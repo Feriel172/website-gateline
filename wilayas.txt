@@ -1,0 +1,2639 @@
+{
+    "rates": [
+        {
+            "toTerritoryId": "337f0471-70aa-4e1b-b7af-29983ba6c6cb",
+            "toTerritoryName": "Ben Choud",
+            "toTerritoryNameArabic": "بن شود",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "d80f9c4f-74c0-4c6a-b994-2baca3acccbc",
+            "toTerritoryName": "Boudouaou El Bahri",
+            "toTerritoryNameArabic": "بودواو البحري",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "56d4d794-fd4a-4384-b13f-365cead309a9",
+            "toTerritoryName": "Si Mustapha",
+            "toTerritoryNameArabic": "سي مصطفى",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "597389de-2c0a-4163-bea6-4bdab78dfbd8",
+            "toTerritoryName": "Timezrit",
+            "toTerritoryNameArabic": "تيمزريت",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "896841bb-4763-49f8-9de0-4c3761c5b34b",
+            "toTerritoryName": "Thenia",
+            "toTerritoryNameArabic": "الثنية",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "d9516b64-3d19-4d71-afdf-4f426fec0091",
+            "toTerritoryName": "Souk El Had",
+            "toTerritoryNameArabic": "سوق الحد",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "2d6071b3-02c8-410c-b706-50e5658c253a",
+            "toTerritoryName": "Ouled Aissa",
+            "toTerritoryNameArabic": "أولاد عيسى",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "286ce6b5-d29b-406e-9721-529ea49163ca",
+            "toTerritoryName": "Beni Amrane",
+            "toTerritoryNameArabic": "بني عمران",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "5a12dc12-d791-4992-a791-56dcf3d31f09",
+            "toTerritoryName": "Corso",
+            "toTerritoryNameArabic": "قورصو",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "855fa14f-1ffb-4919-8814-584e0f1ad242",
+            "toTerritoryName": "Afir",
+            "toTerritoryNameArabic": "أعفير",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "4bb620d8-8ddf-41cb-9d1d-5ec0d9d747a0",
+            "toTerritoryName": "Ouled Moussa",
+            "toTerritoryNameArabic": "أولاد موسى",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "36c40888-1123-4f54-8cc2-60a898de39f6",
+            "toTerritoryName": "El Kharrouba",
+            "toTerritoryNameArabic": "الخروبة",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "8eda7324-3d3b-408f-beb7-7626e80cb0c4",
+            "toTerritoryName": "Larbatache",
+            "toTerritoryNameArabic": "الاربعطاش",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "37976834-6a63-4074-b923-7663f32fdd03",
+            "toTerritoryName": "Chabet El Ameur",
+            "toTerritoryNameArabic": "شعبة العامر",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "7377ac2c-102f-4c8b-b5cf-79ff63f17a9e",
+            "toTerritoryName": "Tidjelabine",
+            "toTerritoryNameArabic": "تيجلابين",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "b78b602c-38d5-4c5e-9821-840814494210",
+            "toTerritoryName": "Djinet",
+            "toTerritoryNameArabic": "جنات",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "db62074e-473d-449b-a240-84b0838ea65b",
+            "toTerritoryName": "Khemis El Khechna",
+            "toTerritoryNameArabic": "خميس الخشنة",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "7942759b-bcce-4f4d-bf42-a091bd78a32a",
+            "toTerritoryName": "Ouled Hedadj",
+            "toTerritoryNameArabic": "أولاد هداج",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "0b7ea8b2-0ddf-42e2-99b3-a595843d4ae3",
+            "toTerritoryName": "Ammal",
+            "toTerritoryNameArabic": "عمال",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "0e14ad02-8bcd-490f-8d2e-ab65db222312",
+            "toTerritoryName": "Bouzegza Keddara",
+            "toTerritoryNameArabic": "بوزقزة قدارة",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "b42567d7-ea5e-4bde-8b3b-afd9b1c63a5e",
+            "toTerritoryName": "Isser",
+            "toTerritoryNameArabic": "يسر",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "6eb90e5f-bbf6-4ca4-a6d9-b3ea8bb3552a",
+            "toTerritoryName": "Dellys",
+            "toTerritoryNameArabic": "دلس",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "cbcba443-456b-458e-ac57-ba35ac9dec9d",
+            "toTerritoryName": "Zemmouri",
+            "toTerritoryNameArabic": "زموري",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "ab821aca-18c7-487f-8b67-bb9cda74c0db",
+            "toTerritoryName": "Baghlia",
+            "toTerritoryNameArabic": "بغلية",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "d695c97f-fd2b-4061-8a41-beb6ec73a907",
+            "toTerritoryName": "Bordj Menaiel",
+            "toTerritoryNameArabic": "برج منايل",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "a098e6b1-c4a2-4c64-8664-cb0260e4004a",
+            "toTerritoryName": "Sidi Daoud",
+            "toTerritoryNameArabic": "سيدي داود",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "31d316f1-67ec-4e29-917e-cce4c341a4c1",
+            "toTerritoryName": "Boudouaou",
+            "toTerritoryNameArabic": "بودواو",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "03e66d30-d981-499d-8742-cce591a7805d",
+            "toTerritoryName": "Naciria",
+            "toTerritoryNameArabic": "الناصرية",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "bf494d7c-1d9a-4862-8d2a-db0daa33b05c",
+            "toTerritoryName": "Hammedi",
+            "toTerritoryNameArabic": "حمادي",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "384a8798-b00c-4794-afc0-df07d2bcc148",
+            "toTerritoryName": "Leghata",
+            "toTerritoryNameArabic": "لقاطة",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "e2b40595-1d46-49d3-9e73-ef2d7e2e43eb",
+            "toTerritoryName": "Taourga",
+            "toTerritoryNameArabic": "تاورقة",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "514b858a-e885-4ae8-a763-f463895a4a5d",
+            "toTerritoryName": "Boumerdes",
+            "toTerritoryNameArabic": "بومرداس",
+            "toTerritoryLevel": "commune",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 420.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 500.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "3c05ecdd-cc5d-4afe-8def-056ade0bd6bc",
+            "toTerritoryName": "Unknown",
+            "toTerritoryNameArabic": "Unknown",
+            "toTerritoryLevel": "Unknown",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 0.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 0.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 0.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "e9a1e9cf-8475-4768-94cc-0888d094ff47",
+            "toTerritoryCode": 25,
+            "toTerritoryName": "Constantine",
+            "toTerritoryNameArabic": "قسنطينة",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 850.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "2d1e61ff-e2af-4b4d-a592-0a6436c5fffd",
+            "toTerritoryCode": 24,
+            "toTerritoryName": "Guelma",
+            "toTerritoryNameArabic": "قالمة",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 850.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "0e0f2d43-6d78-47dd-8bb7-0f2771cb97ff",
+            "toTerritoryCode": 26,
+            "toTerritoryName": "Medea",
+            "toTerritoryNameArabic": "المدية",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 850.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "a9df7e26-1086-4319-8a93-19969c99c89b",
+            "toTerritoryCode": 21,
+            "toTerritoryName": "Skikda",
+            "toTerritoryNameArabic": "سكيكدة",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 900.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "e7b51620-74f4-4748-85c5-216fb9b01b03",
+            "toTerritoryCode": 47,
+            "toTerritoryName": "Ghardaia",
+            "toTerritoryNameArabic": "غرداية",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 670.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 950.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "3fd318e8-7c24-480c-a106-21f6c842583d",
+            "toTerritoryCode": 23,
+            "toTerritoryName": "Annaba",
+            "toTerritoryNameArabic": "عنابة",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 900.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "58a7bf33-d0ea-4671-82f3-24c5a0ba372e",
+            "toTerritoryName": "Unknown",
+            "toTerritoryNameArabic": "Unknown",
+            "toTerritoryLevel": "Unknown",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 0.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 0.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 0.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "ecdf0888-0470-4b2f-beb8-24c99b6fc9cb",
+            "toTerritoryCode": 45,
+            "toTerritoryName": "Naama",
+            "toTerritoryNameArabic": "النعامة",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 670.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 1200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "796e70df-1102-44da-9582-2da66ead2ba6",
+            "toTerritoryCode": 7,
+            "toTerritoryName": "Biskra",
+            "toTerritoryNameArabic": "بسكرة",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 670.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 950.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "75ca308d-ab36-44e2-9702-2e2300a57b8c",
+            "toTerritoryCode": 28,
+            "toTerritoryName": "MSila",
+            "toTerritoryNameArabic": "المسيلة",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 900.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "cd82549a-b1f7-48c1-9a25-2f3f05b80b1d",
+            "toTerritoryCode": 39,
+            "toTerritoryName": "El Oued",
+            "toTerritoryNameArabic": "الوادي",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 670.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 1000.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "e740c188-2bbc-4206-8999-302b17dc0e4b",
+            "toTerritoryCode": 8,
+            "toTerritoryName": "Bechar",
+            "toTerritoryNameArabic": "بشار",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 770.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 1200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 250.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "ada5bb27-ffe5-4977-a917-3105c2b3d9c6",
+            "toTerritoryCode": 14,
+            "toTerritoryName": "Tiaret",
+            "toTerritoryNameArabic": "تيارت",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 520.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 850.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "f30136dc-3012-4ac7-912c-33eab37393a9",
+            "toTerritoryCode": 54,
+            "toTerritoryName": "In Guezzam",
+            "toTerritoryNameArabic": "عين قزام",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 0.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 1650.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 250.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "56ee938d-7887-408e-8731-364d07ad3594",
+            "toTerritoryCode": 19,
+            "toTerritoryName": "Setif",
+            "toTerritoryNameArabic": "سطيف",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 850.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "eabb6505-5eef-479f-b6a3-36ba282d5237",
+            "toTerritoryCode": 57,
+            "toTerritoryName": "El Meghaier",
+            "toTerritoryNameArabic": "المغير",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 0.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 950.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "a8c05822-e30a-4d5a-bcb3-3b3bb23c079b",
+            "toTerritoryCode": 5,
+            "toTerritoryName": "Batna",
+            "toTerritoryNameArabic": "باتنة",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 900.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "e772eb46-276a-4f41-bae7-3b67e1bdc616",
+            "toTerritoryCode": 31,
+            "toTerritoryName": "Oran",
+            "toTerritoryNameArabic": "وهران",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 850.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "56d30b7a-465a-462c-bc2a-3e132c89be63",
+            "toTerritoryCode": 41,
+            "toTerritoryName": "Souk Ahras",
+            "toTerritoryNameArabic": "سوق أهراس",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 900.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "ad58c5ee-868d-4acb-8f03-409f97a10370",
+            "toTerritoryCode": 48,
+            "toTerritoryName": "Relizane",
+            "toTerritoryNameArabic": "غليزان",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 900.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "53c9e062-9c4e-4c77-8b71-55eabf887f83",
+            "toTerritoryCode": 13,
+            "toTerritoryName": "Tlemcen",
+            "toTerritoryNameArabic": "تلمسان",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 900.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "dca8b699-ce8b-4ad7-b8f2-560e63911383",
+            "toTerritoryCode": 32,
+            "toTerritoryName": "El Bayadh",
+            "toTerritoryNameArabic": "البيض",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 670.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 1100.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 250.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "2cec2b2a-cc37-480a-9183-59fdfdb65cd4",
+            "toTerritoryCode": 22,
+            "toTerritoryName": "Sidi Bel Abbes",
+            "toTerritoryNameArabic": "سيدي بلعباس",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 900.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "d4549528-8327-4a3f-9732-5a5462c84b8d",
+            "toTerritoryCode": 40,
+            "toTerritoryName": "Khenchela",
+            "toTerritoryNameArabic": "خنشلة",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 900.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "5afdfab6-e505-4691-abc7-5e8bd79afad5",
+            "toTerritoryCode": 12,
+            "toTerritoryName": "Tebessa",
+            "toTerritoryNameArabic": "تبسة",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 950.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "27b2042a-77f8-4c91-b62d-60934fa0daca",
+            "toTerritoryCode": 20,
+            "toTerritoryName": "Saida",
+            "toTerritoryNameArabic": "سعيدة",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 620.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 900.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "6e978fc5-f20a-4b5f-9adf-61dd21a7672a",
+            "toTerritoryCode": 1,
+            "toTerritoryName": "Adrar",
+            "toTerritoryNameArabic": "أدرار",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 1070.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 1450.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 250.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "8d2d130f-460c-4867-85ef-641341a4d586",
+            "toTerritoryCode": 44,
+            "toTerritoryName": "Ain Defla",
+            "toTerritoryNameArabic": "عين الدفلى",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 900.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "0c8476c5-bbe4-46e4-80e5-67d3501195cc",
+            "toTerritoryCode": 43,
+            "toTerritoryName": "Mila",
+            "toTerritoryNameArabic": "ميلة",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 900.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "ba12c65c-de9e-4f30-a449-6ba0b27dd7d7",
+            "toTerritoryCode": 52,
+            "toTerritoryName": "Beni Abbes",
+            "toTerritoryNameArabic": "بني عباس",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 1070.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 1400.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 250.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "cb7e15ff-1bec-42d7-9907-6f9f8becafd2",
+            "toTerritoryName": "Unknown",
+            "toTerritoryNameArabic": "Unknown",
+            "toTerritoryLevel": "Unknown",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 0.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 0.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 0.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "00b5ef4b-ae2e-4b7f-bd26-70c1a376b69b",
+            "toTerritoryCode": 3,
+            "toTerritoryName": "Laghouat",
+            "toTerritoryNameArabic": "الأغواط",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 670.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 950.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "dc851e52-55b2-4beb-a7f1-79d4e73e9458",
+            "toTerritoryCode": 18,
+            "toTerritoryName": "Jijel",
+            "toTerritoryNameArabic": "جيجل",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 900.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "fb1a9f7a-81a2-4825-af92-79f9d187637f",
+            "toTerritoryCode": 38,
+            "toTerritoryName": "Tissemsilt",
+            "toTerritoryNameArabic": "تيسمسيلت",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 520.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 900.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "bc5cd378-043d-43c5-88f8-7fd82a365fe6",
+            "toTerritoryName": "Unknown",
+            "toTerritoryNameArabic": "Unknown",
+            "toTerritoryLevel": "Unknown",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 0.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 0.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 0.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "442d8a1c-2e12-4a8a-9c7e-8618aac20280",
+            "toTerritoryCode": 55,
+            "toTerritoryName": "Touggourt",
+            "toTerritoryNameArabic": "تقرت",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 670.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 950.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 250.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "a7e764cf-e9ca-4c1f-8232-89852d102aec",
+            "toTerritoryCode": 9,
+            "toTerritoryName": "Blida",
+            "toTerritoryNameArabic": "البليدة",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 520.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 700.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "80d1b557-03b2-4073-a8c2-89a8712a7fc8",
+            "toTerritoryCode": 34,
+            "toTerritoryName": "Bordj Bou Arreridj",
+            "toTerritoryNameArabic": "برج بوعريريج",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 850.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "a17a6482-3f48-4948-aaf2-8a653c4c1110",
+            "toTerritoryCode": 29,
+            "toTerritoryName": "Mascara",
+            "toTerritoryNameArabic": "معسكر",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 900.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "5bef8e95-fad8-4a15-95f0-8d6f5c80f69e",
+            "toTerritoryCode": 15,
+            "toTerritoryName": "Tizi Ouzou",
+            "toTerritoryNameArabic": "تيزي وزو",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 750.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "981f136a-996f-463e-a536-8e643daab193",
+            "toTerritoryCode": 2,
+            "toTerritoryName": "Chlef",
+            "toTerritoryNameArabic": "الشلف",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 850.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "295585ad-4cf4-4b7e-b276-9bb62d019749",
+            "toTerritoryCode": 6,
+            "toTerritoryName": "Bejaia",
+            "toTerritoryNameArabic": "بجاية",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 900.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "37c70742-df6b-4019-981a-a16a29a14748",
+            "toTerritoryCode": 4,
+            "toTerritoryName": "Oum El Bouaghi",
+            "toTerritoryNameArabic": "أم البواقي",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 800.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "38560f06-e049-4fd2-9664-a655e552b517",
+            "toTerritoryCode": 11,
+            "toTerritoryName": "Tamanrasset",
+            "toTerritoryNameArabic": "تمنراست",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 1270.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 1650.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 250.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "bcb30485-37b5-4135-a508-acad8a8a9cf8",
+            "toTerritoryCode": 49,
+            "toTerritoryName": "Timimoun",
+            "toTerritoryNameArabic": "تيميمون",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 1070.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 1450.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 250.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "d134c182-7dac-4655-9d9b-bbdb62aa2ec4",
+            "toTerritoryCode": 16,
+            "toTerritoryName": "Alger",
+            "toTerritoryNameArabic": "الجزائر",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 520.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 600.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "9ee8eac2-77e5-4d70-ac49-bde455d06bee",
+            "toTerritoryCode": 17,
+            "toTerritoryName": "Djelfa",
+            "toTerritoryNameArabic": "الجلفة",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 670.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 950.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "1435179a-6dbb-4d9c-a186-c521b2a57319",
+            "toTerritoryCode": 42,
+            "toTerritoryName": "Tipaza",
+            "toTerritoryNameArabic": "تيبازة",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 800.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "d7175ca6-6dd7-4dfb-a399-d388e782473a",
+            "toTerritoryCode": 27,
+            "toTerritoryName": "Mostaganem",
+            "toTerritoryNameArabic": "مستغانم",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 900.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "e6f4b09c-f63e-42af-92bc-dab9b422c34d",
+            "toTerritoryCode": 36,
+            "toTerritoryName": "El Tarf",
+            "toTerritoryNameArabic": "الطارف",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 900.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "fc460ec5-3e71-489c-b95b-e5301ea68341",
+            "toTerritoryCode": 46,
+            "toTerritoryName": "Ain Temouchent",
+            "toTerritoryNameArabic": "عين تموشنت",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 900.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "3d19d427-08f3-492c-a1d0-e7ace3516ed2",
+            "toTerritoryCode": 58,
+            "toTerritoryName": "El Menia",
+            "toTerritoryNameArabic": "المنيعة",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 670.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 1100.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "0f2dab00-094c-412c-a7d0-ebd0268d3d3c",
+            "toTerritoryCode": 51,
+            "toTerritoryName": "Ouled Djellal",
+            "toTerritoryNameArabic": "أولاد جلال",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 670.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 950.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "7c752560-8412-4e11-8c75-ed7cd9c22be2",
+            "toTerritoryCode": 53,
+            "toTerritoryName": "In Salah",
+            "toTerritoryNameArabic": "عين صالح",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 1270.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 1650.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 250.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "a1f0229c-4f34-40aa-9238-fadde6757cba",
+            "toTerritoryCode": 10,
+            "toTerritoryName": "Bouira",
+            "toTerritoryNameArabic": "البويرة",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 570.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 750.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        },
+        {
+            "toTerritoryId": "ada333a0-708d-476e-a97d-fd70fe661b09",
+            "toTerritoryCode": 30,
+            "toTerritoryName": "Ouargla",
+            "toTerritoryNameArabic": "ورقلة",
+            "toTerritoryLevel": "wilaya",
+            "deliveryPrices": [
+                {
+                    "deliveryType": "pickup-point",
+                    "price": 670.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "home",
+                    "price": 1000.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                },
+                {
+                    "deliveryType": "return",
+                    "price": 200.00,
+                    "discountedPrice": null,
+                    "isSpecificPrice": false,
+                    "specificPriceId": null
+                }
+            ]
+        }
+    ],
+    "appliedDiscounts": []
+}

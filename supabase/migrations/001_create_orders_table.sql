@@ -12,18 +12,22 @@ CREATE TABLE IF NOT EXISTS orders (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- Enable Row Level Security (optional but recommended)
+-- Enable Row Level Security
 ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
 
--- Allow anonymous inserts (so anyone can place an order)
-CREATE POLICY "Allow anonymous inserts" ON orders
-  FOR INSERT
-  TO anon
-  WITH CHECK (true);
+-- NOTE: Anonymous inserts are now handled via the server-side API route (/api/checkout)
+-- which uses the service_role key. This eliminates the need for anonymous insert policies.
+-- The service_role key bypasses RLS entirely, so all inserts go through server-side validation.
 
 -- Allow authenticated users to view all orders (for admin panel)
 CREATE POLICY "Allow authenticated select" ON orders
   FOR SELECT
+  TO authenticated
+  USING (true);
+
+-- Allow authenticated users to delete orders (admin functionality)
+CREATE POLICY "Allow authenticated delete" ON orders
+  FOR DELETE
   TO authenticated
   USING (true);
 

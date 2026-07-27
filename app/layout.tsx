@@ -18,22 +18,22 @@ const playfairDisplay = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: 'Boty — Natural Skincare',
+  title: 'Gateline Cosmetics',
   description: 'Premium natural skincare and body care products. Glow gently with Boty.',
   generator: 'v0.app',
   keywords: ['skincare', 'natural', 'organic', 'beauty', 'body care', 'cruelty-free'],
   icons: {
     icon: [
       {
-        url: '/icon-light-32x32.png',
+        url: '/logo.png',
         media: '(prefers-color-scheme: light)',
       },
       {
-        url: '/icon-dark-32x32.png',
+        url: '/logo.png',
         media: '(prefers-color-scheme: dark)',
       },
       {
-        url: '/icon.svg',
+        url: '/logo.svg',
         type: 'image/svg+xml',
       },
     ],

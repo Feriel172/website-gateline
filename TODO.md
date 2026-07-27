@@ -1,21 +1,27 @@
-# Fix "Ajouter au panier" Button & Checkout
+# Security Audit Fixes
 
 ## Steps
-- [x] Step 1: Analyze the issue — identified files related to cart functionality
-- [x] Step 2: Fix `app/product/[id]/page.tsx` — add `addItem` call
-- [x] Step 3: Fix `app/shop/page.tsx` — add `addItem` call
-- [x] Step 4: Install Supabase packages (`@supabase/supabase-js`, `@supabase/ssr`)
-- [x] Step 5: Create `.env.local` with Supabase credentials
-- [x] Step 6: Create `lib/supabase/client.ts` — Supabase client utility
-- [x] Step 7: Update `components/boty/cart-drawer.tsx` — navigate to `/checkout`
-- [x] Step 8: Create `app/checkout/page.tsx` — checkout form with validation and Supabase integration
-- [x] Step 9: Fix `app/checkout/page.tsx` — add `bureau` field to Supabase insert
-- [x] Step 10: Create `supabase/migrations/001_create_orders_table.sql` — SQL to create `orders` table
+- [x] Step 1: Create plan and get approval
+- [x] Step 2: Create `app/api/checkout/route.ts` — server-side API route with validation
+- [x] Step 3: Create `lib/supabase/admin.ts` — admin client with service role key
+- [x] Step 4: Update `app/checkout/page.tsx` — call API instead of direct Supabase insert
+- [x] Step 5: Update `next.config.mjs` — add security headers, fix TypeScript config
+- [x] Step 6: Update `supabase/migrations/001_create_orders_table.sql` — improve RLS policies
+- [x] Step 7: Create `supabase/migrations/002_security_fixes.sql` — additional security policies
 
-## ⚠️ Manual Step Required
-Run the SQL migration in your Supabase Dashboard:
-1. Go to https://supabase.com/dashboard
-2. Select your project
-3. Open **SQL Editor**
-4. Paste and execute the contents of `supabase/migrations/001_create_orders_table.sql`
+## ⚠️ Manual Steps Required
+1. Add `SUPABASE_SERVICE_ROLE_KEY` to `.env.local`:
+   ```
+   SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
+   ```
+   Get it from Supabase Dashboard > Settings > API > Project API keys > `service_role` (secret)
+
+2. Run both SQL migrations in Supabase Dashboard SQL Editor:
+   - First run `supabase/migrations/001_create_orders_table.sql`
+   - Then run `supabase/migrations/002_add_rate_limiting.sql`
+
+3. Restart the dev server after adding the environment variable:
+   ```bash
+   npm run dev
+   ```
 

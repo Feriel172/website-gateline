@@ -11,7 +11,6 @@ import { useCart } from "@/components/boty/cart-context"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { createClient } from "@/lib/supabase/client"
 
 interface TerritoryRate {
   toTerritoryName: string
@@ -197,28 +196,31 @@ export default function CheckoutPage() {
     setSubmitError(null)
 
     try {
-      const supabase = createClient()
-
-      const { error } = await supabase.from("orders").insert({
-        first_name: formData.firstName,
-        last_name: formData.lastName || null,
-        phone: formData.phone,
-        wilaya: formData.wilaya,
-        delivery_type: formData.deliveryType === "domicile" ? "À domicile" : "Bureau ZR Express",
-        bureau: formData.deliveryType === "bureau" ? formData.bureau : null,
-        items: items.map(item => ({
-          id: item.id,
-          name: item.name,
-          price: item.price,
-          quantity: item.quantity,
-          image: item.image
-        })),
-        total: total
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName || null,
+          phone: formData.phone,
+          wilaya: formData.wilaya,
+          deliveryType: formData.deliveryType,
+          bureau: formData.deliveryType === "bureau" ? formData.bureau : null,
+          items: items.map(item => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            image: item.image
+          })),
+        }),
       })
 
-      if (error) {
-        console.error("Supabase error:", error)
-        setSubmitError("Erreur lors de l'enregistrement de la commande. Veuillez réessayer.")
+      const result = await response.json()
+
+      if (!response.ok || !result.success) {
+        const errorMsg = result.errors?.[0]?.message || "Erreur lors de l'enregistrement de la commande."
+        setSubmitError(errorMsg)
         return
       }
 

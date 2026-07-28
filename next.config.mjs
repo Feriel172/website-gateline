@@ -45,6 +45,11 @@ const nextConfig = {
 
               "connect-src 'self' https://*.supabase.co https://*.vercel-insights.com https://connect.facebook.net https://www.facebook.com https://graph.facebook.com https://*.facebook.com",
 
+              // fbevents.js injects a hidden facebook.com iframe for cookie/identity
+              // sync, and Meta's Event Setup Tool overlays the site from facebook.com.
+              // Without this they fall back to default-src 'self' and get blocked.
+              "frame-src https://www.facebook.com https://*.facebook.com",
+
               "frame-ancestors 'none'",
 
               "form-action 'self'",

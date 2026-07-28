@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { createAdminClient } from "@/lib/supabase/admin"
+import { createAdminClient, SupabaseConfigError } from "@/lib/supabase/admin"
 
 // Known product prices for server-side validation and total recalculation
 const PRODUCT_PRICES: Record<string, number> = {
@@ -275,8 +275,11 @@ export async function POST(request: Request) {
     })
   } catch (err) {
     console.error("Checkout API error:", err)
+    // Surface a non-sensitive code so a misconfigured deployment is diagnosable
+    // from the response alone. The message stays generic for shoppers.
+    const code = err instanceof SupabaseConfigError ? "SERVER_MISCONFIGURED" : "INTERNAL_ERROR"
     return NextResponse.json(
-      { success: false, errors: [{ field: "server", message: "Une erreur interne est survenue" }] },
+      { success: false, code, errors: [{ field: "server", message: "Une erreur interne est survenue" }] },
       { status: 500 }
     )
   }

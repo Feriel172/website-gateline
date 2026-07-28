@@ -8,6 +8,7 @@ import { ChevronLeft, Minus, Plus, ChevronDown, Leaf, Heart, Award, Recycle, Sta
 import { Header } from "@/components/boty/header"
 import { Footer } from "@/components/boty/footer"
 import { useCart } from "@/components/boty/cart-context"
+import { trackViewContent } from "@/lib/fpixel"
 
 const products: Record<string, {
   id: string
@@ -145,6 +146,10 @@ export default function ProductPage() {
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [productId])
+
+  useEffect(() => {
+    trackViewContent({ id: product.id, name: product.name, price: product.price })
+  }, [product.id, product.name, product.price])
 
   const toggleAccordion = (section: AccordionSection) => {
     setOpenAccordion(openAccordion === section ? null : section)

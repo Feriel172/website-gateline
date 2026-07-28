@@ -11,6 +11,7 @@ import { useCart } from "@/components/boty/cart-context"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { trackPurchase } from "@/lib/fpixel"
 
 interface TerritoryRate {
   toTerritoryName: string
@@ -223,6 +224,12 @@ export default function CheckoutPage() {
         setSubmitError(errorMsg)
         return
       }
+
+      // Fire before clearCart() — the cart is empty afterwards.
+      trackPurchase(
+        items.map(item => ({ id: item.id, quantity: item.quantity, price: item.price })),
+        subtotal
+      )
 
       setIsSuccess(true)
       clearCart()

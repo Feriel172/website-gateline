@@ -1,6 +1,7 @@
 "use client"
 
 import { createContext, useContext, useState, type ReactNode } from "react"
+import { trackAddToCart } from "@/lib/fpixel"
 
 export interface CartItem {
   id: string
@@ -42,6 +43,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
       return [...currentItems, { ...newItem, quantity: 1 }]
     })
     setIsOpen(true)
+    trackAddToCart({
+      id: newItem.id,
+      name: newItem.name,
+      price: newItem.price,
+      quantity: 1,
+    })
   }
 
   const removeItem = (id: string) => {

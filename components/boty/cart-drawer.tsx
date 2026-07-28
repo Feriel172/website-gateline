@@ -13,6 +13,7 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer"
 import { useCart } from "./cart-context"
+import { trackInitiateCheckout } from "@/lib/fpixel"
 
 export function CartDrawer() {
   const { items, removeItem, updateQuantity, isOpen, setIsOpen, itemCount, subtotal } = useCart()
@@ -22,6 +23,9 @@ export function CartDrawer() {
   const total = subtotal + shipping
 
   const handleCheckout = () => {
+    trackInitiateCheckout(
+      items.map((item) => ({ id: item.id, quantity: item.quantity, price: item.price }))
+    )
     setIsOpen(false)
     router.push("/checkout")
   }

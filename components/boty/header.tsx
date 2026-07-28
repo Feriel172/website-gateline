@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Menu, X, ShoppingBag, Search, User } from "lucide-react"
+import { Menu, X, ShoppingBag, Search } from "lucide-react"
 import { CartDrawer } from "./cart-drawer"
 import { useCart } from "./cart-context"
 
@@ -55,13 +55,6 @@ export function Header() {
             >
               <Search className="w-5 h-5" />
             </button>
-            <Link
-              href="/account"
-              className="hidden sm:block p-2 text-foreground/70 hover:text-foreground boty-transition"
-              aria-label="Account"
-            >
-              <User className="w-5 h-5" />
-            </Link>
             <button
               type="button"
               onClick={() => setIsOpen(true)}

@@ -16,9 +16,53 @@ interface PixelContent {
   price: number
 }
 
+// The pixel snippet loads with strategy="afterInteractive", so fbq can still be
+// undefined when a mount effect fires on a cold load. Hold events until it exists
+// instead of dropping them, otherwise ViewContent is lost on ad landings.
+const queued: Array<[string, Record<string, unknown> | undefined]> = []
+let waitTimer: ReturnType<typeof setInterval> | null = null
+const MAX_WAIT_MS = 10000
+
+function stopWaiting() {
+  if (waitTimer !== null) {
+    clearInterval(waitTimer)
+    waitTimer = null
+  }
+}
+
+function flush() {
+  const fbq = window.fbq
+  if (typeof fbq !== "function") return
+  while (queued.length > 0) {
+    const [event, params] = queued.shift()!
+    fbq("track", event, params)
+  }
+  stopWaiting()
+}
+
 function track(event: string, params?: Record<string, unknown>) {
-  if (typeof window === "undefined" || typeof window.fbq !== "function") return
-  window.fbq("track", event, params)
+  if (typeof window === "undefined") return
+
+  queued.push([event, params])
+
+  if (typeof window.fbq === "function") {
+    flush()
+    return
+  }
+
+  if (waitTimer !== null) return
+
+  let waited = 0
+  waitTimer = setInterval(() => {
+    waited += 200
+    if (typeof window.fbq === "function") {
+      flush()
+    } else if (waited >= MAX_WAIT_MS) {
+      // Blocked by an extension, or the script failed to load — drop the events.
+      queued.length = 0
+      stopWaiting()
+    }
+  }, 200)
 }
 
 function toContents(contents: PixelContent[]) {

@@ -30,33 +30,10 @@ const nextConfig = {
             value: "camera=(), microphone=(), geolocation=()",
           },
 
-          {
-            key: "Content-Security-Policy",
-            value: [
-              "default-src 'self'",
-
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://connect.facebook.net https://www.facebook.com",
-
-              "style-src 'self' 'unsafe-inline'",
-
-              "img-src 'self' data: blob: https://www.facebook.com https://connect.facebook.net",
-
-              "font-src 'self' data:",
-
-              "connect-src 'self' https://*.supabase.co https://*.vercel-insights.com https://connect.facebook.net https://www.facebook.com https://graph.facebook.com https://*.facebook.com",
-
-              // fbevents.js injects a hidden facebook.com iframe for cookie/identity
-              // sync, and Meta's Event Setup Tool overlays the site from facebook.com.
-              // Without this they fall back to default-src 'self' and get blocked.
-              "frame-src https://www.facebook.com https://*.facebook.com",
-
-              "frame-ancestors 'none'",
-
-              "form-action 'self'",
-
-              "base-uri 'self'",
-            ].join("; "),
-          },
+          // No Content-Security-Policy by design. It kept breaking third-party
+          // marketing tags — it blocked the Vercel Blob hero videos via media-src
+          // and silently dropped Meta Pixel ecommerce events via form-action.
+          // Clickjacking is still covered by X-Frame-Options above.
         ],
       },
     ]

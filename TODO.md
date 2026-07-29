@@ -1,27 +1,41 @@
-# Security Audit Fixes
+# Admin Page Implementation
 
-## Steps
-- [x] Step 1: Create plan and get approval
-- [x] Step 2: Create `app/api/checkout/route.ts` — server-side API route with validation
-- [x] Step 3: Create `lib/supabase/admin.ts` — admin client with service role key
-- [x] Step 4: Update `app/checkout/page.tsx` — call API instead of direct Supabase insert
-- [x] Step 5: Update `next.config.mjs` — add security headers, fix TypeScript config
-- [x] Step 6: Update `supabase/migrations/001_create_orders_table.sql` — improve RLS policies
-- [x] Step 7: Create `supabase/migrations/002_security_fixes.sql` — additional security policies
+## ✅ Completed
 
-## ⚠️ Manual Steps Required
-1. Add `SUPABASE_SERVICE_ROLE_KEY` to `.env.local`:
-   ```
-   SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
-   ```
-   Get it from Supabase Dashboard > Settings > API > Project API keys > `service_role` (secret)
+- [x] **Migration**: Created `supabase/migrations/003_add_order_status.sql`
+  - Added `status` column (DEFAULT `'en attente'`)
+  - CHECK constraint for valid statuses
+  - Index on status column
 
-2. Run both SQL migrations in Supabase Dashboard SQL Editor:
-   - First run `supabase/migrations/001_create_orders_table.sql`
-   - Then run `supabase/migrations/002_add_rate_limiting.sql`
+- [x] **API – List Orders**: Created `app/api/admin/orders/route.ts`
+  - `GET` endpoint fetches all orders ordered by `created_at DESC`
+  - Protected by `x-admin-key` header matching `ADMIN_PASSWORD`
 
-3. Restart the dev server after adding the environment variable:
+- [x] **API – Update Status**: Created `app/api/admin/orders/[id]/route.ts`
+  - `PATCH` endpoint updates order status
+  - Validates status is one of: `en attente`, `confirmée`, `annulé`
+  - Protected by `x-admin-key` header
+
+- [x] **Admin Page**: Created `app/admin/page.tsx`
+  - Password gate authentication (verifies via API call)
+  - Dashboard summary cards (total, pending, confirmed, cancelled, revenue)
+  - Desktop: Full table view with sortable columns
+  - Mobile/Tablet: Card-based layout
+  - Clickable status badges with dropdown to change status
+  - Loading skeleton, empty state, error state
+  - Session persistence via `sessionStorage`
+  - Refresh & logout buttons
+
+- [x] **Environment Variable**: Added `ADMIN_PASSWORD` to `.env.local`
+
+## 🔧 Usage
+
+1. Run the Supabase migration:
    ```bash
-   npm run dev
+   # Apply migration via Supabase CLI or Supabase dashboard SQL editor
    ```
+
+2. Access the admin page at `/admin`
+
+3. Login with the password: `4qhdvUH3uXf9w*c`
 

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { createAdminClient, SupabaseConfigError } from "@/lib/supabase/admin"
 
-const VALID_STATUSES = ["en attente", "confirmée", "annulé"] as const
+const VALID_STATUSES = ["en attente", "confirmée", "annulé", "ne répond pas", "injoignable/éteint"] as const
 
 // Simple admin authentication using a shared secret
 function isAuthenticated(request: Request): boolean {

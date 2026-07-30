@@ -3,15 +3,12 @@
 
 ALTER TABLE orders ADD COLUMN IF NOT EXISTS status TEXT NOT NULL DEFAULT 'en attente';
 
--- Add a CHECK constraint to ensure only valid status values
+-- Drop existing constraint if any
 ALTER TABLE orders DROP CONSTRAINT IF EXISTS check_valid_status;
-ALTER TABLE orders ADD CONSTRAINT check_valid_status
-  CHECK (status IN ('en attente', 'confirmée', 'annulé'));
 
--- Create an index on status for filtering
-ALTER TABLE orders DROP CONSTRAINT IF EXISTS check_valid_status;
+-- Add a CHECK constraint to ensure only valid status values
 ALTER TABLE orders ADD CONSTRAINT check_valid_status
-  CHECK (status IN ('en attente', 'confirmée', 'annulé'));
+  CHECK (status IN ('en attente', 'confirmée', 'annulé', 'ne répond pas', 'injoignable/éteint'));
 
 -- Create an index on status for filtering
 CREATE INDEX IF NOT EXISTS idx_orders_status ON orders (status);

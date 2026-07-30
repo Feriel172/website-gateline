@@ -57,7 +57,7 @@ interface Order {
   bureau: string | null
   items: OrderItem[]
   total: number
-  status: "en attente" | "confirmée" | "annulé"
+  status: "en attente" | "confirmée" | "annulé" | "ne répond pas" | "injoignable/éteint"
   created_at: string
 }
 
@@ -70,9 +70,11 @@ const STATUS_CONFIG: Record<
   "en attente": { label: "En attente", color: "outline" },
   confirmée: { label: "Confirmée", color: "default" },
   annulé: { label: "Annulé", color: "destructive" },
+  "ne répond pas": { label: "Ne répond pas", color: "secondary" },
+  "injoignable/éteint": { label: "Injoignable/Éteint", color: "destructive" },
 }
 
-const VALID_STATUSES = ["en attente", "confirmée", "annulé"] as const
+const VALID_STATUSES = ["en attente", "confirmée", "annulé", "ne répond pas", "injoignable/éteint"] as const
 
 // --- Login Page ---
 

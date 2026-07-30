@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server"
+import { NextResponse, after } from "next/server"
 import { createAdminClient, SupabaseConfigError } from "@/lib/supabase/admin"
+import { sendNewOrderEmail } from "@/lib/email"
 
 // Known product prices for server-side validation and total recalculation
 const PRODUCT_PRICES: Record<string, number> = {
@@ -242,24 +243,30 @@ export async function POST(request: Request) {
     const shipping = calculateShipping(data.wilaya, data.deliveryType)
     const total = subtotal + shipping
 
+    const deliveryLabel = data.deliveryType === "domicile" ? "À domicile" : "Bureau ZR Express"
+
     // Insert order using service role key (bypasses RLS)
     const supabase = createAdminClient()
-    const { error: insertError } = await supabase.from("orders").insert({
-      first_name: data.firstName,
-      last_name: data.lastName || null,
-      phone: data.phone,
-      wilaya: data.wilaya,
-      delivery_type: data.deliveryType === "domicile" ? "À domicile" : "Bureau ZR Express",
-      bureau: data.bureau || null,
-      items: data.items.map((item) => ({
-        id: item.id,
-        name: item.name,
-        price: item.price,
-        quantity: item.quantity,
-        image: item.image || null,
-      })),
-      total,
-    })
+    const { data: inserted, error: insertError } = await supabase
+      .from("orders")
+      .insert({
+        first_name: data.firstName,
+        last_name: data.lastName || null,
+        phone: data.phone,
+        wilaya: data.wilaya,
+        delivery_type: deliveryLabel,
+        bureau: data.bureau || null,
+        items: data.items.map((item) => ({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          image: item.image || null,
+        })),
+        total,
+      })
+      .select("id, created_at")
+      .single()
 
     if (insertError) {
       console.error("Supabase insert error:", insertError)
@@ -268,6 +275,29 @@ export async function POST(request: Request) {
         { status: 500 }
       )
     }
+
+    // Notify the shop owner after the response is flushed, so a slow or failing
+    // email provider never delays or breaks a checkout that already succeeded.
+    after(async () => {
+      await sendNewOrderEmail({
+        id: inserted?.id,
+        createdAt: inserted?.created_at,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        phone: data.phone,
+        wilaya: data.wilaya,
+        deliveryType: deliveryLabel,
+        bureau: data.bureau,
+        items: data.items.map((item) => ({
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+        })),
+        subtotal,
+        shipping,
+        total,
+      })
+    })
 
     return NextResponse.json({
       success: true,

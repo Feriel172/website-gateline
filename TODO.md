@@ -28,6 +28,26 @@
 
 - [x] **Environment Variable**: Added `ADMIN_PASSWORD` to `.env.local`
 
+- [x] **Email Notification**: Created `lib/email.ts`
+  - Sends an email to the shop owner on every new order
+  - Uses the Resend REST API via `fetch` (no extra dependency)
+  - Called from `app/api/checkout/route.ts` inside `after()`, so a slow or
+    failing email provider never delays or breaks a checkout
+  - No-ops with a warning when `RESEND_API_KEY` / `ORDER_NOTIFICATION_TO` are unset
+
+## 📧 Email notification setup
+
+1. Create a free account at [resend.com](https://resend.com) and copy an API key
+2. Fill in `.env`:
+   ```
+   RESEND_API_KEY=re_...
+   ORDER_NOTIFICATION_TO=medram90@gmail.com   # comma-separated for several recipients
+   ```
+3. Sender: the default `onboarding@resend.dev` only delivers to the address that
+   owns the Resend account. To send from your own domain, verify it in Resend and set
+   `ORDER_NOTIFICATION_FROM=Gatelin <commandes@votre-domaine.com>`
+4. On Vercel, add the same variables under Project → Settings → Environment Variables
+
 ## 🔧 Usage
 
 1. Run the Supabase migration:

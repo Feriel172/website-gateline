@@ -24,6 +24,8 @@ export interface OrderEmailPayload {
   items: OrderEmailItem[]
   subtotal: number
   shipping: number
+  discount?: number
+  promoCode?: string | null
   total: number
   createdAt?: string
 }
@@ -35,16 +37,16 @@ export type SendResult =
 function formatDA(amount: number): string {
   // Group thousands with a narrow space, matching the storefront's fr-DZ style.
   const rounded = Math.round(amount)
-  return `${rounded.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} DA`
+  return `${rounded.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} DA`
 }
 
 function escapeHtml(value: string): string {
   return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;")
+    .replace(/&/g, "\u0026amp;")
+    .replace(/</g, "\u0026lt;")
+    .replace(/>/g, "\u0026gt;")
+    .replace(/"/g, "\u0026quot;")
+    .replace(/'/g, "\u0026#39;")
 }
 
 function customerName(order: OrderEmailPayload): string {
@@ -72,6 +74,7 @@ function buildText(order: OrderEmailPayload): string {
   ]
 
   if (order.bureau) lines.push(`Bureau      : ${order.bureau}`)
+  if (order.promoCode) lines.push(`Code promo  : ${order.promoCode} (-${formatDA(order.discount || 0)})`)
 
   lines.push("", "ARTICLES")
   for (const item of order.items) {
@@ -82,6 +85,13 @@ function buildText(order: OrderEmailPayload): string {
     "",
     `Sous-total  : ${formatDA(order.subtotal)}`,
     `Livraison   : ${formatDA(order.shipping)}`,
+  )
+
+  if (order.discount && order.discount > 0) {
+    lines.push(`Remise      : -${formatDA(order.discount)}`)
+  }
+
+  lines.push(
     `TOTAL       : ${formatDA(order.total)}`,
     "",
     `Date        : ${formatDate(order.createdAt)}`
@@ -123,8 +133,16 @@ function buildHtml(order: OrderEmailPayload): string {
     detail("Wilaya", escapeHtml(order.wilaya)),
     detail("Livraison", escapeHtml(order.deliveryType)),
     order.bureau ? detail("Bureau", escapeHtml(order.bureau)) : "",
+    order.promoCode ? detail("Code promo", `${escapeHtml(order.promoCode)} (-${formatDA(order.discount || 0)})`) : "",
     detail("Date", escapeHtml(formatDate(order.createdAt))),
   ].join("")
+
+  const discountRow = order.discount && order.discount > 0
+    ? `<tr>
+        <td style="padding:0 0 8px;color:#888;">Remise</td>
+        <td style="padding:0 0 8px;text-align:right;color:#e53e3e;">-${formatDA(order.discount)}</td>
+      </tr>`
+    : ""
 
   return `<!doctype html>
 <html lang="fr">
@@ -148,6 +166,7 @@ function buildHtml(order: OrderEmailPayload): string {
             <td style="padding:0 0 8px;color:#888;">Livraison</td>
             <td style="padding:0 0 8px;text-align:right;">${formatDA(order.shipping)}</td>
           </tr>
+          ${discountRow}
           <tr>
             <td style="padding:8px 0;border-top:2px solid #111;font-weight:600;">Total</td>
             <td style="padding:8px 0;border-top:2px solid #111;text-align:right;font-weight:600;">${formatDA(order.total)}</td>

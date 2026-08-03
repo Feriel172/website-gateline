@@ -1,6 +1,6 @@
 import React from "react"
 import type { Metadata, Viewport } from 'next'
-import { DM_Sans, Playfair_Display } from 'next/font/google'
+import { DM_Sans, Playfair_Display, Cairo } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { CartProvider } from '@/components/boty/cart-context'
 import { FB_PIXEL_ID } from '@/lib/fpixel'
@@ -17,6 +17,12 @@ const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
   variable: '--font-playfair',
   weight: ['400', '500', '600', '700']
+});
+
+const cairo = Cairo({
+  subsets: ["arabic"],
+  variable: '--font-cairo',
+  weight: ['300', '400', '500', '600', '700']
 });
 
 export const metadata: Metadata = {
@@ -74,7 +80,7 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: fbPixelSnippet }} />
       </head>
-      <body className={`${dmSans.variable} ${playfairDisplay.variable} font-sans antialiased`}>
+<body className={`${dmSans.variable} ${playfairDisplay.variable} ${cairo.variable} font-sans antialiased`}>
         <CartProvider>
           {children}
         </CartProvider>

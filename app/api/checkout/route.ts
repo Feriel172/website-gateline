@@ -30,6 +30,11 @@ const ALLOWED_WILAYAS = new Set([
 // Phone validation: Algerian mobile numbers starting with 05, 06, or 07
 const PHONE_REGEX = /^(0[5-7])\d{8}$/
 
+// Known promo codes: code (case-insensitive) → discount percentage
+const PROMO_CODES: Record<string, number> = {
+  "été10": 10,
+}
+
 interface CartItem {
   id: string
   name: string
@@ -46,6 +51,7 @@ interface CheckoutBody {
   deliveryType: "domicile" | "bureau"
   bureau?: string
   items: CartItem[]
+  promoCode?: string
 }
 
 interface ValidationError {
@@ -151,6 +157,7 @@ function validate(body: unknown): { valid: boolean; errors: ValidationError[]; d
         quantity: item.quantity,
         image: item.image,
       })),
+      promoCode: typeof data.promoCode === "string" ? data.promoCode.trim() : undefined,
     },
   }
 }
@@ -221,6 +228,22 @@ function calculateShipping(wilaya: string, deliveryType: string): number {
   return deliveryType === "domicile" ? rates.home : rates.pickup
 }
 
+function applyPromoCode(promoCode: string | undefined, subtotal: number): { code: string | null; discount: number } {
+  if (!promoCode) {
+    return { code: null, discount: 0 }
+  }
+
+  const normalizedCode = promoCode.toLowerCase().trim()
+  const discountPercent = PROMO_CODES[normalizedCode]
+
+  if (discountPercent === undefined) {
+    return { code: null, discount: 0 }
+  }
+
+  const discount = Math.round(subtotal * discountPercent / 100)
+  return { code: normalizedCode, discount }
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json()
@@ -241,11 +264,14 @@ export async function POST(request: Request) {
 
     // Calculate shipping server-side
     const shipping = calculateShipping(data.wilaya, data.deliveryType)
-    const total = subtotal + shipping
+
+    // Apply promo code
+    const { code: appliedPromoCode, discount } = applyPromoCode(data.promoCode, subtotal)
+    const total = subtotal + shipping - discount
 
     const deliveryLabel = data.deliveryType === "domicile" ? "À domicile" : "Bureau ZR Express"
 
-    // Insert order using service role key (bypasses RLS)
+// Insert order using service role key (bypasses RLS)
     const supabase = createAdminClient()
     const { data: inserted, error: insertError } = await supabase
       .from("orders")
@@ -295,6 +321,8 @@ export async function POST(request: Request) {
         })),
         subtotal,
         shipping,
+        discount,
+        promoCode: appliedPromoCode,
         total,
       })
     })
@@ -314,4 +342,3 @@ export async function POST(request: Request) {
     )
   }
 }
-

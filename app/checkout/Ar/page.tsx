@@ -3,10 +3,10 @@
 import { useState, useEffect, useMemo, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
-import { ChevronLeft, Check, Truck, Building, Loader2 } from "lucide-react"
+import { ChevronRight, Check, Truck, Building, Loader2 } from "lucide-react"
 import Link from "next/link"
-import { Header } from "@/components/boty/header"
-import { Footer } from "@/components/boty/footer"
+import { HeaderAr } from "@/components/boty/header-ar"
+import { FooterAr } from "@/components/boty/footer-ar"
 import { useCart } from "@/components/boty/cart-context"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -37,7 +37,7 @@ interface FormErrors {
   bureau?: string
 }
 
-export default function CheckoutPage() {
+export default function CheckoutPageAr() {
   const router = useRouter()
   const { items, clearCart, subtotal } = useCart()
   const [formData, setFormData] = useState<FormData>({
@@ -64,7 +64,7 @@ export default function CheckoutPage() {
           return
         }
         const data = await res.json()
-        
+
         // Extract only wilaya-level territories
         const wilayaRates: TerritoryRate[] = data.rates
           .filter((r: any) => r.toTerritoryLevel === "wilaya")
@@ -147,7 +147,7 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     if (items.length === 0 && !isSuccess) {
-      router.push("/")
+      router.push("/shop/Ar")
     }
   }, [items, isSuccess, router])
 
@@ -155,21 +155,21 @@ export default function CheckoutPage() {
     const newErrors: FormErrors = {}
 
     if (!formData.firstName.trim()) {
-      newErrors.firstName = "Le prénom est requis"
+      newErrors.firstName = "الاسم الأول مطلوب"
     }
     if (!formData.phone.trim()) {
-      newErrors.phone = "Le numéro de téléphone est requis"
+      newErrors.phone = "رقم الهاتف مطلوب"
     } else if (!/^(0[5-7])\d{8}$/.test(formData.phone.replace(/\s/g, ""))) {
-      newErrors.phone = "Numéro de téléphone invalide (ex: 0555123456)"
+      newErrors.phone = "رقم الهاتف غير صالح (مثال: 0555123456)"
     }
     if (!formData.wilaya.trim()) {
-      newErrors.wilaya = "La wilaya est requise"
+      newErrors.wilaya = "الولاية مطلوبة"
     }
     if (!formData.deliveryType) {
-      newErrors.deliveryType = "Le type de livraison est requis"
+      newErrors.deliveryType = "نوع التوصيل مطلوب"
     }
     if (showBureauSelect && !formData.bureau.trim()) {
-      newErrors.bureau = "Veuillez sélectionner un bureau ZR Express"
+      newErrors.bureau = "يرجى اختيار مكتب ZR Express"
     }
 
     setErrors(newErrors)
@@ -220,7 +220,7 @@ export default function CheckoutPage() {
       const result = await response.json()
 
       if (!response.ok || !result.success) {
-        const errorMsg = result.errors?.[0]?.message || "Erreur lors de l'enregistrement de la commande."
+        const errorMsg = result.errors?.[0]?.message || "حدث خطأ أثناء تسجيل الطلب."
         setSubmitError(errorMsg)
         return
       }
@@ -235,7 +235,7 @@ export default function CheckoutPage() {
       clearCart()
     } catch (err) {
       console.error("Submission error:", err)
-      setSubmitError("Une erreur est survenue. Veuillez réessayer.")
+      setSubmitError("حدث خطأ ما. يرجى المحاولة مرة أخرى.")
     } finally {
       setIsSubmitting(false)
     }
@@ -243,35 +243,28 @@ export default function CheckoutPage() {
 
   if (isSuccess) {
     return (
-      <main className="min-h-screen">
-        <Header />
+      <main dir="rtl" className="min-h-screen font-cairo">
+        <HeaderAr />
         <div className="pt-28 pb-20">
           <div className="max-w-lg mx-auto px-6 text-center">
             <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
               <Check className="w-10 h-10 text-primary" />
             </div>
-            <h1 className="font-serif text-3xl text-foreground mb-4">
-              Commande confirmée ! 🎉
-            </h1>
-            <p className="text-muted-foreground mb-8">
-              Merci pour votre commande ! Un membre de notre équipe vous contactera 
-              au <strong>{formData.phone}</strong> dans les plus brefs délais pour confirmer votre commande.
-            </p>
-            <h1 className="font-serif text-3xl text-foreground mb-4">
+            <h1 className="font-cairo text-3xl text-foreground mb-4 font-semibold">
               تم تسجيل طلبيتكم بنجاح 🎉
             </h1>
-            <p className="text-muted-foreground mb-8">
-              سيقوم أحد أعضاء فريقنا بالاتصال بكم في أقرب وقت لتأكيد طلبيتكم.
+            <p className="text-muted-foreground mb-8 font-cairo">
+              شكراً لطلبكم! سيتواصل معكم أحد أعضاء فريقنا لتأكيد طلبيتكم.
             </p>
             <Link
-              href="/"
-              className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-full font-medium hover:bg-primary/90 boty-transition"
+              href="/shop/Ar"
+              className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-full font-medium hover:bg-primary/90 boty-transition font-cairo"
             >
-              Retour à l'accueil
+              العودة إلى المتجر
             </Link>
           </div>
         </div>
-        <Footer />
+        <FooterAr />
       </main>
     )
   }
@@ -281,86 +274,86 @@ export default function CheckoutPage() {
   }
 
   return (
-    <main className="min-h-screen">
-      <Header />
-      
+    <main dir="rtl" className="min-h-screen font-cairo">
+      <HeaderAr />
+
       <div className="pt-28 pb-20">
         <div className="max-w-4xl mx-auto px-6 lg:px-8">
           {/* Back Link */}
           <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground boty-transition mb-8"
+            href="/shop/Ar"
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground boty-transition mb-8 font-cairo"
           >
-            <ChevronLeft className="w-4 h-4" />
-            Retour à la boutique
+            <ChevronRight className="w-4 h-4" />
+            العودة إلى المتجر
           </Link>
 
           <div className="grid lg:grid-cols-5 gap-12">
             {/* Checkout Form */}
             <div className="lg:col-span-3">
-              <h1 className="font-serif text-3xl text-foreground mb-8">Finaliser la commande</h1>
+              <h1 className="font-cairo text-3xl text-foreground mb-8 font-semibold">إتمام الطلب</h1>
 
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Nom et Prénom */}
+                {/* الاسم الأول واللقب */}
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="firstName">
-                      Prénom <span className="text-destructive">*</span>
+                    <Label htmlFor="firstName" className="font-cairo">
+                      الاسم الأول <span className="text-destructive">*</span>
                     </Label>
                     <Input
                       id="firstName"
-                      placeholder="Votre prénom"
+                      placeholder="اسمك الأول"
                       value={formData.firstName}
                       onChange={(e) => handleChange("firstName", e.target.value)}
                       className={errors.firstName ? "border-destructive" : ""}
                     />
                     {errors.firstName && (
-                      <p className="text-xs text-destructive">{errors.firstName}</p>
+                      <p className="text-xs text-destructive font-cairo">{errors.firstName}</p>
                     )}
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="lastName">Nom</Label>
+                    <Label htmlFor="lastName" className="font-cairo">اللقب</Label>
                     <Input
                       id="lastName"
-                      placeholder="Votre nom"
+                      placeholder="اسم عائلتك"
                       value={formData.lastName}
                       onChange={(e) => handleChange("lastName", e.target.value)}
                     />
                   </div>
                 </div>
 
-                {/* Téléphone */}
+                {/* الهاتف */}
                 <div className="space-y-2">
-                  <Label htmlFor="phone">
-                    Numéro de téléphone <span className="text-destructive">*</span>
+                  <Label htmlFor="phone" className="font-cairo">
+                    رقم الهاتف <span className="text-destructive">*</span>
                   </Label>
                   <Input
                     id="phone"
                     type="tel"
-                    placeholder="ex: 0555123456"
+                    placeholder="مثال: 0555123456"
                     value={formData.phone}
                     onChange={(e) => handleChange("phone", e.target.value)}
                     className={errors.phone ? "border-destructive" : ""}
                   />
                   {errors.phone && (
-                    <p className="text-xs text-destructive">{errors.phone}</p>
+                    <p className="text-xs text-destructive font-cairo">{errors.phone}</p>
                   )}
                 </div>
 
-                {/* Wilaya */}
+                {/* الولاية */}
                 <div className="space-y-2">
-                  <Label htmlFor="wilaya">
-                    Wilaya <span className="text-destructive">*</span>
+                  <Label htmlFor="wilaya" className="font-cairo">
+                    الولاية <span className="text-destructive">*</span>
                   </Label>
                   <select
                     id="wilaya"
                     value={formData.wilaya}
                     onChange={(e) => handleChange("wilaya", e.target.value)}
-                    className={`flex h-10 w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
+                    className={`flex h-10 w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 font-cairo ${
                       errors.wilaya ? "border-destructive" : ""
                     }`}
                   >
-                    <option value="">Sélectionnez votre wilaya</option>
+                    <option value="">اختر ولايتك</option>
                     {territoryRates
                       .sort((a, b) => a.toTerritoryName.localeCompare(b.toTerritoryName))
                       .map((territory) => (
@@ -370,14 +363,14 @@ export default function CheckoutPage() {
                       ))}
                   </select>
                   {errors.wilaya && (
-                    <p className="text-xs text-destructive">{errors.wilaya}</p>
+                    <p className="text-xs text-destructive font-cairo">{errors.wilaya}</p>
                   )}
                 </div>
 
-                {/* Type de livraison */}
+                {/* نوع التوصيل */}
                 <div className="space-y-3">
-                  <Label>
-                    Type de livraison <span className="text-destructive">*</span>
+                  <Label className="font-cairo">
+                    نوع التوصيل <span className="text-destructive">*</span>
                   </Label>
                   <RadioGroup
                     value={formData.deliveryType}
@@ -395,11 +388,11 @@ export default function CheckoutPage() {
                       <div className="flex items-center gap-3">
                         <Truck className="w-5 h-5 text-muted-foreground" />
                         <div>
-                          <p className="font-medium text-foreground text-sm">À domicile</p>
-                          <p className="text-xs text-muted-foreground">
+                          <p className="font-medium text-foreground text-sm font-cairo">إلى المنزل</p>
+                          <p className="text-xs text-muted-foreground font-cairo">
                             {selectedTerritory
-                              ? `${selectedTerritory.homePrice} DZD`
-                              : "Sélectionnez une wilaya"}
+                              ? `${selectedTerritory.homePrice} دج`
+                              : "اختر ولاية"}
                           </p>
                         </div>
                       </div>
@@ -415,36 +408,36 @@ export default function CheckoutPage() {
                       <div className="flex items-center gap-3">
                         <Building className="w-5 h-5 text-muted-foreground" />
                         <div>
-                          <p className="font-medium text-foreground text-sm">Bureau ZR Express</p>
-                          <p className="text-xs text-muted-foreground">
+                          <p className="font-medium text-foreground text-sm font-cairo">مكتب ZR Express</p>
+                          <p className="text-xs text-muted-foreground font-cairo">
                             {selectedTerritory
-                              ? `${selectedTerritory.pickupPrice} DZD`
-                              : "Sélectionnez une wilaya"}
+                              ? `${selectedTerritory.pickupPrice} دج`
+                              : "اختر ولاية"}
                           </p>
                         </div>
                       </div>
                     </label>
                   </RadioGroup>
                   {errors.deliveryType && (
-                    <p className="text-xs text-destructive">{errors.deliveryType}</p>
+                    <p className="text-xs text-destructive font-cairo">{errors.deliveryType}</p>
                   )}
                 </div>
 
-                {/* Bureau ZR Express selection */}
+                {/* مكتب ZR Express */}
                 {showBureauSelect && (
                   <div className="space-y-2">
-                    <Label htmlFor="bureau">
-                      Bureau ZR Express <span className="text-destructive">*</span>
+                    <Label htmlFor="bureau" className="font-cairo">
+                      مكتب ZR Express <span className="text-destructive">*</span>
                     </Label>
                     <select
                       id="bureau"
                       value={formData.bureau}
                       onChange={(e) => handleChange("bureau", e.target.value)}
-                      className={`flex h-10 w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
+                      className={`flex h-10 w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 font-cairo ${
                         errors.bureau ? "border-destructive" : ""
                       }`}
                     >
-                      <option value="">Sélectionnez un bureau</option>
+                      <option value="">اختر مكتباً</option>
                       {availableBureaux.map((bureau) => (
                         <option key={bureau} value={bureau}>
                           {bureau}
@@ -452,13 +445,13 @@ export default function CheckoutPage() {
                       ))}
                     </select>
                     {errors.bureau && (
-                      <p className="text-xs text-destructive">{errors.bureau}</p>
+                      <p className="text-xs text-destructive font-cairo">{errors.bureau}</p>
                     )}
                   </div>
                 )}
 
                 {submitError && (
-                  <div className="p-4 bg-destructive/10 text-destructive rounded-xl text-sm">
+                  <div className="p-4 bg-destructive/10 text-destructive rounded-xl text-sm font-cairo">
                     {submitError}
                   </div>
                 )}
@@ -467,15 +460,15 @@ export default function CheckoutPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full lg:hidden bg-primary text-primary-foreground py-4 rounded-full font-medium hover:bg-primary/90 boty-transition disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2"
+                  className="w-full lg:hidden bg-primary text-primary-foreground py-4 rounded-full font-medium hover:bg-primary/90 boty-transition disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2 font-cairo"
                 >
                   {isSubmitting ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      Traitement...
+                      جارٍ المعالجة...
                     </>
                   ) : (
-                    `Valider la commande — ${total} DZD`
+                    `تأكيد الطلب — ${total} دج`
                   )}
                 </button>
               </form>
@@ -484,7 +477,7 @@ export default function CheckoutPage() {
             {/* Order Summary */}
             <div className="lg:col-span-2">
               <div className="bg-card rounded-3xl p-6 boty-shadow sticky top-32">
-                <h2 className="font-serif text-xl text-foreground mb-6">Récapitulatif</h2>
+                <h2 className="font-cairo text-xl text-foreground mb-6 font-semibold">ملخص الطلب</h2>
 
                 <div className="space-y-4 mb-6">
                   {items.map((item) => (
@@ -498,28 +491,28 @@ export default function CheckoutPage() {
                         />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-sm font-medium text-foreground">{item.name}</h3>
-                        <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
-                        <p className="text-sm font-medium text-foreground mt-1">
-                          {item.price * item.quantity} DZD
+                        <h3 className="text-sm font-medium text-foreground font-cairo">{item.name}</h3>
+                        <p className="text-xs text-muted-foreground font-cairo">الكمية: {item.quantity}</p>
+                        <p className="text-sm font-medium text-foreground mt-1 font-cairo">
+                          {item.price * item.quantity} دج
                         </p>
                       </div>
                     </div>
                   ))}
                 </div>
 
-                <div className="space-y-2 text-sm border-t border-border/50 pt-4">
+                <div className="space-y-2 text-sm border-t border-border/50 pt-4 font-cairo">
                   <div className="flex justify-between text-muted-foreground">
-                    <span>Sous-total</span>
-                    <span>{subtotal} DZD</span>
+                    <span>المجموع الفرعي</span>
+                    <span>{subtotal} دج</span>
                   </div>
                   <div className="flex justify-between text-muted-foreground">
-                    <span>Livraison</span>
-                    <span>{shipping === 0 ? "à définir" : `${shipping} DZD`}</span>
+                    <span>التوصيل</span>
+                    <span>{shipping === 0 ? "يُحدد لاحقاً" : `${shipping} دج`}</span>
                   </div>
                   <div className="flex justify-between text-base font-medium text-foreground pt-2 border-t border-border/50">
-                    <span>Total</span>
-                    <span>{total} DZD</span>
+                    <span>الإجمالي</span>
+                    <span>{total} دج</span>
                   </div>
                 </div>
 
@@ -528,15 +521,15 @@ export default function CheckoutPage() {
                   type="submit"
                   disabled={isSubmitting}
                   onClick={handleSubmit}
-                  className="hidden lg:inline-flex w-full mt-6 bg-primary text-primary-foreground py-4 rounded-full font-medium hover:bg-primary/90 boty-transition disabled:opacity-50 disabled:cursor-not-allowed items-center justify-center gap-2"
+                  className="hidden lg:inline-flex w-full mt-6 bg-primary text-primary-foreground py-4 rounded-full font-medium hover:bg-primary/90 boty-transition disabled:opacity-50 disabled:cursor-not-allowed items-center justify-center gap-2 font-cairo"
                 >
                   {isSubmitting ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      Traitement...
+                      جارٍ المعالجة...
                     </>
                   ) : (
-                    `Valider la commande — ${total} DZD`
+                    `تأكيد الطلب — ${total} دج`
                   )}
                 </button>
               </div>
@@ -545,8 +538,7 @@ export default function CheckoutPage() {
         </div>
       </div>
 
-      <Footer />
+      <FooterAr />
     </main>
   )
 }
-

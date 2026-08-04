@@ -1,0 +1,171 @@
+"use client"
+
+import { useState, useEffect, useCallback } from "react"
+import Link from "next/link"
+import {
+  Package,
+  LogOut,
+  Loader2,
+  AlertCircle,
+  ChevronLeft,
+  RefreshCw,
+} from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Skeleton } from "@/components/ui/skeleton"
+import { AdminLogin } from "@/components/admin/admin-login"
+import { ProductBreakdown } from "@/components/admin/product-breakdown"
+import { useAdminAuth } from "@/hooks/use-admin-auth"
+import { type Order, formatCurrency, orderSubtotal } from "@/lib/admin"
+
+export default function AdminAnalyticsPage() {
+  const { adminKey, ready, login, logout } = useAdminAuth()
+  const [orders, setOrders] = useState<Order[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  const fetchOrders = useCallback(async () => {
+    if (!adminKey) return
+
+    setLoading(true)
+    setError(null)
+
+    try {
+      const res = await fetch("/api/admin/orders", {
+        headers: { "x-admin-key": adminKey },
+      })
+      const result = await res.json()
+
+      if (!res.ok || !result.success) {
+        if (res.status === 401) {
+          logout()
+          return
+        }
+        setError(result.error || "Erreur lors du chargement des commandes")
+        return
+      }
+
+      setOrders(result.data as Order[])
+    } catch {
+      setError("Erreur de connexion au serveur")
+    } finally {
+      setLoading(false)
+    }
+  }, [adminKey, logout])
+
+  useEffect(() => {
+    if (adminKey) fetchOrders()
+  }, [adminKey, fetchOrders])
+
+  // Wait for sessionStorage to be read so the login form does not flash
+  if (!ready) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
+
+  if (!adminKey) {
+    return <AdminLogin onLogin={login} />
+  }
+
+  const active = orders.filter((o) => o.status !== "annulé")
+  const revenue = active.reduce((sum, o) => sum + o.total, 0)
+  const productRevenue = active.reduce((sum, o) => sum + orderSubtotal(o.items), 0)
+  const delivery = revenue - productRevenue
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Admin Header */}
+      <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-md border-b border-border/50">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+              <Package className="w-4 h-4 text-primary" />
+            </div>
+            <div>
+              <h1 className="font-serif text-lg text-foreground leading-tight">
+                Gateline Cosmetics
+              </h1>
+              <p className="text-xs text-muted-foreground">Statistiques</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <Button variant="ghost" size="sm" asChild>
+              <Link href="/admin">
+                <ChevronLeft className="w-4 h-4" />
+                <span className="hidden sm:inline">Commandes</span>
+              </Link>
+            </Button>
+            <Button variant="ghost" size="sm" onClick={fetchOrders} disabled={loading}>
+              <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
+              <span className="hidden sm:inline">Actualiser</span>
+            </Button>
+            <Button variant="outline" size="sm" onClick={logout}>
+              <LogOut className="w-4 h-4" />
+              <span className="hidden sm:inline">Déconnexion</span>
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
+        {error && (
+          <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 p-4 rounded-xl mb-6">
+            <AlertCircle className="w-4 h-4 flex-shrink-0" />
+            {error}
+            <Button variant="outline" size="sm" onClick={fetchOrders} className="ml-auto">
+              Réessayer
+            </Button>
+          </div>
+        )}
+
+        {loading ? (
+          <div className="space-y-4">
+            <Skeleton className="h-28 w-full rounded-xl" />
+            <Skeleton className="h-72 w-full rounded-xl" />
+          </div>
+        ) : orders.length === 0 ? (
+          <Card>
+            <CardContent className="p-12 text-center text-muted-foreground">
+              Aucune commande pour le moment.
+            </CardContent>
+          </Card>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+              <Card>
+                <CardContent className="p-4 flex flex-col items-center text-center">
+                  <p className="text-xl font-bold whitespace-nowrap">
+                    {formatCurrency(productRevenue)}
+                  </p>
+                  <p className="text-xs text-muted-foreground">Revenu hors livraison</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4 flex flex-col items-center text-center">
+                  <p className="text-xl font-bold whitespace-nowrap">
+                    {formatCurrency(delivery)}
+                  </p>
+                  <p className="text-xs text-muted-foreground">Frais de livraison</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4 flex flex-col items-center text-center">
+                  <p className="text-xl font-bold whitespace-nowrap">
+                    {formatCurrency(revenue)}
+                  </p>
+                  <p className="text-xs text-muted-foreground">Revenu total</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            <ProductBreakdown orders={orders} />
+          </>
+        )}
+      </main>
+    </div>
+  )
+}

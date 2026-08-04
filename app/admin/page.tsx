@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
+import Link from "next/link"
 import { format } from "date-fns"
 import { fr } from "date-fns/locale"
 import {
@@ -15,6 +16,7 @@ import {
   Truck,
   Building,
   RefreshCw,
+  BarChart3,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -33,53 +35,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Skeleton } from "@/components/ui/skeleton"
-
-// --- Types ---
-
-interface OrderItem {
-  id: string
-  name: string
-  price: number
-  quantity: number
-  image?: string | null
-}
-
-interface Order {
-  id: string
-  first_name: string
-  last_name: string | null
-  phone: string
-  wilaya: string
-  delivery_type: string
-  bureau: string | null
-  items: OrderItem[]
-  total: number
-  promo_code?: string | null
-  discount?: number | null
-  status: "en attente" | "confirmée" | "annulé" | "ne répond pas" | "injoignable/éteint"
-  created_at: string
-}
-
-// --- Order money breakdown ---
-// Only the grand total is stored, so the products subtotal is recomputed from
-// the line items and delivery is what remains: total = subtotal + shipping.
-// The discount term is added back for orders that record one; clamped at zero
-// so a promo order can never render a negative delivery figure.
-
-function lineTotal(item: OrderItem): number {
-  return item.price * item.quantity
-}
-
-function orderSubtotal(items: OrderItem[]): number {
-  return items.reduce((sum, item) => sum + lineTotal(item), 0)
-}
-
-function orderShipping(order: Order): number {
-  return Math.max(0, order.total - orderSubtotal(order.items) + (order.discount ?? 0))
-}
+import { AdminLogin } from "@/components/admin/admin-login"
+import { useAdminAuth } from "@/hooks/use-admin-auth"
+import {
+  type Order,
+  type OrderItem,
+  formatCurrency,
+  lineTotal,
+  orderShipping,
+  orderSubtotal,
+} from "@/lib/admin"
 
 // --- Status config ---
 
@@ -97,86 +63,6 @@ const STATUS_CONFIG: Record<
 const VALID_STATUSES = ["en attente", "confirmée", "annulé", "ne répond pas", "injoignable/éteint"] as const
 
 // --- Login Page ---
-
-function LoginPage({ onLogin }: { onLogin: (password: string) => void }) {
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState("")
-  const [loading, setLoading] = useState(false)
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError("")
-    setLoading(true)
-
-    // Verify password by attempting to fetch orders
-    try {
-      const res = await fetch("/api/admin/orders", {
-        headers: { "x-admin-key": password },
-      })
-      const result = await res.json()
-
-      if (res.ok && result.success) {
-        onLogin(password)
-      } else {
-        setError("Mot de passe incorrect")
-      }
-    } catch {
-      setError("Erreur de connexion au serveur")
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-            <Package className="w-8 h-8 text-primary" />
-          </div>
-          <CardTitle className="text-2xl font-serif">Administration</CardTitle>
-          <p className="text-sm text-muted-foreground mt-1">
-            Gérez les commandes Gateline Cosmetics
-          </p>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="password">Mot de passe administrateur</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Entrez le mot de passe"
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value)
-                  setError("")
-                }}
-                autoFocus
-              />
-            </div>
-            {error && (
-              <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 p-3 rounded-lg">
-                <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                {error}
-              </div>
-            )}
-            <Button type="submit" className="w-full" disabled={loading || !password.trim()}>
-              {loading ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Vérification...
-                </>
-              ) : (
-                "Se connecter"
-              )}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
-  )
-}
 
 // --- Order Status Badge (clickable) ---
 
@@ -227,14 +113,6 @@ function formatDate(dateStr: string) {
   } catch {
     return dateStr
   }
-}
-
-function formatCurrency(amount: number) {
-  return new Intl.NumberFormat("fr-DZ", {
-    style: "currency",
-    currency: "DZD",
-    maximumFractionDigits: 0,
-  }).format(amount).replace("DZD", "DZD").trim()
 }
 
 // --- Summary Cards ---
@@ -294,129 +172,24 @@ function DashboardCards({ orders }: { orders: Order[] }) {
   )
 }
 
-// --- Per-product breakdown ---
-
-interface ProductStat {
-  id: string
-  name: string
-  orders: number
-  quantity: number
-  revenue: number
-}
-
-// Aggregates the line items of every non-cancelled order. "orders" counts each
-// order once even when it contains several units of the product.
-function productStats(orders: Order[]): ProductStat[] {
-  const stats = new Map<string, ProductStat>()
-
-  for (const order of orders) {
-    if (order.status === "annulé") continue
-    const seen = new Set<string>()
-
-    for (const item of order.items as OrderItem[]) {
-      const key = item.id || item.name
-      const stat = stats.get(key) ?? { id: key, name: item.name, orders: 0, quantity: 0, revenue: 0 }
-
-      if (!seen.has(key)) {
-        stat.orders += 1
-        seen.add(key)
-      }
-      stat.quantity += item.quantity
-      stat.revenue += lineTotal(item)
-      stats.set(key, stat)
-    }
-  }
-
-  return [...stats.values()].sort((a, b) => b.revenue - a.revenue)
-}
-
-function ProductBreakdown({ orders }: { orders: Order[] }) {
-  const stats = productStats(orders)
-  if (stats.length === 0) return null
-
-  const totalQuantity = stats.reduce((sum, s) => sum + s.quantity, 0)
-  const totalRevenue = stats.reduce((sum, s) => sum + s.revenue, 0)
-
-  return (
-    <Card className="mb-8">
-      <CardHeader>
-        <CardTitle className="text-xl font-serif flex items-center gap-2">
-          <Package className="w-5 h-5 text-primary" />
-          Ventes par produit
-          <span className="text-sm font-sans font-normal text-muted-foreground">
-            (hors livraison, commandes annulées exclues)
-          </span>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Produit</TableHead>
-                <TableHead className="text-right">Commandes</TableHead>
-                <TableHead className="text-right">Quantité</TableHead>
-                <TableHead className="text-right">Revenu</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {stats.map((stat) => (
-                <TableRow key={stat.id}>
-                  <TableCell className="font-medium">{stat.name}</TableCell>
-                  <TableCell className="text-right">{stat.orders}</TableCell>
-                  <TableCell className="text-right">{stat.quantity}</TableCell>
-                  <TableCell className="text-right whitespace-nowrap">
-                    {formatCurrency(stat.revenue)}
-                  </TableCell>
-                </TableRow>
-              ))}
-              <TableRow className="border-t-2">
-                <TableCell className="font-semibold">Total</TableCell>
-                <TableCell className="text-right text-muted-foreground">—</TableCell>
-                <TableCell className="text-right font-semibold">{totalQuantity}</TableCell>
-                <TableCell className="text-right font-semibold whitespace-nowrap">
-                  {formatCurrency(totalRevenue)}
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </div>
-      </CardContent>
-    </Card>
-  )
-}
-
 // --- Main Page ---
 
 export default function AdminPage() {
-  const [adminKey, setAdminKey] = useState<string | null>(null)
+  const { adminKey, ready, login: handleLogin, logout } = useAdminAuth()
   const [orders, setOrders] = useState<Order[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [updatingId, setUpdatingId] = useState<string | null>(null)
 
-  // Handle login
-  const handleLogin = useCallback((password: string) => {
-    setAdminKey(password)
-    // Store in sessionStorage so it persists on navigation
-    sessionStorage.setItem("admin_key", password)
-  }, [])
-
   const handleLogout = useCallback(() => {
-    setAdminKey(null)
-    sessionStorage.removeItem("admin_key")
+    logout()
     setOrders([])
-  }, [])
+  }, [logout])
 
-  // Check sessionStorage on mount
+  // Nothing to load until the stored key has been read
   useEffect(() => {
-    const stored = sessionStorage.getItem("admin_key")
-    if (stored) {
-      setAdminKey(stored)
-    } else {
-      setLoading(false)
-    }
-  }, [])
+    if (ready && !adminKey) setLoading(false)
+  }, [ready, adminKey])
 
   // Fetch orders
   const fetchOrders = useCallback(async () => {
@@ -490,9 +263,18 @@ export default function AdminPage() {
     [adminKey]
   )
 
+  // Wait for sessionStorage to be read so the login form does not flash
+  if (!ready) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
+
   // If not logged in, show login
   if (!adminKey) {
-    return <LoginPage onLogin={handleLogin} />
+    return <AdminLogin onLogin={handleLogin} />
   }
 
   return (
@@ -521,6 +303,12 @@ export default function AdminPage() {
               <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
               <span className="hidden sm:inline">Actualiser</span>
             </Button>
+            <Button variant="ghost" size="sm" asChild>
+              <Link href="/admin/analytics">
+                <BarChart3 className="w-4 h-4" />
+                <span className="hidden sm:inline">Analytics</span>
+              </Link>
+            </Button>
             <Button
               variant="outline"
               size="sm"
@@ -537,9 +325,6 @@ export default function AdminPage() {
       <main className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
         {/* Dashboard Cards */}
         {!loading && orders.length > 0 && <DashboardCards orders={orders} />}
-
-        {/* Per-product breakdown */}
-        {!loading && orders.length > 0 && <ProductBreakdown orders={orders} />}
 
         {/* Error State */}
         {error && (

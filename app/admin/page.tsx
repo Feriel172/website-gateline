@@ -57,8 +57,28 @@ interface Order {
   bureau: string | null
   items: OrderItem[]
   total: number
+  promo_code?: string | null
+  discount?: number | null
   status: "en attente" | "confirmée" | "annulé" | "ne répond pas" | "injoignable/éteint"
   created_at: string
+}
+
+// --- Order money breakdown ---
+// Only the grand total is stored, so the products subtotal is recomputed from
+// the line items and delivery is what remains: total = subtotal + shipping.
+// The discount term is added back for orders that record one; clamped at zero
+// so a promo order can never render a negative delivery figure.
+
+function lineTotal(item: OrderItem): number {
+  return item.price * item.quantity
+}
+
+function orderSubtotal(items: OrderItem[]): number {
+  return items.reduce((sum, item) => sum + lineTotal(item), 0)
+}
+
+function orderShipping(order: Order): number {
+  return Math.max(0, order.total - orderSubtotal(order.items) + (order.discount ?? 0))
 }
 
 // --- Status config ---
@@ -224,12 +244,12 @@ function DashboardCards({ orders }: { orders: Order[] }) {
   const pending = orders.filter((o) => o.status === "en attente").length
   const confirmed = orders.filter((o) => o.status === "confirmée").length
   const cancelled = orders.filter((o) => o.status === "annulé").length
-  const revenue = orders
-    .filter((o) => o.status !== "annulé")
-    .reduce((sum, o) => sum + o.total, 0)
+  const active = orders.filter((o) => o.status !== "annulé")
+  const revenue = active.reduce((sum, o) => sum + o.total, 0)
+  const productRevenue = active.reduce((sum, o) => sum + orderSubtotal(o.items), 0)
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+    <div className="grid grid-cols-2 lg:grid-cols-6 gap-4 mb-8">
       <Card>
         <CardContent className="p-4 flex flex-col items-center text-center">
           <ShoppingBag className="w-5 h-5 text-primary mb-1" />
@@ -258,10 +278,16 @@ function DashboardCards({ orders }: { orders: Order[] }) {
           <p className="text-xs text-muted-foreground">Annulées</p>
         </CardContent>
       </Card>
-      <Card className="col-span-2 lg:col-span-1">
+      <Card>
         <CardContent className="p-4 flex flex-col items-center text-center">
           <p className="text-2xl font-bold">{formatCurrency(revenue)}</p>
           <p className="text-xs text-muted-foreground">Revenu</p>
+        </CardContent>
+      </Card>
+      <Card className="col-span-2 lg:col-span-1">
+        <CardContent className="p-4 flex flex-col items-center text-center">
+          <p className="text-2xl font-bold">{formatCurrency(productRevenue)}</p>
+          <p className="text-xs text-muted-foreground">Produits (hors livraison)</p>
         </CardContent>
       </Card>
     </div>
@@ -527,16 +553,32 @@ export default function AdminPage() {
                           )}
                         </TableCell>
                         <TableCell>
-                          <div className="text-xs space-y-0.5 max-w-[200px]">
+                          <div className="text-xs space-y-0.5 max-w-[240px]">
                             {(order.items as OrderItem[]).map((item, idx) => (
-                              <div key={idx} className="truncate">
-                                {item.name} x{item.quantity}
+                              <div key={idx} className="flex justify-between gap-2">
+                                <span className="truncate">
+                                  {item.name} x{item.quantity}
+                                </span>
+                                <span className="whitespace-nowrap text-muted-foreground">
+                                  {formatCurrency(lineTotal(item))}
+                                </span>
                               </div>
                             ))}
                           </div>
                         </TableCell>
-                        <TableCell className="text-right font-medium whitespace-nowrap">
-                          {formatCurrency(order.total)}
+                        <TableCell className="text-right whitespace-nowrap">
+                          <div className="font-medium">{formatCurrency(order.total)}</div>
+                          <div className="text-xs text-muted-foreground mt-0.5">
+                            Produits {formatCurrency(orderSubtotal(order.items))}
+                          </div>
+                          {(order.discount ?? 0) > 0 && (
+                            <div className="text-xs text-muted-foreground">
+                              Remise −{formatCurrency(order.discount ?? 0)}
+                            </div>
+                          )}
+                          <div className="text-xs text-muted-foreground">
+                            Livraison {formatCurrency(orderShipping(order))}
+                          </div>
                         </TableCell>
                         <TableCell>
                           {updatingId === order.id ? (
@@ -623,18 +665,39 @@ export default function AdminPage() {
                       {/* Items */}
                       <div className="text-xs text-muted-foreground space-y-0.5">
                         {(order.items as OrderItem[]).map((item, idx) => (
-                          <div key={idx}>
-                            {item.name} × {item.quantity}
+                          <div key={idx} className="flex justify-between gap-2">
+                            <span>
+                              {item.name} × {item.quantity}
+                            </span>
+                            <span className="whitespace-nowrap">
+                              {formatCurrency(lineTotal(item))}
+                            </span>
                           </div>
                         ))}
                       </div>
 
-                      {/* Total */}
-                      <div className="flex items-center justify-between pt-2 border-t border-border/50">
-                        <span className="text-sm text-muted-foreground">Total</span>
-                        <span className="font-semibold text-foreground">
-                          {formatCurrency(order.total)}
-                        </span>
+                      {/* Totals */}
+                      <div className="pt-2 border-t border-border/50 space-y-1">
+                        <div className="flex items-center justify-between text-xs text-muted-foreground">
+                          <span>Produits (hors livraison)</span>
+                          <span>{formatCurrency(orderSubtotal(order.items))}</span>
+                        </div>
+                        {(order.discount ?? 0) > 0 && (
+                          <div className="flex items-center justify-between text-xs text-muted-foreground">
+                            <span>Remise{order.promo_code ? ` (${order.promo_code})` : ""}</span>
+                            <span>−{formatCurrency(order.discount ?? 0)}</span>
+                          </div>
+                        )}
+                        <div className="flex items-center justify-between text-xs text-muted-foreground">
+                          <span>Livraison</span>
+                          <span>{formatCurrency(orderShipping(order))}</span>
+                        </div>
+                        <div className="flex items-center justify-between pt-1">
+                          <span className="text-sm text-muted-foreground">Total</span>
+                          <span className="font-semibold text-foreground">
+                            {formatCurrency(order.total)}
+                          </span>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>

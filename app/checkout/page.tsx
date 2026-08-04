@@ -294,7 +294,7 @@ export default function CheckoutPage() {
         <div className="max-w-4xl mx-auto px-6 lg:px-8">
           {/* Back Link */}
           <Link
-            href="/"
+            href="/shop"
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground boty-transition mb-8"
           >
             <ChevronLeft className="w-4 h-4" />

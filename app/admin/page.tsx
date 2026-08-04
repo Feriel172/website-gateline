@@ -280,17 +280,109 @@ function DashboardCards({ orders }: { orders: Order[] }) {
       </Card>
       <Card>
         <CardContent className="p-4 flex flex-col items-center text-center">
-          <p className="text-2xl font-bold">{formatCurrency(revenue)}</p>
+          <p className="text-xl font-bold whitespace-nowrap">{formatCurrency(revenue)}</p>
           <p className="text-xs text-muted-foreground">Revenu</p>
         </CardContent>
       </Card>
-      <Card className="col-span-2 lg:col-span-1">
+      <Card>
         <CardContent className="p-4 flex flex-col items-center text-center">
-          <p className="text-2xl font-bold">{formatCurrency(productRevenue)}</p>
-          <p className="text-xs text-muted-foreground">Produits (hors livraison)</p>
+          <p className="text-xl font-bold whitespace-nowrap">{formatCurrency(productRevenue)}</p>
+          <p className="text-xs text-muted-foreground">Revenu hors livraison</p>
         </CardContent>
       </Card>
     </div>
+  )
+}
+
+// --- Per-product breakdown ---
+
+interface ProductStat {
+  id: string
+  name: string
+  orders: number
+  quantity: number
+  revenue: number
+}
+
+// Aggregates the line items of every non-cancelled order. "orders" counts each
+// order once even when it contains several units of the product.
+function productStats(orders: Order[]): ProductStat[] {
+  const stats = new Map<string, ProductStat>()
+
+  for (const order of orders) {
+    if (order.status === "annulé") continue
+    const seen = new Set<string>()
+
+    for (const item of order.items as OrderItem[]) {
+      const key = item.id || item.name
+      const stat = stats.get(key) ?? { id: key, name: item.name, orders: 0, quantity: 0, revenue: 0 }
+
+      if (!seen.has(key)) {
+        stat.orders += 1
+        seen.add(key)
+      }
+      stat.quantity += item.quantity
+      stat.revenue += lineTotal(item)
+      stats.set(key, stat)
+    }
+  }
+
+  return [...stats.values()].sort((a, b) => b.revenue - a.revenue)
+}
+
+function ProductBreakdown({ orders }: { orders: Order[] }) {
+  const stats = productStats(orders)
+  if (stats.length === 0) return null
+
+  const totalQuantity = stats.reduce((sum, s) => sum + s.quantity, 0)
+  const totalRevenue = stats.reduce((sum, s) => sum + s.revenue, 0)
+
+  return (
+    <Card className="mb-8">
+      <CardHeader>
+        <CardTitle className="text-xl font-serif flex items-center gap-2">
+          <Package className="w-5 h-5 text-primary" />
+          Ventes par produit
+          <span className="text-sm font-sans font-normal text-muted-foreground">
+            (hors livraison, commandes annulées exclues)
+          </span>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Produit</TableHead>
+                <TableHead className="text-right">Commandes</TableHead>
+                <TableHead className="text-right">Quantité</TableHead>
+                <TableHead className="text-right">Revenu</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {stats.map((stat) => (
+                <TableRow key={stat.id}>
+                  <TableCell className="font-medium">{stat.name}</TableCell>
+                  <TableCell className="text-right">{stat.orders}</TableCell>
+                  <TableCell className="text-right">{stat.quantity}</TableCell>
+                  <TableCell className="text-right whitespace-nowrap">
+                    {formatCurrency(stat.revenue)}
+                  </TableCell>
+                </TableRow>
+              ))}
+              <TableRow className="border-t-2">
+                <TableCell className="font-semibold">Total</TableCell>
+                <TableCell className="text-right text-muted-foreground">—</TableCell>
+                <TableCell className="text-right font-semibold">{totalQuantity}</TableCell>
+                <TableCell className="text-right font-semibold whitespace-nowrap">
+                  {formatCurrency(totalRevenue)}
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </div>
+      </CardContent>
+    </Card>
   )
 }
 
@@ -445,6 +537,9 @@ export default function AdminPage() {
       <main className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
         {/* Dashboard Cards */}
         {!loading && orders.length > 0 && <DashboardCards orders={orders} />}
+
+        {/* Per-product breakdown */}
+        {!loading && orders.length > 0 && <ProductBreakdown orders={orders} />}
 
         {/* Error State */}
         {error && (

@@ -137,8 +137,14 @@ export default function CheckoutPageAr() {
   )
 
   const normalizedWilaya = formData.wilaya.toLowerCase().trim()
-  const availableBureaux = bureauxData[normalizedWilaya] || []
-  const showBureauSelect = formData.deliveryType === "bureau" && formData.wilaya && availableBureaux.length > 0
+  // wilayas-bureaux.txt only lists wilayas that have several ZR Express offices.
+  // Every other wilaya has a single office named after the wilaya itself, which
+  // is why multi-office rows always include the wilaya name ("Chlef, Tenes, Chlef").
+  const availableBureaux = bureauxData[normalizedWilaya] ?? (formData.wilaya ? [formData.wilaya] : [])
+  const isBureauDelivery = formData.deliveryType === "bureau" && Boolean(formData.wilaya)
+  // A single office is not a choice — resolve it instead of asking for it.
+  const resolvedBureau = availableBureaux.length === 1 ? availableBureaux[0] : formData.bureau
+  const showBureauSelect = isBureauDelivery && availableBureaux.length > 1
 
   const shipping = selectedTerritory
     ? (formData.deliveryType === "domicile" ? selectedTerritory.homePrice : selectedTerritory.pickupPrice)
@@ -168,7 +174,7 @@ export default function CheckoutPageAr() {
     if (!formData.deliveryType) {
       newErrors.deliveryType = "نوع التوصيل مطلوب"
     }
-    if (showBureauSelect && !formData.bureau.trim()) {
+    if (isBureauDelivery && !resolvedBureau.trim()) {
       newErrors.bureau = "يرجى اختيار مكتب ZR Express"
     }
 
@@ -206,7 +212,7 @@ export default function CheckoutPageAr() {
           phone: formData.phone,
           wilaya: formData.wilaya,
           deliveryType: formData.deliveryType,
-          bureau: formData.deliveryType === "bureau" ? formData.bureau : null,
+          bureau: formData.deliveryType === "bureau" ? resolvedBureau : null,
           items: items.map(item => ({
             id: item.id,
             name: item.name,
@@ -447,6 +453,16 @@ export default function CheckoutPageAr() {
                     {errors.bureau && (
                       <p className="text-xs text-destructive font-cairo">{errors.bureau}</p>
                     )}
+                  </div>
+                )}
+
+                {/* ولاية بمكتب واحد: نعرض المكتب بدل طلب اختياره */}
+                {isBureauDelivery && !showBureauSelect && resolvedBureau && (
+                  <div className="space-y-2">
+                    <Label className="font-cairo">مكتب ZR Express</Label>
+                    <div className="flex h-10 w-full items-center rounded-xl border border-input bg-muted/50 px-3 py-2 text-sm text-foreground font-cairo">
+                      {resolvedBureau}
+                    </div>
                   </div>
                 )}
 

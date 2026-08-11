@@ -109,7 +109,7 @@ const products: Record<string, {
     delivery: "Toutes les commandes sont livrées 2 jours après leur validation. Un membre de l'équipe Gateline Cosmetics vous appelera afin de confirmer votre commande au maximum le lendemain de votre commande."
   },
   "rosehip-oil": {
-    id: "renewal-oil",
+    id: "rosehip-oil",
     name: "clear pore masque",
     tagline: "enrichi en acide glycolique et d'un mélange d'argiles, ce masque agit comme un exfoliant et un masque purifiant qui nettoie en profondeur.",
     description: "Ce Clear Pore Mask à base d’argiles verte et blanche, enrichi en AHA, aide à purifier et nettoyer la peau en profondeur et à améliorer l'apparence des pores. Il exfolie en douceur et affine le grain de peau pour un teint plus net, plus lisse et plus uniforme.",

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { ChevronRight, Minus, Plus, ChevronDown, Truck, Award, Star, Check } from "lucide-react"
 import { HeaderAr } from "@/components/boty/header-ar"
 import { FooterAr } from "@/components/boty/footer-ar"
@@ -169,7 +169,8 @@ export default function ProductPageAr() {
   const [quantity, setQuantity] = useState(1)
   const [openAccordion, setOpenAccordion] = useState<AccordionSection | null>("details")
   const [isAdded, setIsAdded] = useState(false)
-  const { addItem } = useCart()
+  const { addItem, setIsOpen } = useCart()
+  const router = useRouter()
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -183,16 +184,31 @@ export default function ProductPageAr() {
     setOpenAccordion(openAccordion === section ? null : section)
   }
 
+  const addToCart = () => {
+    addItem(
+      {
+        id: product.id,
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        image: product.image
+      },
+      quantity
+    )
+  }
+
   const handleAddToCart = () => {
-    addItem({
-      id: product.id,
-      name: product.name,
-      description: product.description,
-      price: product.price,
-      image: product.image
-    })
+    addToCart()
     setIsAdded(true)
     setTimeout(() => setIsAdded(false), 2000)
+  }
+
+  // Straight to checkout. addItem opens the cart drawer, which would otherwise
+  // sit over the checkout page, so close it before navigating.
+  const handleBuyNow = () => {
+    addToCart()
+    setIsOpen(false)
+    router.push("/checkout/Ar")
   }
 
   const accordionItems: { key: AccordionSection; title: string; content: string }[] = [
@@ -335,6 +351,7 @@ export default function ProductPageAr() {
                 </button>
                 <button
                   type="button"
+                  onClick={handleBuyNow}
                   className="flex-1 inline-flex items-center justify-center gap-2 bg-transparent border border-foreground/20 text-foreground px-8 py-4 rounded-full text-sm tracking-wide boty-transition hover:bg-foreground/5 font-cairo"
                 >
                   اشترِ الآن

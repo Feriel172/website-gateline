@@ -16,7 +16,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { AdminLogin } from "@/components/admin/admin-login"
 import { ProductBreakdown } from "@/components/admin/product-breakdown"
 import { useAdminAuth } from "@/hooks/use-admin-auth"
-import { type Order, formatCurrency, orderSubtotal } from "@/lib/admin"
+import { type Order, confirmedOrders, formatCurrency, orderSubtotal } from "@/lib/admin"
 
 export default function AdminAnalyticsPage() {
   const { adminKey, ready, login, logout } = useAdminAuth()
@@ -70,9 +70,9 @@ export default function AdminAnalyticsPage() {
     return <AdminLogin onLogin={login} />
   }
 
-  const active = orders.filter((o) => o.status !== "annulé")
-  const revenue = active.reduce((sum, o) => sum + o.total, 0)
-  const productRevenue = active.reduce((sum, o) => sum + orderSubtotal(o.items), 0)
+  const earning = confirmedOrders(orders)
+  const revenue = earning.reduce((sum, o) => sum + o.total, 0)
+  const productRevenue = earning.reduce((sum, o) => sum + orderSubtotal(o.items), 0)
   const delivery = revenue - productRevenue
 
   return (
@@ -135,6 +135,9 @@ export default function AdminAnalyticsPage() {
           </Card>
         ) : (
           <>
+            <p className="text-sm text-muted-foreground mb-4">
+              Calculé sur les {earning.length} commandes confirmées.
+            </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
               <Card>
                 <CardContent className="p-4 flex flex-col items-center text-center">

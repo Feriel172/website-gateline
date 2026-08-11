@@ -50,6 +50,18 @@ export function orderShipping(order: Order): number {
   return Math.max(0, order.total - orderSubtotal(order.items) + (order.discount ?? 0))
 }
 
+// --- Revenue scope ---
+// Every revenue figure counts confirmed orders only. Pending, unreachable and
+// cancelled orders are not money earned, so they must not inflate the totals.
+
+export function isConfirmed(order: Order): boolean {
+  return order.status === "confirmée"
+}
+
+export function confirmedOrders(orders: Order[]): Order[] {
+  return orders.filter(isConfirmed)
+}
+
 // --- Per-product breakdown ---
 
 export interface ProductStat {
@@ -60,13 +72,14 @@ export interface ProductStat {
   revenue: number
 }
 
-// Aggregates the line items of every non-cancelled order. "orders" counts each
-// order once even when it contains several units of the product.
+// Aggregates the line items of every confirmed order, so the revenue column
+// agrees with the dashboard figures. "orders" counts each order once even when
+// it contains several units of the product.
 export function productStats(orders: Order[]): ProductStat[] {
   const stats = new Map<string, ProductStat>()
 
   for (const order of orders) {
-    if (order.status === "annulé") continue
+    if (!isConfirmed(order)) continue
     const seen = new Set<string>()
 
     for (const item of order.items) {

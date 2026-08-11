@@ -41,6 +41,7 @@ import { useAdminAuth } from "@/hooks/use-admin-auth"
 import {
   type Order,
   type OrderItem,
+  confirmedOrders,
   formatCurrency,
   lineTotal,
   orderShipping,
@@ -122,9 +123,9 @@ function DashboardCards({ orders }: { orders: Order[] }) {
   const pending = orders.filter((o) => o.status === "en attente").length
   const confirmed = orders.filter((o) => o.status === "confirmée").length
   const cancelled = orders.filter((o) => o.status === "annulé").length
-  const active = orders.filter((o) => o.status !== "annulé")
-  const revenue = active.reduce((sum, o) => sum + o.total, 0)
-  const productRevenue = active.reduce((sum, o) => sum + orderSubtotal(o.items), 0)
+  const earning = confirmedOrders(orders)
+  const revenue = earning.reduce((sum, o) => sum + o.total, 0)
+  const productRevenue = earning.reduce((sum, o) => sum + orderSubtotal(o.items), 0)
 
   return (
     <div className="grid grid-cols-2 lg:grid-cols-6 gap-4 mb-8">

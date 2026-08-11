@@ -26,7 +26,7 @@ export function ProductBreakdown({ orders }: { orders: Order[] }) {
           <Package className="w-5 h-5 text-primary" />
           Ventes par produit
           <span className="text-sm font-sans font-normal text-muted-foreground">
-            (hors livraison, commandes annulées exclues)
+            (hors livraison, commandes confirmées uniquement)
           </span>
         </CardTitle>
       </CardHeader>

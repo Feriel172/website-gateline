@@ -121,6 +121,34 @@ const products: Record<string, {
     howToUse: "appliquer une couche uniforme sur peau propre et sèche, en évitant le contour des yeux. Laisser poser 15 à 20 minutes puis rincer.",
     ingredients: "hydrolat de rose, argile verte, argile blanche, farine de riz, acide glycolique, aloe Véra, glycérine végétale, huile d’amande douce, extrait de réglisse, indigo bleu, conservateur.",
     delivery: "Toutes les commandes sont livrées 2 jours après leur validation. Un membre de l'équipe Gateline Cosmetics vous appelera afin de confirmer votre commande au maximum le lendemain de votre commande."
+  },
+  "deodorant-fraicheur": {
+    id: "deodorant-fraicheur",
+    name: "Déodorant 100% naturel - Fraîcheur",
+    tagline: "24h de fraîcheur, sans sels d'aluminium ni alcool.",
+    description: "24h de fraicheur grâce à ce déodorant avec des ingrédients 100% naturels, sans aluminium ni alcool.",
+    price: 750,
+    originalPrice: null,
+    image: "/images/products/deodorant_fraicheur.jpg",
+    sizes: ["50ml"],
+    details: "Convient à tous types de peau. Sans sels d'aluminium ni alcool. Conserver dans un endroit frais et sec, hors de portée des enfants. Protéger de la lumière directe du soleil.",
+    howToUse: "Appliquer une petite quantité sur des aisselles propres et sèches, puis masser jusqu'à absorption complète. À utiliser quotidiennement.",
+    ingredients: "huile de coco, bicarbonate de soude, fécule de maïs, huile essentielle de Palma rosa et sauge sclarée, vitamine E, fragrance.",
+    delivery: "Toutes les commandes sont livrées 2 jours après leur validation. Un membre de l'équipe Gateline Cosmetics vous appelera afin de confirmer votre commande au maximum le lendemain de votre commande."
+  },
+  "deodorant-vanille": {
+    id: "deodorant-vanille",
+    name: "Déodorant 100% naturel - Vanille",
+    tagline: "24h de fraîcheur au parfum vanille, sans sels d'aluminium ni alcool.",
+    description: "24h de fraicheur grâce à ce déodorant avec des ingrédients 100% naturels, sans aluminium ni alcool.",
+    price: 750,
+    originalPrice: null,
+    image: "/images/products/deodorant_vanille.jpg",
+    sizes: ["50ml"],
+    details: "Convient à tous types de peau. Sans sels d'aluminium ni alcool. Conserver dans un endroit frais et sec, hors de portée des enfants. Protéger de la lumière directe du soleil.",
+    howToUse: "Appliquer une petite quantité sur des aisselles propres et sèches, puis masser jusqu'à absorption complète. À utiliser quotidiennement.",
+    ingredients: "huile de coco, bicarbonate de soude, fécule de maïs, huile essentielle de Palma rosa et sauge sclarée, vitamine E, fragrance.",
+    delivery: "Toutes les commandes sont livrées 2 jours après leur validation. Un membre de l'équipe Gateline Cosmetics vous appelera afin de confirmer votre commande au maximum le lendemain de votre commande."
   }
 }
 

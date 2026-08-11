@@ -11,6 +11,8 @@ const PRODUCT_PRICES: Record<string, number> = {
   "night-cream": 900,
   "renewal-oil": 1500,
   "rosehip-oil": 1200,
+  "deodorant-fraicheur": 750,
+  "deodorant-vanille": 750,
 }
 
 // Allowed wilayas list (from public/wilayas-list.txt)

@@ -82,10 +82,32 @@ const products = [
     image: "/images/products/aha_masque.png",
     badge: null,
     category: "masques"
+  },
+
+  // Déodorants
+  {
+    id: "deodorant-fraicheur",
+    name: "Déodorant 100% naturel - Fraîcheur",
+    description: "24h de fraîcheur, sans aluminium ni alcool",
+    price: 750,
+    originalPrice: null,
+    image: "/images/products/deodorant_fraicheur.jpg",
+    badge: "Nouveau",
+    category: "déodorants"
+  },
+  {
+    id: "deodorant-vanille",
+    name: "Déodorant 100% naturel - Vanille",
+    description: "24h de fraîcheur au parfum vanille, sans aluminium ni alcool",
+    price: 750,
+    originalPrice: null,
+    image: "/images/products/deodorant_vanille.jpg",
+    badge: "Nouveau",
+    category: "déodorants"
   }
 ]
 
-const categories = ["all", "tonerpads", "contour des yeux", "masques"]
+const categories = ["all", "tonerpads", "contour des yeux", "masques", "déodorants"]
 
 export default function ShopPage() {
   const [selectedCategory, setSelectedCategory] = useState("all")

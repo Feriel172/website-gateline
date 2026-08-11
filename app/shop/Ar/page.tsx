@@ -82,6 +82,28 @@ const products = [
     image: "/images/products/aha_masque.png",
     badge: null,
     category: "masques"
+  },
+
+  // مزيلات العرق
+  {
+    id: "deodorant-fraicheur",
+    name: "مزيل عرق طبيعي 100% - انتعاش",
+    description: "انتعاش يدوم 24 ساعة، بدون ألومنيوم ولا كحول",
+    price: 750,
+    originalPrice: null,
+    image: "/images/products/deodorant_fraicheur.jpg",
+    badge: "جديد",
+    category: "déodorants"
+  },
+  {
+    id: "deodorant-vanille",
+    name: "مزيل عرق طبيعي 100% - فانيلا",
+    description: "انتعاش يدوم 24 ساعة برائحة الفانيلا، بدون ألومنيوم ولا كحول",
+    price: 750,
+    originalPrice: null,
+    image: "/images/products/deodorant_vanille.jpg",
+    badge: "جديد",
+    category: "déodorants"
   }
 ]
 
@@ -89,7 +111,8 @@ const categories = [
   { key: "all", label: "الكل" },
   { key: "tonerpads", label: "تونر بادس" },
   { key: "contour des yeux", label: "محيط العين" },
-  { key: "masques", label: "الأقنعة" }
+  { key: "masques", label: "الأقنعة" },
+  { key: "déodorants", label: "مزيلات العرق" }
 ]
 
 export default function ShopPageAr() {

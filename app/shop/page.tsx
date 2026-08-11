@@ -91,7 +91,7 @@ const products = [
     description: "24h de fraîcheur, sans aluminium ni alcool",
     price: 750,
     originalPrice: null,
-    image: "/images/products/deodorant_fraicheur.jpg",
+    image: "/images/products/deodorant_fraicheur.jpeg",
     badge: "Nouveau",
     category: "déodorants"
   },
@@ -101,7 +101,7 @@ const products = [
     description: "24h de fraîcheur au parfum vanille, sans aluminium ni alcool",
     price: 750,
     originalPrice: null,
-    image: "/images/products/deodorant_vanille.jpg",
+    image: "/images/products/deodorant_vanille.jpeg",
     badge: "Nouveau",
     category: "déodorants"
   }

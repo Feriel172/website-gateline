@@ -91,7 +91,7 @@ const products = [
     description: "انتعاش يدوم 24 ساعة، بدون ألومنيوم ولا كحول",
     price: 750,
     originalPrice: null,
-    image: "/images/products/deodorant_fraicheur.jpg",
+    image: "/images/products/deodorant_fraicheur.jpeg",
     badge: "جديد",
     category: "déodorants"
   },
@@ -101,7 +101,7 @@ const products = [
     description: "انتعاش يدوم 24 ساعة برائحة الفانيلا، بدون ألومنيوم ولا كحول",
     price: 750,
     originalPrice: null,
-    image: "/images/products/deodorant_vanille.jpg",
+    image: "/images/products/deodorant_vanille.jpeg",
     badge: "جديد",
     category: "déodorants"
   }

@@ -6,7 +6,7 @@ import Link from "next/link"
 import { ShoppingBag } from "lucide-react"
 import { useCart } from "./cart-context"
 
-type Category = "tonerpads" | "contourdesyeux" | "masques" | "deodorants"
+type Category = "tonerpads" | "contourdesyeux" | "masques"
 
 const products = [
   // Tonerpads
@@ -82,36 +82,13 @@ const products = [
     image: "/images/products/aha_masque.png",
     badge: null,
     category: "masques"
-  },
-
-  // Déodorants
-  {
-    id: "deodorant-fraicheur",
-    name: "Déodorant 100% naturel - Fraîcheur",
-    description: "24h de fraîcheur, sans aluminium ni alcool",
-    price: 750,
-    originalPrice: null,
-    image: "/images/products/deodorant_fraicheur.jpeg",
-    badge: "Nouveau",
-    category: "deodorants"
-  },
-  {
-    id: "deodorant-vanille",
-    name: "Déodorant 100% naturel - Vanille",
-    description: "24h de fraîcheur au parfum vanille, sans aluminium ni alcool",
-    price: 750,
-    originalPrice: null,
-    image: "/images/products/deodorant_vanille.jpeg",
-    badge: "Nouveau",
-    category: "deodorants"
   }
 ]
 
 const categories = [
   { value: "tonerpads" as Category, label: "Toner pads" },
   { value: "contourdesyeux" as Category, label: "Contour des yeux" },
-  { value: "masques" as Category, label: "Masques" },
-  { value: "deodorants" as Category, label: "Déodorants" }
+  { value: "masques" as Category, label: "Masques" }
 ]
 
 export function ProductGrid() {

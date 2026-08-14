@@ -124,6 +124,7 @@ const products: Record<string, {
   }
 }
 
+
 const benefits = [
   { icon: Truck, label: "98% مكونات طبيعية" },
   { icon: Truck, label: "توصيل إلى جميع أنحاء الجزائر" },

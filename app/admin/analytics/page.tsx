@@ -15,6 +15,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { AdminLogin } from "@/components/admin/admin-login"
 import { ProductBreakdown } from "@/components/admin/product-breakdown"
+import { OrdersCalendar } from "@/components/admin/orders-calendar"
 import { useAdminAuth } from "@/hooks/use-admin-auth"
 import { type Order, confirmedOrders, formatCurrency, orderSubtotal } from "@/lib/admin"
 
@@ -164,6 +165,8 @@ export default function AdminAnalyticsPage() {
                 </CardContent>
               </Card>
             </div>
+
+            <OrdersCalendar orders={orders} />
 
             <ProductBreakdown orders={orders} />
           </>

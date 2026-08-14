@@ -62,6 +62,44 @@ export function confirmedOrders(orders: Order[]): Order[] {
   return orders.filter(isConfirmed)
 }
 
+// --- Daily breakdown ---
+
+export interface DayStat {
+  orders: number          // every order placed that day, whatever its status
+  confirmed: number       // how many of those are confirmed
+  revenue: number         // confirmed revenue, delivery included
+  productRevenue: number  // confirmed revenue excluding delivery
+}
+
+// created_at is stored in UTC. Keying on the browser's local calendar day keeps
+// the grouping aligned with the shop's own day rather than splitting an evening
+// order into the next date.
+export function dayKey(date: Date): string {
+  const month = String(date.getMonth() + 1).padStart(2, "0")
+  const day = String(date.getDate()).padStart(2, "0")
+  return `${date.getFullYear()}-${month}-${day}`
+}
+
+export function dailyStats(orders: Order[]): Map<string, DayStat> {
+  const byDay = new Map<string, DayStat>()
+
+  for (const order of orders) {
+    const key = dayKey(new Date(order.created_at))
+    const stat = byDay.get(key) ?? { orders: 0, confirmed: 0, revenue: 0, productRevenue: 0 }
+
+    stat.orders += 1
+    if (isConfirmed(order)) {
+      stat.confirmed += 1
+      stat.revenue += order.total
+      stat.productRevenue += orderSubtotal(order.items)
+    }
+
+    byDay.set(key, stat)
+  }
+
+  return byDay
+}
+
 // --- Per-product breakdown ---
 
 export interface ProductStat {

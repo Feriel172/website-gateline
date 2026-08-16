@@ -17,7 +17,14 @@ import { AdminLogin } from "@/components/admin/admin-login"
 import { ProductBreakdown } from "@/components/admin/product-breakdown"
 import { OrdersCalendar } from "@/components/admin/orders-calendar"
 import { useAdminAuth } from "@/hooks/use-admin-auth"
-import { type Order, confirmedOrders, formatCurrency, orderSubtotal } from "@/lib/admin"
+import {
+  type Order,
+  confirmedOrders,
+  formatCurrency,
+  orderProductionCost,
+  orderSubtotal,
+  unpricedItems,
+} from "@/lib/admin"
 
 export default function AdminAnalyticsPage() {
   const { adminKey, ready, login, logout } = useAdminAuth()
@@ -75,6 +82,12 @@ export default function AdminAnalyticsPage() {
   const revenue = earning.reduce((sum, o) => sum + o.total, 0)
   const productRevenue = earning.reduce((sum, o) => sum + orderSubtotal(o.items), 0)
   const delivery = revenue - productRevenue
+  const productionCost = earning.reduce((sum, o) => sum + orderProductionCost(o), 0)
+  // Delivery is charged to the customer and paid straight back out to the
+  // courier, so it nets out: profit is what the products earned less what they
+  // cost to make.
+  const profit = productRevenue - productionCost
+  const missingCosts = unpricedItems(orders)
 
   return (
     <div className="min-h-screen bg-background">
@@ -139,23 +152,9 @@ export default function AdminAnalyticsPage() {
             <p className="text-sm text-muted-foreground mb-4">
               Calculé sur les {earning.length} commandes confirmées.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-              <Card>
-                <CardContent className="p-4 flex flex-col items-center text-center">
-                  <p className="text-xl font-bold whitespace-nowrap">
-                    {formatCurrency(productRevenue)}
-                  </p>
-                  <p className="text-xs text-muted-foreground">Revenu hors livraison</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardContent className="p-4 flex flex-col items-center text-center">
-                  <p className="text-xl font-bold whitespace-nowrap">
-                    {formatCurrency(delivery)}
-                  </p>
-                  <p className="text-xs text-muted-foreground">Frais de livraison</p>
-                </CardContent>
-              </Card>
+            {/* Reads left to right as the calculation: total, less delivery,
+                less production cost, leaves profit. */}
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
               <Card>
                 <CardContent className="p-4 flex flex-col items-center text-center">
                   <p className="text-xl font-bold whitespace-nowrap">
@@ -164,7 +163,49 @@ export default function AdminAnalyticsPage() {
                   <p className="text-xs text-muted-foreground">Revenu total</p>
                 </CardContent>
               </Card>
+              <Card>
+                <CardContent className="p-4 flex flex-col items-center text-center">
+                  <p className="text-xl font-bold whitespace-nowrap text-muted-foreground">
+                    −{formatCurrency(delivery)}
+                  </p>
+                  <p className="text-xs text-muted-foreground">Frais de livraison</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4 flex flex-col items-center text-center">
+                  <p className="text-xl font-bold whitespace-nowrap">
+                    {formatCurrency(productRevenue)}
+                  </p>
+                  <p className="text-xs text-muted-foreground">Revenu produits</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4 flex flex-col items-center text-center">
+                  <p className="text-xl font-bold whitespace-nowrap text-muted-foreground">
+                    −{formatCurrency(productionCost)}
+                  </p>
+                  <p className="text-xs text-muted-foreground">Coût de production</p>
+                </CardContent>
+              </Card>
+              <Card className="col-span-2 lg:col-span-1 border-primary/40 bg-primary/5">
+                <CardContent className="p-4 flex flex-col items-center text-center">
+                  <p className="text-xl font-bold whitespace-nowrap text-primary">
+                    {formatCurrency(profit)}
+                  </p>
+                  <p className="text-xs font-medium">Bénéfice</p>
+                </CardContent>
+              </Card>
             </div>
+
+            {missingCosts.length > 0 && (
+              <div className="flex items-start gap-2 text-sm text-destructive bg-destructive/10 p-4 rounded-xl mb-8">
+                <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                <span>
+                  Coût de production manquant pour : {missingCosts.join(", ")}. Ces produits
+                  comptent comme sans coût, le bénéfice est donc surévalué.
+                </span>
+              </div>
+            )}
 
             <OrdersCalendar orders={orders} />
 

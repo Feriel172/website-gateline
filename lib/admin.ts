@@ -62,6 +62,45 @@ export function confirmedOrders(orders: Order[]): Order[] {
   return orders.filter(isConfirmed)
 }
 
+// --- Production costs ---
+// Unit cost in DZD, taken from the Skincare Business Manager, keyed by the same
+// product ids the checkout route prices. A product missing from here is treated
+// as costing nothing, which would overstate profit — surfaceUnpricedItems()
+// reports any such id so it cannot pass unnoticed.
+
+export const PRODUCTION_COSTS: Record<string, number> = {
+  "radiance-serum": 430,       // Toner Pads 4% Niacinamide      — vend 1600
+  "hydrating-serum": 500,      // Toner Pads 5% AHA glycolique   — vend 1600
+  "hydra-cream": 310,          // Contour des yeux à la caféine  — vend 900
+  "gentle-cleanser": 310,      // Contour des yeux au collagène  — vend 900
+  "night-cream": 270,          // Contour des yeux au rétinol    — vend 900
+  "renewal-oil": 450,          // Glass skin masque collagène    — vend 1500
+  "rosehip-oil": 500,          // Clear pore masque              — vend 1200
+  "deodorant-fraicheur": 300,  // Déodorant                      — vend 750
+  "deodorant-vanille": 300,    // Déodorant                      — vend 750
+}
+
+export function orderProductionCost(order: Order): number {
+  return order.items.reduce(
+    (sum, item) => sum + (PRODUCTION_COSTS[item.id] ?? 0) * item.quantity,
+    0
+  )
+}
+
+// Ids sold but absent from PRODUCTION_COSTS, so the profit figure can warn
+// rather than quietly count them as pure margin.
+export function unpricedItems(orders: Order[]): string[] {
+  const missing = new Set<string>()
+
+  for (const order of confirmedOrders(orders)) {
+    for (const item of order.items) {
+      if (PRODUCTION_COSTS[item.id] === undefined) missing.add(item.id)
+    }
+  }
+
+  return [...missing]
+}
+
 // --- Daily breakdown ---
 
 export interface DayStat {

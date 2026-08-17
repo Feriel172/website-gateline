@@ -2,18 +2,37 @@
 // an order re-costed by an admin uses exactly the same prices and shipping
 // rates it was created with.
 
-// Known product prices for server-side validation and total recalculation
-export const PRODUCT_PRICES: Record<string, number> = {
-  "radiance-serum": 1600,
-  "hydrating-serum": 1600,
-  "hydra-cream": 900,
-  "gentle-cleanser": 900,
-  "night-cream": 900,
-  "renewal-oil": 1500,
-  "rosehip-oil": 1200,
-  "deodorant-fraicheur": 750,
-  "deodorant-vanille": 750,
+export interface CatalogProduct {
+  id: string
+  name: string
+  price: number
+  image: string
+  // Withdrawn from the storefront but still priced, so historical orders keep
+  // costing correctly. Not offered when adding a line to an order.
+  archived?: boolean
 }
+
+// The catalogue an admin can add to an order, and the source of the price table.
+export const PRODUCT_CATALOG: CatalogProduct[] = [
+  { id: "radiance-serum", name: "Toner Pads 4% Niacinamide", price: 1600, image: "/images/products/niacinamide_tonerpads.jpg" },
+  { id: "hydrating-serum", name: "Toner Pads 5% AHA", price: 1600, image: "/images/products/aha_tonerpads.jpg" },
+  { id: "hydra-cream", name: "Contour des yeux à la caféine", price: 900, image: "/images/products/cafeine_contour.png" },
+  { id: "gentle-cleanser", name: "Contour des yeux au collagène", price: 900, image: "/images/products/collagene_contour.png" },
+  { id: "night-cream", name: "Contour des yeux au rétinol", price: 900, image: "/images/products/retinol_contour.png" },
+  { id: "renewal-oil", name: "Masque peel off au collagène", price: 1500, image: "/images/products/collagene_masque.png" },
+  { id: "rosehip-oil", name: "Masque clear pore AHA", price: 1200, image: "/images/products/aha_masque.png" },
+  { id: "deodorant-fraicheur", name: "Déodorant 100% naturel - Fraîcheur", price: 750, image: "/images/products/deodorant_fraicheur.jpeg", archived: true },
+  { id: "deodorant-vanille", name: "Déodorant 100% naturel - Vanille", price: 750, image: "/images/products/deodorant_vanille.jpeg", archived: true },
+]
+
+// Known product prices for server-side validation and total recalculation.
+// Derived from the catalogue so a price can never be changed in one place only.
+export const PRODUCT_PRICES: Record<string, number> = Object.fromEntries(
+  PRODUCT_CATALOG.map((product) => [product.id, product.price])
+)
+
+// Offered when adding a line to an existing order
+export const SELLABLE_PRODUCTS = PRODUCT_CATALOG.filter((product) => !product.archived)
 
 // Allowed wilayas list (from public/wilayas-list.txt)
 export const ALLOWED_WILAYAS = new Set([

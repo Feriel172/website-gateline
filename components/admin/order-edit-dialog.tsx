@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { AlertCircle, Loader2, Minus, Plus, Trash2 } from "lucide-react"
+import { SELLABLE_PRODUCTS } from "@/lib/orders"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -32,6 +33,7 @@ export function OrderEditDialog({ order, open, onOpenChange, onSave }: Props) {
   const [deliveryType, setDeliveryType] = useState<"domicile" | "bureau">("domicile")
   const [bureau, setBureau] = useState("")
   const [items, setItems] = useState<OrderItem[]>([])
+  const [productToAdd, setProductToAdd] = useState(SELLABLE_PRODUCTS[0]?.id ?? "")
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -63,6 +65,26 @@ export function OrderEditDialog({ order, open, onOpenChange, onSave }: Props) {
 
   const removeItem = (index: number) => {
     setItems((current) => current.filter((_, i) => i !== index))
+  }
+
+  // Adding a product already on the order bumps its quantity rather than
+  // creating a second line for the same thing.
+  const addProduct = () => {
+    const product = SELLABLE_PRODUCTS.find((p) => p.id === productToAdd)
+    if (!product) return
+
+    setItems((current) => {
+      const existing = current.findIndex((item) => item.id === product.id)
+      if (existing !== -1) {
+        return current.map((item, i) =>
+          i === existing ? { ...item, quantity: Math.min(99, item.quantity + 1) } : item
+        )
+      }
+      return [
+        ...current,
+        { id: product.id, name: product.name, price: product.price, quantity: 1, image: product.image },
+      ]
+    })
   }
 
   const handleSave = async () => {
@@ -176,6 +198,25 @@ export function OrderEditDialog({ order, open, onOpenChange, onSave }: Props) {
                   )}
                 </div>
               ))}
+            </div>
+
+            <div className="flex items-center gap-2 pt-1">
+              <select
+                value={productToAdd}
+                onChange={(e) => setProductToAdd(e.target.value)}
+                aria-label="Produit à ajouter"
+                className="flex h-10 flex-1 min-w-0 rounded-xl border border-input bg-background px-3 py-2 text-sm"
+              >
+                {SELLABLE_PRODUCTS.map((product) => (
+                  <option key={product.id} value={product.id}>
+                    {product.name} — {formatCurrency(product.price)}
+                  </option>
+                ))}
+              </select>
+              <Button variant="outline" onClick={addProduct} className="shrink-0">
+                <Plus className="w-4 h-4" />
+                Ajouter
+              </Button>
             </div>
           </div>
 

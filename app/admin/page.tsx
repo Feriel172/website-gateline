@@ -17,6 +17,9 @@ import {
   Building,
   RefreshCw,
   BarChart3,
+  Search,
+  X,
+  Pencil,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -36,7 +39,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Input } from "@/components/ui/input"
 import { AdminLogin } from "@/components/admin/admin-login"
+import { OrderEditDialog } from "@/components/admin/order-edit-dialog"
 import { useAdminAuth } from "@/hooks/use-admin-auth"
 import {
   type Order,
@@ -181,6 +186,20 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [updatingId, setUpdatingId] = useState<string | null>(null)
+  const [query, setQuery] = useState("")
+  const [editing, setEditing] = useState<Order | null>(null)
+
+  // Name search, accent- and case-insensitive; phone is included because it is
+  // how a customer is identified on the confirmation call.
+  const normalise = (value: string) =>
+    value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+
+  const needle = normalise(query.trim())
+  const filteredOrders = needle
+    ? orders.filter((o) =>
+        normalise(`${o.first_name} ${o.last_name ?? ""} ${o.phone}`).includes(needle)
+      )
+    : orders
 
   const handleLogout = useCallback(() => {
     logout()
@@ -259,6 +278,37 @@ export default function AdminPage() {
         console.error("Error updating status:", err)
       } finally {
         setUpdatingId(null)
+      }
+    },
+    [adminKey]
+  )
+
+  // Save a full edit. Returns an error message, or null when it succeeded, so
+  // the dialog can keep itself open and show what went wrong.
+  const saveOrder = useCallback(
+    async (orderId: string, payload: Record<string, unknown>): Promise<string | null> => {
+      if (!adminKey) return "Session expirée"
+
+      try {
+        const res = await fetch(`/api/admin/orders/${orderId}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            "x-admin-key": adminKey,
+          },
+          body: JSON.stringify(payload),
+        })
+        const result = await res.json()
+
+        if (!res.ok || !result.success) {
+          return result.error || "Erreur lors de la mise à jour de la commande"
+        }
+
+        // The server re-costs the order, so take its version rather than ours
+        setOrders((prev) => prev.map((o) => (o.id === orderId ? (result.data as Order) : o)))
+        return null
+      } catch {
+        return "Erreur de connexion au serveur"
       }
     },
     [adminKey]
@@ -346,10 +396,32 @@ export default function AdminPage() {
               Commandes
               {orders.length > 0 && (
                 <span className="text-sm font-normal text-muted-foreground">
-                  ({orders.length} commande{orders.length > 1 ? "s" : ""})
+                  ({filteredOrders.length}
+                  {filteredOrders.length !== orders.length ? ` / ${orders.length}` : ""} commande
+                  {filteredOrders.length > 1 ? "s" : ""})
                 </span>
               )}
             </CardTitle>
+
+            <div className="relative mt-4 max-w-sm">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Rechercher par nom ou téléphone..."
+                className="pl-9 pr-9"
+              />
+              {query && (
+                <button
+                  type="button"
+                  onClick={() => setQuery("")}
+                  aria-label="Effacer la recherche"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
           </CardHeader>
           <CardContent className="p-0">
             {loading ? (
@@ -364,15 +436,17 @@ export default function AdminPage() {
                   </div>
                 ))}
               </div>
-            ) : orders.length === 0 ? (
+            ) : filteredOrders.length === 0 ? (
               // Empty state
               <div className="text-center py-16 px-6">
                 <Package className="w-12 h-12 text-muted-foreground/50 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-foreground mb-2">
-                  Aucune commande pour le moment
+                  {query ? "Aucun résultat" : "Aucune commande pour le moment"}
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                  Les nouvelles commandes apparaîtront ici automatiquement.
+                  {query
+                    ? `Aucune commande ne correspond à « ${query} ».`
+                    : "Les nouvelles commandes apparaîtront ici automatiquement."}
                 </p>
               </div>
             ) : (
@@ -389,10 +463,11 @@ export default function AdminPage() {
                       <TableHead>Articles</TableHead>
                       <TableHead className="w-[100px] text-right">Total</TableHead>
                       <TableHead className="w-[150px]">Statut</TableHead>
+                      <TableHead className="w-[110px]">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {orders.map((order) => (
+                    {filteredOrders.map((order) => (
                       <TableRow key={order.id}>
                         <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
                           {formatDate(order.created_at)}
@@ -474,6 +549,12 @@ export default function AdminPage() {
                             />
                           )}
                         </TableCell>
+                        <TableCell>
+                          <Button variant="ghost" size="sm" onClick={() => setEditing(order)}>
+                            <Pencil className="w-4 h-4" />
+                            Modifier
+                          </Button>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -484,7 +565,7 @@ export default function AdminPage() {
             {/* Mobile / Tablet Cards */}
             {orders.length > 0 && (
               <div className="lg:hidden space-y-4 p-4">
-                {orders.map((order) => (
+                {filteredOrders.map((order) => (
                   <Card key={order.id} className="overflow-hidden">
                     <CardContent className="p-4 space-y-3">
                       {/* Top row: Date + Status */}
@@ -580,6 +661,16 @@ export default function AdminPage() {
                           </span>
                         </div>
                       </div>
+
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full"
+                        onClick={() => setEditing(order)}
+                      >
+                        <Pencil className="w-4 h-4" />
+                        Modifier la commande
+                      </Button>
                     </CardContent>
                   </Card>
                 ))}
@@ -588,6 +679,13 @@ export default function AdminPage() {
           </CardContent>
         </Card>
       </main>
+
+      <OrderEditDialog
+        order={editing}
+        open={editing !== null}
+        onOpenChange={(open) => !open && setEditing(null)}
+        onSave={saveOrder}
+      />
     </div>
   )
 }

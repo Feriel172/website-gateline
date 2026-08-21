@@ -9,6 +9,7 @@ import { HeaderAr } from "@/components/boty/header-ar"
 import { FooterAr } from "@/components/boty/footer-ar"
 import { useCart } from "@/components/boty/cart-context"
 import { trackViewContent } from "@/lib/fpixel"
+import { isSoldOut } from "@/lib/orders"
 
 const products: Record<string, {
   id: string
@@ -169,7 +170,10 @@ export default function ProductPageAr() {
     )
   }
 
+  const soldOut = isSoldOut(product.id)
+
   const handleAddToCart = () => {
+    if (soldOut) return
     addToCart()
     setIsAdded(true)
     setTimeout(() => setIsAdded(false), 2000)
@@ -178,6 +182,7 @@ export default function ProductPageAr() {
   // Straight to checkout. addItem opens the cart drawer, which would otherwise
   // sit over the checkout page, so close it before navigating.
   const handleBuyNow = () => {
+    if (soldOut) return
     addToCart()
     setIsOpen(false)
     router.push("/checkout/Ar")
@@ -301,6 +306,12 @@ export default function ProductPageAr() {
                 </div>
               </div>
 
+              {soldOut && (
+                <div className="mb-4 rounded-xl bg-destructive/10 px-4 py-3 text-sm text-destructive font-cairo">
+                  هذا المنتج غير متوفر حالياً.
+                </div>
+              )}
+
               {/* Add to Cart Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 mb-10">
                 <button
@@ -312,7 +323,9 @@ export default function ProductPageAr() {
                       : "bg-primary text-primary-foreground hover:bg-primary/90"
                   }`}
                 >
-                  {isAdded ? (
+                  {soldOut ? (
+                    "نفدت الكمية"
+                  ) : isAdded ? (
                     <>
                       <Check className="w-4 h-4" />
                       أُضيف إلى السلة
@@ -324,7 +337,8 @@ export default function ProductPageAr() {
                 <button
                   type="button"
                   onClick={handleBuyNow}
-                  className="flex-1 inline-flex items-center justify-center gap-2 bg-transparent border border-foreground/20 text-foreground px-8 py-4 rounded-full text-sm tracking-wide boty-transition hover:bg-foreground/5 font-cairo"
+                  disabled={soldOut}
+                  className="flex-1 inline-flex items-center justify-center gap-2 bg-transparent border border-foreground/20 text-foreground px-8 py-4 rounded-full text-sm tracking-wide boty-transition hover:bg-foreground/5 disabled:opacity-50 disabled:cursor-not-allowed font-cairo"
                 >
                   اشترِ الآن
                 </button>

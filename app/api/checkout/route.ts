@@ -7,6 +7,7 @@ import {
   PRODUCT_PRICES,
   calculateShipping,
   deliveryLabel,
+  isSoldOut,
 } from "@/lib/orders"
 
 // Known promo codes: code (case-insensitive) → discount percentage
@@ -111,6 +112,12 @@ function validate(body: unknown): { valid: boolean; errors: ValidationError[]; d
       const knownPrice = PRODUCT_PRICES[itemId]
       if (knownPrice === undefined) {
         errors.push({ field: `items[${i}].id`, message: `Produit inconnu: ${itemId}` })
+      } else if (isSoldOut(itemId)) {
+        // A page opened before the product sold out can still post it
+        errors.push({
+          field: `items[${i}].id`,
+          message: `${item.name || itemId} est en rupture de stock`,
+        })
       }
     }
   }

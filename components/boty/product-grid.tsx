@@ -5,6 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { ShoppingBag } from "lucide-react"
 import { useCart } from "./cart-context"
+import { isSoldOut } from "@/lib/orders"
 
 type Category = "tonerpads" | "contourdesyeux" | "masques"
 
@@ -227,7 +228,11 @@ export function ProductGrid() {
                     className="object-cover boty-transition group-hover:scale-105"
                   />
                   {/* Badge */}
-                  {product.badge && (
+                  {isSoldOut(product.id) ? (
+            <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs tracking-wide bg-destructive/10 text-destructive">
+              Rupture de stock
+            </span>
+          ) : product.badge && (
                     <span
                       className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs tracking-wide bg-white text-black ${
                         product.badge === "Sale"
@@ -255,7 +260,7 @@ export function ProductGrid() {
                         image: product.image
                       })
                     }}
-                    aria-label="Add to cart"
+                    aria-label={isSoldOut(product.id) ? "Rupture de stock" : "Add to cart"}
                   >
                     <ShoppingBag className="w-4 h-4 text-foreground" />
                   </button>

@@ -7,6 +7,7 @@ import { ShoppingBag, SlidersHorizontal, X } from "lucide-react"
 import { Header } from "@/components/boty/header"
 import { Footer } from "@/components/boty/footer"
 import { useCart } from "@/components/boty/cart-context"
+import { isSoldOut } from "@/lib/orders"
 
 const products = [
   // Tonerpads
@@ -277,7 +278,11 @@ function ProductCard({
             onLoad={() => setImageLoaded(true)}
           />
           {/* Badge */}
-          {product.badge && (
+          {isSoldOut(product.id) ? (
+            <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs tracking-wide bg-destructive/10 text-destructive">
+              Rupture de stock
+            </span>
+          ) : product.badge && (
             <span
               className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs tracking-wide ${
                 product.badge === "Sale"
@@ -294,8 +299,10 @@ function ProductCard({
           <button
             type="button"
             className="absolute bottom-4 right-4 w-12 h-12 rounded-full bg-background/90 backdrop-blur-sm flex items-center justify-center opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 boty-transition boty-shadow"
+            disabled={isSoldOut(product.id)}
             onClick={(e) => {
               e.preventDefault()
+              if (isSoldOut(product.id)) return
               addItem({
                 id: product.id,
                 name: product.name,
@@ -304,7 +311,7 @@ function ProductCard({
                 image: product.image
               })
             }}
-            aria-label="Add to cart"
+            aria-label={isSoldOut(product.id) ? "Rupture de stock" : "Add to cart"}
           >
             <ShoppingBag className="w-5 h-5 text-foreground" />
           </button>

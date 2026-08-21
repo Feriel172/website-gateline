@@ -9,6 +9,7 @@ import { Header } from "@/components/boty/header"
 import { Footer } from "@/components/boty/footer"
 import { useCart } from "@/components/boty/cart-context"
 import { trackViewContent } from "@/lib/fpixel"
+import { isSoldOut } from "@/lib/orders"
 
 const products: Record<string, {
   id: string
@@ -169,7 +170,10 @@ export default function ProductPage() {
     )
   }
 
+  const soldOut = isSoldOut(product.id)
+
   const handleAddToCart = () => {
+    if (soldOut) return
     addToCart()
     setIsAdded(true)
     setTimeout(() => setIsAdded(false), 2000)
@@ -178,6 +182,7 @@ export default function ProductPage() {
   // Straight to checkout. addItem opens the cart drawer, which would otherwise
   // sit over the checkout page, so close it before navigating.
   const handleBuyNow = () => {
+    if (soldOut) return
     addToCart()
     setIsOpen(false)
     router.push("/checkout")
@@ -301,18 +306,27 @@ export default function ProductPage() {
                 </div>
               </div>
 
+              {soldOut && (
+                <div className="mb-4 rounded-xl bg-destructive/10 px-4 py-3 text-sm text-destructive">
+                  Ce produit est momentanément en rupture de stock.
+                </div>
+              )}
+
               {/* Add to Cart Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 mb-10">
                 <button
                   type="button"
                   onClick={handleAddToCart}
-                  className={`flex-1 inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full text-sm tracking-wide boty-transition boty-shadow ${
+                  disabled={soldOut}
+                  className={`flex-1 inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full text-sm tracking-wide boty-transition boty-shadow disabled:opacity-50 disabled:cursor-not-allowed ${
                     isAdded
                       ? "bg-primary/80 text-primary-foreground"
                       : "bg-primary text-primary-foreground hover:bg-primary/90"
                   }`}
                 >
-                  {isAdded ? (
+                  {soldOut ? (
+                    "Rupture de stock"
+                  ) : isAdded ? (
                     <>
                       <Check className="w-4 h-4" />
                       Ajouté au panier
@@ -324,7 +338,8 @@ export default function ProductPage() {
                 <button
                   type="button"
                   onClick={handleBuyNow}
-                  className="flex-1 inline-flex items-center justify-center gap-2 bg-transparent border border-foreground/20 text-foreground px-8 py-4 rounded-full text-sm tracking-wide boty-transition hover:bg-foreground/5"
+                  disabled={soldOut}
+                  className="flex-1 inline-flex items-center justify-center gap-2 bg-transparent border border-foreground/20 text-foreground px-8 py-4 rounded-full text-sm tracking-wide boty-transition hover:bg-foreground/5 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Acheter maintenant
                 </button>

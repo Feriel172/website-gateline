@@ -10,6 +10,9 @@ export interface CatalogProduct {
   // Withdrawn from the storefront but still priced, so historical orders keep
   // costing correctly. Not offered when adding a line to an order.
   archived?: boolean
+  // Temporarily unavailable: still listed and browsable, but cannot be ordered.
+  // Flip this one flag to put a product back on sale.
+  soldOut?: boolean
 }
 
 // The catalogue an admin can add to an order, and the source of the price table.
@@ -19,7 +22,7 @@ export const PRODUCT_CATALOG: CatalogProduct[] = [
   { id: "hydra-cream", name: "Contour des yeux à la caféine", price: 900, image: "/images/products/cafeine_contour.png" },
   { id: "gentle-cleanser", name: "Contour des yeux au collagène", price: 900, image: "/images/products/collagene_contour.png" },
   { id: "night-cream", name: "Contour des yeux au rétinol", price: 900, image: "/images/products/retinol_contour.png" },
-  { id: "renewal-oil", name: "Masque peel off au collagène", price: 1500, image: "/images/products/collagene_masque.png" },
+  { id: "renewal-oil", name: "Masque peel off au collagène", price: 1500, image: "/images/products/collagene_masque.png", soldOut: true },
   { id: "rosehip-oil", name: "Masque clear pore AHA", price: 1200, image: "/images/products/aha_masque.png" },
   { id: "deodorant-fraicheur", name: "Déodorant 100% naturel - Fraîcheur", price: 750, image: "/images/products/deodorant_fraicheur.jpeg", archived: true },
   { id: "deodorant-vanille", name: "Déodorant 100% naturel - Vanille", price: 750, image: "/images/products/deodorant_vanille.jpeg", archived: true },
@@ -32,7 +35,17 @@ export const PRODUCT_PRICES: Record<string, number> = Object.fromEntries(
 )
 
 // Offered when adding a line to an existing order
-export const SELLABLE_PRODUCTS = PRODUCT_CATALOG.filter((product) => !product.archived)
+export const SELLABLE_PRODUCTS = PRODUCT_CATALOG.filter(
+  (product) => !product.archived && !product.soldOut
+)
+
+const SOLD_OUT_IDS = new Set(
+  PRODUCT_CATALOG.filter((product) => product.soldOut).map((product) => product.id)
+)
+
+export function isSoldOut(productId: string): boolean {
+  return SOLD_OUT_IDS.has(productId)
+}
 
 // Allowed wilayas list (from public/wilayas-list.txt)
 export const ALLOWED_WILAYAS = new Set([

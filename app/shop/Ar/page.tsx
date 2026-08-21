@@ -7,6 +7,7 @@ import { ShoppingBag, SlidersHorizontal, X } from "lucide-react"
 import { HeaderAr } from "@/components/boty/header-ar"
 import { FooterAr } from "@/components/boty/footer-ar"
 import { useCart } from "@/components/boty/cart-context"
+import { isSoldOut } from "@/lib/orders"
 
 const products = [
   // Tonerpads
@@ -282,7 +283,11 @@ function ProductCard({
             onLoad={() => setImageLoaded(true)}
           />
           {/* Badge */}
-          {product.badge && (
+          {isSoldOut(product.id) ? (
+            <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs tracking-wide bg-destructive/10 text-destructive">
+              نفدت الكمية
+            </span>
+          ) : product.badge && (
             <span
               className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs tracking-wide font-cairo ${
                 product.badge === "حرق"
@@ -299,8 +304,10 @@ function ProductCard({
           <button
             type="button"
             className="absolute bottom-4 left-4 w-12 h-12 rounded-full bg-background/90 backdrop-blur-sm flex items-center justify-center opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 boty-transition boty-shadow"
+            disabled={isSoldOut(product.id)}
             onClick={(e) => {
               e.preventDefault()
+              if (isSoldOut(product.id)) return
               addItem({
                 id: product.id,
                 name: product.name,

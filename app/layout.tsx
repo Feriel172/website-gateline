@@ -70,6 +70,19 @@ fbq('init', '${FB_PIXEL_ID}');
 fbq('track', 'PageView');
 `
 
+// Google Tag Manager. Inline in <head> for the same reason as the pixel above:
+// next/script would only mount it after hydration, delaying every tag in the
+// container. GA4 itself is configured inside GTM, not here.
+const GTM_ID = "GTM-NDQRQ9KQ"
+
+const gtmSnippet = `
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','${GTM_ID}');
+`
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -78,9 +91,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <script dangerouslySetInnerHTML={{ __html: gtmSnippet }} />
         <script dangerouslySetInnerHTML={{ __html: fbPixelSnippet }} />
       </head>
 <body className={`${dmSans.variable} ${playfairDisplay.variable} ${cairo.variable} font-sans antialiased`}>
+        {/* Google Tag Manager (noscript) — must stay immediately after <body> */}
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
+
         <CartProvider>
           {children}
         </CartProvider>

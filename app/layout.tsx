@@ -83,6 +83,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','${GTM_ID}');
 `
 
+// GA4 loaded directly rather than through the GTM container above. Both share
+// window.dataLayer, which is fine — gtag reuses the array GTM already created.
+const GA_MEASUREMENT_ID = "G-6PFFLNGPF8"
+
+const gtagSnippet = `
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', '${GA_MEASUREMENT_ID}');
+`
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -92,6 +104,8 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <script dangerouslySetInnerHTML={{ __html: gtmSnippet }} />
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} />
+        <script dangerouslySetInnerHTML={{ __html: gtagSnippet }} />
         <script dangerouslySetInnerHTML={{ __html: fbPixelSnippet }} />
       </head>
 <body className={`${dmSans.variable} ${playfairDisplay.variable} ${cairo.variable} font-sans antialiased`}>

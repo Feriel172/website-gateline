@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { Check } from "lucide-react"
 import {
   type Pack,
@@ -35,6 +36,7 @@ export function defaultChoices(pack: Pack, preselect: string): string[] {
 export function OfferSelector({
   productId,
   productPrice,
+  productImage,
   packs,
   value,
   onChange,
@@ -42,6 +44,7 @@ export function OfferSelector({
 }: {
   productId: string
   productPrice: number
+  productImage: string
   packs: Pack[]
   value: Offer
   onChange: (offer: Offer) => void
@@ -67,12 +70,15 @@ export function OfferSelector({
               : "border-border hover:border-foreground/30"
           }`}
         >
+          <span className="relative block w-full aspect-[4/3] rounded-xl overflow-hidden bg-background mb-2">
+            <Image src={productImage} alt="" fill className="object-contain p-1" sizes="160px" />
+          </span>
           <span className="block text-sm font-medium text-foreground">{t.single}</span>
           <span className="block text-base font-semibold text-foreground mt-1">
             {productPrice} {t.currency}
           </span>
           {value.kind === "single" && (
-            <Check className="absolute top-2 right-2 w-4 h-4 text-primary" />
+            <Check className="absolute top-2 right-2 z-10 w-4 h-4 text-primary" />
           )}
         </button>
 
@@ -91,17 +97,26 @@ export function OfferSelector({
               }`}
             >
               {saving > 0 && (
-                <span className="absolute -top-2 left-3 px-2 py-0.5 rounded-full bg-primary text-primary-foreground text-[10px] whitespace-nowrap">
+                <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded-full bg-primary text-primary-foreground text-[10px] whitespace-nowrap shadow">
                   −{saving} {t.currency}
                 </span>
               )}
+              <span className="relative block w-full aspect-[4/3] rounded-xl overflow-hidden bg-background mb-2">
+                <Image
+                  src={pack.image}
+                  alt=""
+                  fill
+                  className="object-contain p-1"
+                  sizes="160px"
+                />
+              </span>
               <span className="block text-sm font-medium text-foreground leading-snug">
                 {locale === "ar" ? pack.nameAr : pack.name}
               </span>
               <span className="block text-base font-semibold text-foreground mt-1">
                 {pack.price} {t.currency}
               </span>
-              {active && <Check className="absolute top-2 right-2 w-4 h-4 text-primary" />}
+              {active && <Check className="absolute top-2 right-2 z-10 w-4 h-4 text-primary" />}
             </button>
           )
         })}

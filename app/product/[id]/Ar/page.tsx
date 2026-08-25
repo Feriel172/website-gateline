@@ -338,6 +338,7 @@ export default function ProductPageAr() {
               <OfferSelector
                 productId={product.id}
                 productPrice={product.price}
+                productImage={product.image}
                 packs={relatedPacks}
                 value={offer}
                 onChange={setOffer}

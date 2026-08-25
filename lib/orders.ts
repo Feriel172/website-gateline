@@ -61,7 +61,7 @@ export const PACKS: Pack[] = [
     description: "Masque clear pore + 1 contour des yeux + 1 toner pads au choix",
     descriptionAr: "قناع تنظيف المسام + محيط عين + تونر بادس حسب اختيارك",
     price: 3400,
-    image: "/images/products/aha_masque.png",
+    image: "/images/products/pack_clear_pore.jpg",
     includes: ["rosehip-oil"],
     slots: [
       {
@@ -83,7 +83,7 @@ export const PACKS: Pack[] = [
     description: "Toner Pads 5% AHA + Toner Pads 4% Niacinamide",
     descriptionAr: "تونر بادس AHA 5% + تونر بادس نياسيناميد 4%",
     price: 3000,
-    image: "/images/products/aha_tonerpads.jpg",
+    image: "/images/products/pack_duo_toner.jpg",
     includes: ["hydrating-serum", "radiance-serum"],
     slots: [],
   },

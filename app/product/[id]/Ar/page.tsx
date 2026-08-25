@@ -9,7 +9,8 @@ import { HeaderAr } from "@/components/boty/header-ar"
 import { FooterAr } from "@/components/boty/footer-ar"
 import { useCart } from "@/components/boty/cart-context"
 import { trackViewContent } from "@/lib/fpixel"
-import { isSoldOut } from "@/lib/orders"
+import { isSoldOut, packsContaining } from "@/lib/orders"
+import { PackCard } from "@/components/boty/pack-card"
 
 const products: Record<string, {
   id: string
@@ -171,6 +172,7 @@ export default function ProductPageAr() {
   }
 
   const soldOut = isSoldOut(product.id)
+  const relatedPacks = packsContaining(product.id)
 
   const handleAddToCart = () => {
     if (soldOut) return
@@ -391,6 +393,26 @@ export default function ProductPageAr() {
           </div>
         </div>
       </div>
+
+      {relatedPacks.length > 0 && (
+        <section className="pb-20" dir="rtl">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="pt-10 border-t border-border/50">
+              <h2 className="font-cairo text-2xl md:text-3xl font-semibold text-foreground mb-2">
+                أو اطلبيه ضمن باك
+              </h2>
+              <p className="text-sm text-muted-foreground mb-8 font-cairo">
+                نفس المنتج، مع منتجات أخرى، بسعر أقل.
+              </p>
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+                {relatedPacks.map((pack) => (
+                  <PackCard key={pack.id} pack={pack} locale="ar" preselect={product.id} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       <FooterAr />
     </main>

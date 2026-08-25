@@ -142,6 +142,17 @@ export function isSoldOut(productId: string): boolean {
 
 // --- Pack display and availability ---
 
+// Packs a product can be bought inside, whether it is always included or one of
+// the options — used to upsell the pack from the product's own page.
+export function packsContaining(productId: string): Pack[] {
+  return PACKS.filter(
+    (pack) =>
+      packAvailable(pack) &&
+      (pack.includes.includes(productId) ||
+        pack.slots.some((slot) => availableOptions(slot).includes(productId)))
+  )
+}
+
 export function productName(productId: string, locale: "fr" | "ar" = "fr"): string {
   const product = PRODUCT_CATALOG.find((item) => item.id === productId)
   if (!product) return productId

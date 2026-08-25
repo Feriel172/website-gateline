@@ -19,13 +19,27 @@ const COPY = {
 }
 
 // Same shell as a product card so packs sit in the shop grid without standing out
-export function PackCard({ pack, locale = "fr" }: { pack: Pack; locale?: "fr" | "ar" }) {
+export function PackCard({
+  pack,
+  locale = "fr",
+  preselect,
+}: {
+  pack: Pack
+  locale?: "fr" | "ar"
+  // Product the visitor is already looking at: picked by default in any slot
+  // that offers it, so the pack reads as "the same thing, plus more, for less"
+  preselect?: string
+}) {
   const t = COPY[locale]
   const rtl = locale === "ar"
   const { addItem } = useCart()
 
   const [choices, setChoices] = useState<string[]>(() =>
-    pack.slots.map((slot) => availableOptions(slot)[0] ?? "")
+    pack.slots.map((slot) => {
+      const options = availableOptions(slot)
+      if (preselect && options.includes(preselect)) return preselect
+      return options[0] ?? ""
+    })
   )
   const [added, setAdded] = useState(false)
 

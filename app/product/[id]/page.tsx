@@ -9,7 +9,8 @@ import { Header } from "@/components/boty/header"
 import { Footer } from "@/components/boty/footer"
 import { useCart } from "@/components/boty/cart-context"
 import { trackViewContent } from "@/lib/fpixel"
-import { isSoldOut } from "@/lib/orders"
+import { isSoldOut, packsContaining } from "@/lib/orders"
+import { PackCard } from "@/components/boty/pack-card"
 
 const products: Record<string, {
   id: string
@@ -171,6 +172,7 @@ export default function ProductPage() {
   }
 
   const soldOut = isSoldOut(product.id)
+  const relatedPacks = packsContaining(product.id)
 
   const handleAddToCart = () => {
     if (soldOut) return
@@ -392,6 +394,26 @@ export default function ProductPage() {
           </div>
         </div>
       </div>
+
+      {relatedPacks.length > 0 && (
+        <section className="pb-20">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="pt-10 border-t border-border/50">
+              <h2 className="font-serif text-2xl md:text-3xl text-foreground mb-2">
+                Ou prenez-le en pack
+              </h2>
+              <p className="text-sm text-muted-foreground mb-8">
+                Le même produit, accompagné, à prix réduit.
+              </p>
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+                {relatedPacks.map((pack) => (
+                  <PackCard key={pack.id} pack={pack} preselect={product.id} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       <Footer />
     </main>

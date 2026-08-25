@@ -84,7 +84,8 @@ export function OfferSelector({
 
         {packs.map((pack) => {
           const variant = findPackVariant(pack.id, defaultChoices(pack, productId))
-          const saving = variant ? packUndiscountedTotal(variant) - pack.price : 0
+          const fullPrice = variant ? packUndiscountedTotal(variant) : 0
+          const saving = fullPrice - pack.price
           const active = value.kind === "pack" && value.packId === pack.id
 
           return (
@@ -113,8 +114,15 @@ export function OfferSelector({
               <span className="block text-sm font-medium text-foreground leading-snug">
                 {locale === "ar" ? pack.nameAr : pack.name}
               </span>
-              <span className="block text-base font-semibold text-foreground mt-1">
-                {pack.price} {t.currency}
+              <span className="flex items-baseline gap-1.5 flex-wrap mt-1">
+                <span className="text-base font-semibold text-foreground">
+                  {pack.price} {t.currency}
+                </span>
+                {saving > 0 && (
+                  <span className="text-xs text-muted-foreground line-through">
+                    {fullPrice} {t.currency}
+                  </span>
+                )}
               </span>
               {active && <Check className="absolute top-2 right-2 z-10 w-4 h-4 text-primary" />}
             </button>

@@ -56,8 +56,8 @@ export interface Pack {
 export const PACKS: Pack[] = [
   {
     id: "pack-clear-pore",
-    name: "Pack Clear Pore",
-    nameAr: "باك تنظيف المسام",
+    name: "Pack Trio",
+    nameAr: "باك تريو",
     description: "Masque clear pore + 1 contour des yeux + 1 toner pads au choix",
     descriptionAr: "قناع تنظيف المسام + محيط عين + تونر بادس حسب اختيارك",
     price: 3400,

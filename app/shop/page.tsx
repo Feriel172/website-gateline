@@ -219,22 +219,10 @@ export default function ShopPage() {
             </div>
           )}
 
-          {/* Packs */}
-          {(selectedCategory === "all" || selectedCategory === "packs") && (
-            <div className="mb-14">
-              <h2 className="font-serif text-2xl text-foreground mb-6">Nos Packs</h2>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {PACKS.filter(packAvailable).map((pack) => (
-                  <PackCard key={pack.id} pack={pack} />
-                ))}
-              </div>
-            </div>
-          )}
-
           {/* Product Grid */}
           <div 
             ref={gridRef}
-            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"
           >
             {filteredProducts.map((product, index) => (
               <ProductCard 
@@ -245,6 +233,18 @@ export default function ShopPage() {
               />
             ))}
           </div>
+
+          {/* Packs */}
+          {(selectedCategory === "all" || selectedCategory === "packs") && (
+            <div className="mt-16 pt-10 border-t border-border/50">
+              <h2 className="font-serif text-2xl text-foreground mb-6">Nos Packs</h2>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {PACKS.filter(packAvailable).map((pack) => (
+                  <PackCard key={pack.id} pack={pack} />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -268,12 +268,12 @@ function ProductCard({
   return (
     <Link
       href={`/product/${product.id}`}
-      className={`group transition-all duration-700 ease-out ${
+      className={`group h-full transition-all duration-700 ease-out ${
         isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
       }`}
       style={{ transitionDelay: `${index * 80}ms` }}
     >
-      <div className="bg-card rounded-3xl overflow-hidden boty-shadow boty-transition group-hover:scale-[1.02]">
+      <div className="bg-card rounded-3xl overflow-hidden boty-shadow boty-transition group-hover:scale-[1.02] h-full flex flex-col">
         {/* Image */}
         <div className="relative aspect-square bg-muted overflow-hidden">
           {/* Skeleton */}
@@ -313,7 +313,7 @@ function ProductCard({
           {/* Quick add button */}
           <button
             type="button"
-            className="absolute bottom-4 right-4 w-12 h-12 rounded-full bg-background/90 backdrop-blur-sm flex items-center justify-center opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 boty-transition boty-shadow"
+            className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-background/90 backdrop-blur-sm flex items-center justify-center opacity-100 sm:opacity-0 sm:translate-y-2 sm:group-hover:opacity-100 sm:group-hover:translate-y-0 boty-transition boty-shadow"
             disabled={isSoldOut(product.id)}
             onClick={(e) => {
               e.preventDefault()
@@ -333,11 +333,11 @@ function ProductCard({
         </div>
 
         {/* Info */}
-        <div className="p-6">
-          <h3 className="font-serif text-xl text-foreground mb-1">{product.name}</h3>
-          <p className="text-sm text-muted-foreground mb-4">{product.description}</p>
-          <div className="flex items-center gap-2">
-            <span className="text-lg font-medium text-foreground">{product.price} DZD</span>
+        <div className="p-3 sm:p-6 flex flex-col flex-1">
+          <h3 className="font-serif text-base sm:text-xl text-foreground mb-1 leading-snug">{product.name}</h3>
+          <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 line-clamp-2">{product.description}</p>
+          <div className="flex items-center gap-2 mt-auto">
+            <span className="text-base sm:text-lg font-medium text-foreground">{product.price} DZD</span>
             {product.originalPrice && (
               <span className="text-sm text-muted-foreground line-through">
                 {product.originalPrice} DZD

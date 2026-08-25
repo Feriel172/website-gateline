@@ -60,7 +60,7 @@ export const PACKS: Pack[] = [
     nameAr: "باك تنظيف المسام",
     description: "Masque clear pore + 1 contour des yeux + 1 toner pads au choix",
     descriptionAr: "قناع تنظيف المسام + محيط عين + تونر بادس حسب اختيارك",
-    price: 3200,
+    price: 3400,
     image: "/images/products/aha_masque.png",
     includes: ["rosehip-oil"],
     slots: [

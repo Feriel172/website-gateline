@@ -7,7 +7,8 @@ import { ShoppingBag, SlidersHorizontal, X } from "lucide-react"
 import { HeaderAr } from "@/components/boty/header-ar"
 import { FooterAr } from "@/components/boty/footer-ar"
 import { useCart } from "@/components/boty/cart-context"
-import { isSoldOut } from "@/lib/orders"
+import { PackCard } from "@/components/boty/pack-card"
+import { PACKS, isSoldOut, packAvailable } from "@/lib/orders"
 
 const products = [
   // Tonerpads
@@ -90,6 +91,7 @@ const categories = [
   { key: "all", label: "الكل" },
   { key: "tonerpads", label: "تونر بادس" },
   { key: "contour des yeux", label: "محيط العين" },
+  { key: "packs", label: "الباكات" },
   { key: "masques", label: "الأقنعة" }
 ]
 
@@ -101,6 +103,8 @@ export default function ShopPageAr() {
 
   const filteredProducts = selectedCategory === "all"
     ? products
+    : selectedCategory === "packs"
+    ? []
     : products.filter(p => p.category === selectedCategory)
 
   useEffect(() => {
@@ -217,6 +221,18 @@ export default function ShopPageAr() {
                     </button>
                   ))}
                 </div>
+              </div>
+            </div>
+          )}
+
+          {/* الباكات */}
+          {(selectedCategory === "all" || selectedCategory === "packs") && (
+            <div className="mb-14">
+              <h2 className="font-cairo text-2xl font-semibold text-foreground mb-6">باكاتنا</h2>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {PACKS.filter(packAvailable).map((pack) => (
+                  <PackCard key={pack.id} pack={pack} locale="ar" />
+                ))}
               </div>
             </div>
           )}

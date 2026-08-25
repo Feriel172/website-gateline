@@ -1,3 +1,5 @@
+import { PACK_VARIANTS } from "@/lib/orders"
+
 // Shared types and money helpers for the admin pages (/admin and /admin/analytics).
 
 export interface OrderItem {
@@ -80,9 +82,21 @@ export const PRODUCTION_COSTS: Record<string, number> = {
   "deodorant-vanille": 300,    // Déodorant                      — vend 750
 }
 
+// Every pack combination costs the sum of what is inside it
+const PACK_PRODUCTION_COSTS: Record<string, number> = Object.fromEntries(
+  PACK_VARIANTS.map((variant) => [
+    variant.id,
+    variant.components.reduce((sum, id) => sum + (PRODUCTION_COSTS[id] ?? 0), 0),
+  ])
+)
+
+function unitCost(productId: string): number {
+  return PRODUCTION_COSTS[productId] ?? PACK_PRODUCTION_COSTS[productId] ?? 0
+}
+
 export function orderProductionCost(order: Order): number {
   return order.items.reduce(
-    (sum, item) => sum + (PRODUCTION_COSTS[item.id] ?? 0) * item.quantity,
+    (sum, item) => sum + unitCost(item.id) * item.quantity,
     0
   )
 }
@@ -94,7 +108,9 @@ export function unpricedItems(orders: Order[]): string[] {
 
   for (const order of confirmedOrders(orders)) {
     for (const item of order.items) {
-      if (PRODUCTION_COSTS[item.id] === undefined) missing.add(item.id)
+      if (PRODUCTION_COSTS[item.id] === undefined && PACK_PRODUCTION_COSTS[item.id] === undefined) {
+        missing.add(item.id)
+      }
     }
   }
 

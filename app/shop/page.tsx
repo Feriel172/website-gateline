@@ -7,7 +7,8 @@ import { ShoppingBag, SlidersHorizontal, X } from "lucide-react"
 import { Header } from "@/components/boty/header"
 import { Footer } from "@/components/boty/footer"
 import { useCart } from "@/components/boty/cart-context"
-import { isSoldOut } from "@/lib/orders"
+import { PackCard } from "@/components/boty/pack-card"
+import { PACKS, isSoldOut, packAvailable } from "@/lib/orders"
 
 const products = [
   // Tonerpads
@@ -86,7 +87,7 @@ const products = [
   }
 ]
 
-const categories = ["all", "tonerpads", "contour des yeux", "masques"]
+const categories = ["all", "packs", "tonerpads", "contour des yeux", "masques"]
 
 export default function ShopPage() {
   const [selectedCategory, setSelectedCategory] = useState("all")
@@ -96,6 +97,8 @@ export default function ShopPage() {
 
   const filteredProducts = selectedCategory === "all"
     ? products
+    : selectedCategory === "packs"
+    ? []
     : products.filter(p => p.category === selectedCategory)
 
   useEffect(() => {
@@ -212,6 +215,18 @@ export default function ShopPage() {
                     </button>
                   ))}
                 </div>
+              </div>
+            </div>
+          )}
+
+          {/* Packs */}
+          {(selectedCategory === "all" || selectedCategory === "packs") && (
+            <div className="mb-14">
+              <h2 className="font-serif text-2xl text-foreground mb-6">Nos Packs</h2>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {PACKS.filter(packAvailable).map((pack) => (
+                  <PackCard key={pack.id} pack={pack} />
+                ))}
               </div>
             </div>
           )}

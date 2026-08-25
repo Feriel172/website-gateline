@@ -5,6 +5,7 @@
 export interface CatalogProduct {
   id: string
   name: string
+  nameAr: string
   price: number
   image: string
   // Withdrawn from the storefront but still priced, so historical orders keep
@@ -17,22 +18,114 @@ export interface CatalogProduct {
 
 // The catalogue an admin can add to an order, and the source of the price table.
 export const PRODUCT_CATALOG: CatalogProduct[] = [
-  { id: "radiance-serum", name: "Toner Pads 4% Niacinamide", price: 1600, image: "/images/products/niacinamide_tonerpads.jpg" },
-  { id: "hydrating-serum", name: "Toner Pads 5% AHA", price: 1600, image: "/images/products/aha_tonerpads.jpg" },
-  { id: "hydra-cream", name: "Contour des yeux à la caféine", price: 900, image: "/images/products/cafeine_contour.png" },
-  { id: "gentle-cleanser", name: "Contour des yeux au collagène", price: 900, image: "/images/products/collagene_contour.png" },
-  { id: "night-cream", name: "Contour des yeux au rétinol", price: 900, image: "/images/products/retinol_contour.png" },
-  { id: "renewal-oil", name: "Masque peel off au collagène", price: 1500, image: "/images/products/collagene_masque.png", soldOut: true },
-  { id: "rosehip-oil", name: "Masque clear pore AHA", price: 1200, image: "/images/products/aha_masque.png" },
-  { id: "deodorant-fraicheur", name: "Déodorant 100% naturel - Fraîcheur", price: 750, image: "/images/products/deodorant_fraicheur.jpeg", archived: true },
-  { id: "deodorant-vanille", name: "Déodorant 100% naturel - Vanille", price: 750, image: "/images/products/deodorant_vanille.jpeg", archived: true },
+  { id: "radiance-serum", name: "Toner Pads 4% Niacinamide", nameAr: "تونر بادس نياسيناميد 4%", price: 1600, image: "/images/products/niacinamide_tonerpads.jpg" },
+  { id: "hydrating-serum", name: "Toner Pads 5% AHA", nameAr: "تونر بادس AHA 5%", price: 1600, image: "/images/products/aha_tonerpads.jpg" },
+  { id: "hydra-cream", name: "Contour des yeux à la caféine", nameAr: "محيط العين بالكافيين", price: 900, image: "/images/products/cafeine_contour.png" },
+  { id: "gentle-cleanser", name: "Contour des yeux au collagène", nameAr: "محيط العين بالكولاجين", price: 900, image: "/images/products/collagene_contour.png" },
+  { id: "night-cream", name: "Contour des yeux au rétinol", nameAr: "محيط العين بالريتينول", price: 900, image: "/images/products/retinol_contour.png" },
+  { id: "renewal-oil", name: "Masque peel off au collagène", nameAr: "قناع الكولاجين المقشر", price: 1500, image: "/images/products/collagene_masque.png", soldOut: true },
+  { id: "rosehip-oil", name: "Masque clear pore AHA", nameAr: "قناع تنظيف المسام AHA", price: 1200, image: "/images/products/aha_masque.png" },
+  { id: "deodorant-fraicheur", name: "Déodorant 100% naturel - Fraîcheur", nameAr: "مزيل عرق طبيعي 100% - انتعاش", price: 750, image: "/images/products/deodorant_fraicheur.jpeg", archived: true },
+  { id: "deodorant-vanille", name: "Déodorant 100% naturel - Vanille", nameAr: "مزيل عرق طبيعي 100% - فانيلا", price: 750, image: "/images/products/deodorant_vanille.jpeg", archived: true },
 ]
+
+
+// --- Packs ---
+// Each combination of choices is expanded into its own product id, so the cart,
+// the checkout price table and the admin all treat a pack like any other
+// product: identical choices merge into one line, different choices do not.
+
+export interface PackSlot {
+  label: string
+  labelAr: string
+  options: string[]
+}
+
+export interface Pack {
+  id: string
+  name: string
+  nameAr: string
+  description: string
+  descriptionAr: string
+  price: number
+  image: string
+  includes: string[]   // always in the pack
+  slots: PackSlot[]    // one choice each
+}
+
+export const PACKS: Pack[] = [
+  {
+    id: "pack-clear-pore",
+    name: "Pack Clear Pore",
+    nameAr: "باك تنظيف المسام",
+    description: "Masque clear pore + 1 contour des yeux + 1 toner pads au choix",
+    descriptionAr: "قناع تنظيف المسام + محيط عين + تونر بادس حسب اختيارك",
+    price: 3200,
+    image: "/images/products/aha_masque.png",
+    includes: ["rosehip-oil"],
+    slots: [
+      {
+        label: "Votre contour des yeux",
+        labelAr: "محيط العين",
+        options: ["hydra-cream", "gentle-cleanser", "night-cream"],
+      },
+      {
+        label: "Vos toner pads",
+        labelAr: "تونر بادس",
+        options: ["radiance-serum", "hydrating-serum"],
+      },
+    ],
+  },
+  {
+    id: "pack-duo-toner",
+    name: "Pack Duo Toner Pads",
+    nameAr: "باك تونر بادس مزدوج",
+    description: "Toner Pads 5% AHA + Toner Pads 4% Niacinamide",
+    descriptionAr: "تونر بادس AHA 5% + تونر بادس نياسيناميد 4%",
+    price: 3000,
+    image: "/images/products/aha_tonerpads.jpg",
+    includes: ["hydrating-serum", "radiance-serum"],
+    slots: [],
+  },
+]
+
+export interface PackVariant {
+  id: string
+  packId: string
+  price: number
+  components: string[]  // every product id inside, fixed ones first
+  choices: string[]     // just the chosen ones
+}
+
+function expandPack(pack: Pack): PackVariant[] {
+  // cartesian product of the slot options; a pack with no slots yields one variant
+  let combinations: string[][] = [[]]
+  for (const slot of pack.slots) {
+    combinations = combinations.flatMap((combo) => slot.options.map((option) => [...combo, option]))
+  }
+
+  return combinations.map((choices) => ({
+    id: [pack.id, ...choices].join("+"),
+    packId: pack.id,
+    price: pack.price,
+    components: [...pack.includes, ...choices],
+    choices,
+  }))
+}
+
+export const PACK_VARIANTS: PackVariant[] = PACKS.flatMap(expandPack)
+
+export function findPackVariant(packId: string, choices: string[]): PackVariant | undefined {
+  const id = [packId, ...choices].join("+")
+  return PACK_VARIANTS.find((variant) => variant.id === id)
+}
 
 // Known product prices for server-side validation and total recalculation.
 // Derived from the catalogue so a price can never be changed in one place only.
-export const PRODUCT_PRICES: Record<string, number> = Object.fromEntries(
-  PRODUCT_CATALOG.map((product) => [product.id, product.price])
-)
+export const PRODUCT_PRICES: Record<string, number> = Object.fromEntries([
+  ...PRODUCT_CATALOG.map((product) => [product.id, product.price] as const),
+  ...PACK_VARIANTS.map((variant) => [variant.id, variant.price] as const),
+])
 
 // Offered when adding a line to an existing order
 export const SELLABLE_PRODUCTS = PRODUCT_CATALOG.filter(
@@ -45,6 +138,46 @@ const SOLD_OUT_IDS = new Set(
 
 export function isSoldOut(productId: string): boolean {
   return SOLD_OUT_IDS.has(productId)
+}
+
+// --- Pack display and availability ---
+
+export function productName(productId: string, locale: "fr" | "ar" = "fr"): string {
+  const product = PRODUCT_CATALOG.find((item) => item.id === productId)
+  if (!product) return productId
+  return locale === "ar" ? product.nameAr : product.name
+}
+
+// A pack cannot be bought while any product inside it is out of stock
+export function packVariantAvailable(variant: PackVariant): boolean {
+  return variant.components.every((id) => !isSoldOut(id))
+}
+
+export function availableOptions(slot: PackSlot): string[] {
+  return slot.options.filter((id) => !isSoldOut(id))
+}
+
+// A pack is offered while its fixed products are in stock and every slot still
+// has something to choose from
+export function packAvailable(pack: Pack): boolean {
+  return (
+    pack.includes.every((id) => !isSoldOut(id)) &&
+    pack.slots.every((slot) => availableOptions(slot).length > 0)
+  )
+}
+
+// "Pack Clear Pore — Contour caféine + Toner 5% AHA", so the choices travel with
+// the order into the cart, the confirmation email and the admin.
+export function packVariantName(variant: PackVariant, locale: "fr" | "ar" = "fr"): string {
+  const pack = PACKS.find((item) => item.id === variant.packId)
+  const base = pack ? (locale === "ar" ? pack.nameAr : pack.name) : variant.packId
+  if (variant.choices.length === 0) return base
+  return `${base} — ${variant.choices.map((id) => productName(id, locale)).join(" + ")}`
+}
+
+// What the same products would cost bought separately
+export function packUndiscountedTotal(variant: PackVariant): number {
+  return variant.components.reduce((sum, id) => sum + (PRODUCT_PRICES[id] ?? 0), 0)
 }
 
 // Allowed wilayas list (from public/wilayas-list.txt)

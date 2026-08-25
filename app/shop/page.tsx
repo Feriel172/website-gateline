@@ -232,19 +232,14 @@ export default function ShopPage() {
                 isVisible={isVisible}
               />
             ))}
+
+            {/* Packs sit at the end of the same grid, styled like any product */}
+            {(selectedCategory === "all" || selectedCategory === "packs") &&
+              PACKS.filter(packAvailable).map((pack) => (
+                <PackCard key={pack.id} pack={pack} />
+              ))}
           </div>
 
-          {/* Packs */}
-          {(selectedCategory === "all" || selectedCategory === "packs") && (
-            <div className="mt-16 pt-10 border-t border-border/50">
-              <h2 className="font-serif text-2xl text-foreground mb-6">Nos Packs</h2>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {PACKS.filter(packAvailable).map((pack) => (
-                  <PackCard key={pack.id} pack={pack} />
-                ))}
-              </div>
-            </div>
-          )}
         </div>
       </div>
 

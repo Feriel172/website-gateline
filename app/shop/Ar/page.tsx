@@ -238,19 +238,14 @@ export default function ShopPageAr() {
                 isVisible={isVisible}
               />
             ))}
+
+            {/* الباكات في نفس الشبكة، بنفس شكل المنتجات */}
+            {(selectedCategory === "all" || selectedCategory === "packs") &&
+              PACKS.filter(packAvailable).map((pack) => (
+                <PackCard key={pack.id} pack={pack} locale="ar" />
+              ))}
           </div>
 
-          {/* الباكات */}
-          {(selectedCategory === "all" || selectedCategory === "packs") && (
-            <div className="mt-16 pt-10 border-t border-border/50">
-              <h2 className="font-cairo text-2xl font-semibold text-foreground mb-6">باكاتنا</h2>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {PACKS.filter(packAvailable).map((pack) => (
-                  <PackCard key={pack.id} pack={pack} locale="ar" />
-                ))}
-              </div>
-            </div>
-          )}
         </div>
       </div>
 

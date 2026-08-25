@@ -10,7 +10,8 @@ import { Footer } from "@/components/boty/footer"
 import { useCart } from "@/components/boty/cart-context"
 import { trackViewContent } from "@/lib/fpixel"
 import { isSoldOut, packsContaining } from "@/lib/orders"
-import { PackCard } from "@/components/boty/pack-card"
+import { OfferSelector, type Offer, offerVariant } from "@/components/boty/offer-selector"
+import { packVariantName } from "@/lib/orders"
 
 const products: Record<string, {
   id: string
@@ -148,6 +149,7 @@ export default function ProductPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0)
+    setOffer({ kind: "single" })
   }, [productId])
 
   useEffect(() => {
@@ -159,6 +161,20 @@ export default function ProductPage() {
   }
 
   const addToCart = () => {
+    if (selectedPack && selectedVariant) {
+      addItem(
+        {
+          id: selectedVariant.id,
+          name: packVariantName(selectedVariant, "fr"),
+          description: selectedPack.description,
+          price: selectedPack.price,
+          image: selectedPack.image,
+        },
+        quantity
+      )
+      return
+    }
+
     addItem(
       {
         id: product.id,
@@ -173,6 +189,11 @@ export default function ProductPage() {
 
   const soldOut = isSoldOut(product.id)
   const relatedPacks = packsContaining(product.id)
+  const [offer, setOffer] = useState<Offer>({ kind: "single" })
+  const selectedVariant = offerVariant(offer)
+  const selectedPack = relatedPacks.find((p) => offer.kind === "pack" && p.id === offer.packId)
+  // What the buttons will actually add, and the price shown above them
+  const unitPrice = selectedPack ? selectedPack.price : product.price
 
   const handleAddToCart = () => {
     if (soldOut) return
@@ -255,7 +276,7 @@ export default function ProductPage() {
 
               {/* Price */}
               <div className="flex items-center gap-3 mb-8">
-                <span className="text-3xl font-medium text-foreground">{product.price} DZD</span>
+                <span className="text-3xl font-medium text-foreground">{unitPrice} DZD</span>
                 {product.originalPrice && (
                   <span className="text-xl text-muted-foreground line-through">
                     {product.originalPrice} DZD
@@ -313,6 +334,15 @@ export default function ProductPage() {
                   Ce produit est momentanément en rupture de stock.
                 </div>
               )}
+
+              <OfferSelector
+                productId={product.id}
+                productPrice={product.price}
+                packs={relatedPacks}
+                value={offer}
+                onChange={setOffer}
+                locale="fr"
+              />
 
               {/* Add to Cart Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 mb-10">
@@ -395,25 +425,6 @@ export default function ProductPage() {
         </div>
       </div>
 
-      {relatedPacks.length > 0 && (
-        <section className="pb-20">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="pt-10 border-t border-border/50">
-              <h2 className="font-serif text-2xl md:text-3xl text-foreground mb-2">
-                Ou prenez-le en pack
-              </h2>
-              <p className="text-sm text-muted-foreground mb-8">
-                Le même produit, accompagné, à prix réduit.
-              </p>
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
-                {relatedPacks.map((pack) => (
-                  <PackCard key={pack.id} pack={pack} preselect={product.id} />
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
 
       <Footer />
     </main>

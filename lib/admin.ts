@@ -135,6 +135,13 @@ export function dayKey(date: Date): string {
   return `${date.getFullYear()}-${month}-${day}`
 }
 
+// Orders placed within the given calendar month, using the same local-day
+// grouping as dayKey so the two never disagree at a month boundary.
+export function ordersInMonth(orders: Order[], month: Date): Order[] {
+  const prefix = dayKey(month).slice(0, 7) // "YYYY-MM"
+  return orders.filter((order) => dayKey(new Date(order.created_at)).startsWith(prefix))
+}
+
 export function dailyStats(orders: Order[]): Map<string, DayStat> {
   const byDay = new Map<string, DayStat>()
 

@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
+import { format, startOfMonth } from "date-fns"
+import { fr } from "date-fns/locale"
 import {
   Package,
   LogOut,
@@ -23,6 +25,7 @@ import {
   formatCurrency,
   orderProductionCost,
   orderSubtotal,
+  ordersInMonth,
   unpricedItems,
 } from "@/lib/admin"
 
@@ -31,6 +34,7 @@ export default function AdminAnalyticsPage() {
   const [orders, setOrders] = useState<Order[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [month, setMonth] = useState(() => startOfMonth(new Date()))
 
   const fetchOrders = useCallback(async () => {
     if (!adminKey) return
@@ -78,7 +82,9 @@ export default function AdminAnalyticsPage() {
     return <AdminLogin onLogin={login} />
   }
 
-  const earning = confirmedOrders(orders)
+  // Every figure on the page is scoped to the month picked in the calendar
+  const monthOrders = ordersInMonth(orders, month)
+  const earning = confirmedOrders(monthOrders)
   const revenue = earning.reduce((sum, o) => sum + o.total, 0)
   const productRevenue = earning.reduce((sum, o) => sum + orderSubtotal(o.items), 0)
   const delivery = revenue - productRevenue
@@ -87,7 +93,7 @@ export default function AdminAnalyticsPage() {
   // courier, so it nets out: profit is what the products earned less what they
   // cost to make.
   const profit = productRevenue - productionCost
-  const missingCosts = unpricedItems(orders)
+  const missingCosts = unpricedItems(monthOrders)
 
   return (
     <div className="min-h-screen bg-background">
@@ -150,7 +156,8 @@ export default function AdminAnalyticsPage() {
         ) : (
           <>
             <p className="text-sm text-muted-foreground mb-4">
-              Calculé sur les {earning.length} commandes confirmées.
+              <span className="capitalize">{format(month, "LLLL yyyy", { locale: fr })}</span> · calculé
+              sur les {earning.length} commandes confirmées du mois.
             </p>
             {/* Reads left to right as the calculation: total, less delivery,
                 less production cost, leaves profit. */}
@@ -207,9 +214,9 @@ export default function AdminAnalyticsPage() {
               </div>
             )}
 
-            <OrdersCalendar orders={orders} />
+            <OrdersCalendar orders={orders} month={month} onMonthChange={setMonth} />
 
-            <ProductBreakdown orders={orders} />
+            <ProductBreakdown orders={monthOrders} />
           </>
         )}
       </main>

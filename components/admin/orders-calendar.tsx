@@ -1,8 +1,7 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 import {
-  addMonths,
   eachDayOfInterval,
   endOfMonth,
   endOfWeek,
@@ -11,12 +10,11 @@ import {
   isToday,
   startOfMonth,
   startOfWeek,
-  subMonths,
 } from "date-fns"
 import { fr } from "date-fns/locale"
-import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { CalendarDays } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { MonthPicker } from "@/components/admin/month-picker"
 import { type Order, dailyStats, dayKey, formatCurrency } from "@/lib/admin"
 
 const WEEK_STARTS_ON = 1 // Monday
@@ -32,9 +30,15 @@ function heatClass(revenue: number, peak: number): string {
   return "bg-primary/5"
 }
 
-export function OrdersCalendar({ orders }: { orders: Order[] }) {
-  const [month, setMonth] = useState(() => startOfMonth(new Date()))
+interface OrdersCalendarProps {
+  orders: Order[]
+  month: Date
+  onMonthChange: (month: Date) => void
+}
 
+// The month is owned by the page so the same picker also scopes the stats
+// shown around the calendar.
+export function OrdersCalendar({ orders, month, onMonthChange }: OrdersCalendarProps) {
   const stats = useMemo(() => dailyStats(orders), [orders])
 
   const days = useMemo(() => {
@@ -67,17 +71,7 @@ export function OrdersCalendar({ orders }: { orders: Order[] }) {
             Commandes = toutes les commandes du jour · Revenu = commandes confirmées uniquement
           </p>
         </div>
-        <div className="flex items-center gap-1 shrink-0">
-          <Button variant="ghost" size="sm" onClick={() => setMonth(subMonths(month, 1))} aria-label="Mois précédent">
-            <ChevronLeft className="w-4 h-4" />
-          </Button>
-          <span className="text-sm font-medium capitalize min-w-[8.5rem] text-center">
-            {format(month, "LLLL yyyy", { locale: fr })}
-          </span>
-          <Button variant="ghost" size="sm" onClick={() => setMonth(addMonths(month, 1))} aria-label="Mois suivant">
-            <ChevronRight className="w-4 h-4" />
-          </Button>
-        </div>
+        <MonthPicker month={month} onChange={onMonthChange} />
       </CardHeader>
 
       <CardContent>

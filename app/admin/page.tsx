@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
-import { format } from "date-fns"
+import { format, startOfMonth } from "date-fns"
 import { fr } from "date-fns/locale"
 import {
   Package,
@@ -42,6 +42,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Input } from "@/components/ui/input"
 import { AdminLogin } from "@/components/admin/admin-login"
 import { OrderEditDialog } from "@/components/admin/order-edit-dialog"
+import { MonthPicker } from "@/components/admin/month-picker"
 import { useAdminAuth } from "@/hooks/use-admin-auth"
 import {
   type Order,
@@ -51,6 +52,7 @@ import {
   lineTotal,
   orderShipping,
   orderSubtotal,
+  ordersInMonth,
 } from "@/lib/admin"
 
 // --- Status config ---
@@ -188,6 +190,10 @@ export default function AdminPage() {
   const [updatingId, setUpdatingId] = useState<string | null>(null)
   const [query, setQuery] = useState("")
   const [editing, setEditing] = useState<Order | null>(null)
+  const [month, setMonth] = useState(() => startOfMonth(new Date()))
+
+  // Cards and list are both scoped to the picked month
+  const monthOrders = ordersInMonth(orders, month)
 
   // Name search, accent- and case-insensitive; phone is included because it is
   // how a customer is identified on the confirmation call.
@@ -196,10 +202,10 @@ export default function AdminPage() {
 
   const needle = normalise(query.trim())
   const filteredOrders = needle
-    ? orders.filter((o) =>
+    ? monthOrders.filter((o) =>
         normalise(`${o.first_name} ${o.last_name ?? ""} ${o.phone}`).includes(needle)
       )
-    : orders
+    : monthOrders
 
   const handleLogout = useCallback(() => {
     logout()
@@ -374,8 +380,14 @@ export default function AdminPage() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
-        {/* Dashboard Cards */}
-        {!loading && orders.length > 0 && <DashboardCards orders={orders} />}
+        {!loading && orders.length > 0 && (
+          <>
+            <div className="flex justify-end mb-4">
+              <MonthPicker month={month} onChange={setMonth} />
+            </div>
+            <DashboardCards orders={monthOrders} />
+          </>
+        )}
 
         {/* Error State */}
         {error && (
@@ -397,8 +409,9 @@ export default function AdminPage() {
               {orders.length > 0 && (
                 <span className="text-sm font-normal text-muted-foreground">
                   ({filteredOrders.length}
-                  {filteredOrders.length !== orders.length ? ` / ${orders.length}` : ""} commande
-                  {filteredOrders.length > 1 ? "s" : ""})
+                  {filteredOrders.length !== monthOrders.length ? ` / ${monthOrders.length}` : ""} commande
+                  {filteredOrders.length > 1 ? "s" : ""} en{" "}
+                  <span className="capitalize">{format(month, "LLLL yyyy", { locale: fr })}</span>)
                 </span>
               )}
             </CardTitle>
@@ -441,12 +454,18 @@ export default function AdminPage() {
               <div className="text-center py-16 px-6">
                 <Package className="w-12 h-12 text-muted-foreground/50 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-foreground mb-2">
-                  {query ? "Aucun résultat" : "Aucune commande pour le moment"}
+                  {query
+                    ? "Aucun résultat"
+                    : orders.length > 0
+                      ? "Aucune commande ce mois"
+                      : "Aucune commande pour le moment"}
                 </h3>
                 <p className="text-sm text-muted-foreground">
                   {query
                     ? `Aucune commande ne correspond à « ${query} ».`
-                    : "Les nouvelles commandes apparaîtront ici automatiquement."}
+                    : orders.length > 0
+                      ? `Aucune commande en ${format(month, "LLLL yyyy", { locale: fr })}.`
+                      : "Les nouvelles commandes apparaîtront ici automatiquement."}
                 </p>
               </div>
             ) : (

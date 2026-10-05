@@ -12,6 +12,7 @@ import { trackViewContent } from "@/lib/fpixel"
 import { isSoldOut, packsContaining } from "@/lib/orders"
 import { OfferSelector, type Offer, offerVariant } from "@/components/boty/offer-selector"
 import { packVariantName } from "@/lib/orders"
+import { ProductComments } from "@/components/boty/product-comments"
 
 const products: Record<string, {
   id: string
@@ -421,11 +422,13 @@ export default function ProductPage() {
                   </div>
                 ))}
               </div>
+
+              {/* Customer comments, right under the buying decision */}
+              <ProductComments productId={product.id} locale="fr" />
             </div>
           </div>
         </div>
       </div>
-
 
       <Footer />
     </main>

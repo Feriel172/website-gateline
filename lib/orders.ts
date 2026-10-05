@@ -23,7 +23,7 @@ export const PRODUCT_CATALOG: CatalogProduct[] = [
   { id: "hydra-cream", name: "Contour des yeux à la caféine", nameAr: "محيط العين بالكافيين", price: 900, image: "/images/products/cafeine_contour.png" },
   { id: "gentle-cleanser", name: "Contour des yeux au collagène", nameAr: "محيط العين بالكولاجين", price: 900, image: "/images/products/collagene_contour.png" },
   { id: "night-cream", name: "Contour des yeux au rétinol", nameAr: "محيط العين بالريتينول", price: 900, image: "/images/products/retinol_contour.png" },
-  { id: "renewal-oil", name: "Masque peel off au collagène", nameAr: "قناع الكولاجين المقشر", price: 1500, image: "/images/products/collagene_masque.png", soldOut: true },
+  { id: "renewal-oil", name: "Masque peel off au collagène", nameAr: "قناع الكولاجين المقشر", price: 1500, image: "/images/products/collagene_masque.png" },
   { id: "rosehip-oil", name: "Masque clear pore AHA", nameAr: "قناع تنظيف المسام AHA", price: 1200, image: "/images/products/aha_masque.png" },
   { id: "deodorant-fraicheur", name: "Déodorant 100% naturel - Fraîcheur", nameAr: "مزيل عرق طبيعي 100% - انتعاش", price: 750, image: "/images/products/deodorant_fraicheur.jpeg", archived: true },
   { id: "deodorant-vanille", name: "Déodorant 100% naturel - Vanille", nameAr: "مزيل عرق طبيعي 100% - فانيلا", price: 750, image: "/images/products/deodorant_vanille.jpeg", archived: true },

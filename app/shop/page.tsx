@@ -67,7 +67,7 @@ const products = [
   // masques
   {
     id: "renewal-oil",
-    name: "Masque peel off au collagène ",
+    name: "Glass skin masque",
     description: "obtiens une glass skin grâce à ce masque enveloppant au collagène",
     price: 1500,
     originalPrice: null,

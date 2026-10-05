@@ -67,7 +67,7 @@ const products = [
   // masques
   {
     id: "renewal-oil",
-    name: "قناع الكولاجين المقشر",
+    name: "قناع البشرة الزجاجية",
     description: "احصلي على بشرة زجاجية مع هذا القناع المغلف بالكولاجين",
     price: 1500,
     originalPrice: null,

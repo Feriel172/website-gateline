@@ -20,6 +20,8 @@ import {
   Search,
   X,
   Pencil,
+  Repeat,
+  Undo2,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -38,6 +40,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Input } from "@/components/ui/input"
 import { AdminLogin } from "@/components/admin/admin-login"
@@ -53,6 +62,19 @@ import {
   orderShipping,
   orderSubtotal,
   ordersInMonth,
+  DELIVERY_STATUSES,
+  type DeliveryStatus,
+  deliveryStatusOf,
+  swapCandidates,
+  SWAP_LIMIT,
+  canSwap,
+  isSameWilaya,
+  isRestrictedWilaya,
+  swapCost,
+  swapCountOf,
+  isReturned,
+  SWAP_COST_SAME_WILAYA,
+  SWAP_COST_OTHER_WILAYA,
 } from "@/lib/admin"
 
 // --- Status config ---
@@ -113,6 +135,65 @@ function StatusBadge({
   )
 }
 
+// --- Delivery Status Badge (clickable) ---
+
+// There is no yellow badge variant, so "swap" carries its own colours; they win
+// over the variant's because cn() merges Tailwind classes last-one-wins.
+const SWAP_BADGE = "border-transparent bg-yellow-400 text-yellow-950 hover:bg-yellow-400/80"
+
+const DELIVERY_CONFIG: Record<
+  DeliveryStatus,
+  { color: "default" | "secondary" | "destructive" | "outline"; className?: string }
+> = {
+  "Pas encore envoyée": { color: "outline" },
+  Envoyée: { color: "secondary" },
+  livrée: { color: "default" },
+  swap: { color: "outline", className: SWAP_BADGE },
+  retour: { color: "destructive" },
+}
+
+function DeliveryBadge({
+  status,
+  onClick,
+}: {
+  status: DeliveryStatus
+  onClick: (newStatus: DeliveryStatus) => void
+}) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button className="inline-flex items-center gap-1 cursor-pointer">
+          <Badge
+            variant={DELIVERY_CONFIG[status].color}
+            className={`cursor-pointer hover:opacity-80 transition-opacity whitespace-nowrap ${
+              DELIVERY_CONFIG[status].className ?? ""
+            }`}
+          >
+            {status}
+            <ChevronDown className="w-3 h-3" />
+          </Badge>
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start">
+        {DELIVERY_STATUSES.map((s) => (
+          <DropdownMenuItem
+            key={s}
+            onClick={() => onClick(s)}
+            className={s === status ? "bg-accent" : ""}
+          >
+            <Badge
+              variant={DELIVERY_CONFIG[s].color}
+              className={`mr-2 ${DELIVERY_CONFIG[s].className ?? ""}`}
+            >
+              {s}
+            </Badge>
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
 // --- Format helpers ---
 
 function formatDate(dateStr: string) {
@@ -130,12 +211,14 @@ function DashboardCards({ orders }: { orders: Order[] }) {
   const pending = orders.filter((o) => o.status === "en attente").length
   const confirmed = orders.filter((o) => o.status === "confirmée").length
   const cancelled = orders.filter((o) => o.status === "annulé").length
+  const swapped = orders.filter((o) => deliveryStatusOf(o) === "swap").length
+  const returned = orders.filter((o) => isReturned(o)).length
   const earning = confirmedOrders(orders)
   const revenue = earning.reduce((sum, o) => sum + o.total, 0)
   const productRevenue = earning.reduce((sum, o) => sum + orderSubtotal(o.items), 0)
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-6 gap-4 mb-8">
+    <div className="grid grid-cols-2 lg:grid-cols-10 gap-4 mb-8">
       <Card>
         <CardContent className="p-4 flex flex-col items-center text-center">
           <ShoppingBag className="w-5 h-5 text-primary mb-1" />
@@ -159,6 +242,13 @@ function DashboardCards({ orders }: { orders: Order[] }) {
       </Card>
       <Card>
         <CardContent className="p-4 flex flex-col items-center text-center">
+          <Repeat className="w-5 h-5 text-yellow-500 mb-1" />
+          <p className="text-2xl font-bold">{swapped}</p>
+          <p className="text-xs text-muted-foreground">Swap</p>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardContent className="p-4 flex flex-col items-center text-center">
           <div className="w-5 h-5 rounded-full bg-destructive mb-1" />
           <p className="text-2xl font-bold">{cancelled}</p>
           <p className="text-xs text-muted-foreground">Annulées</p>
@@ -166,11 +256,18 @@ function DashboardCards({ orders }: { orders: Order[] }) {
       </Card>
       <Card>
         <CardContent className="p-4 flex flex-col items-center text-center">
+          <Undo2 className="w-5 h-5 text-destructive mb-1" />
+          <p className="text-2xl font-bold">{returned}</p>
+          <p className="text-xs text-muted-foreground">Retour</p>
+        </CardContent>
+      </Card>
+      <Card className="col-span-2">
+        <CardContent className="p-4 flex flex-col items-center text-center">
           <p className="text-xl font-bold whitespace-nowrap">{formatCurrency(revenue)}</p>
           <p className="text-xs text-muted-foreground">Revenu</p>
         </CardContent>
       </Card>
-      <Card>
+      <Card className="col-span-2">
         <CardContent className="p-4 flex flex-col items-center text-center">
           <p className="text-xl font-bold whitespace-nowrap">{formatCurrency(productRevenue)}</p>
           <p className="text-xs text-muted-foreground">Revenu hors livraison</p>
@@ -191,6 +288,10 @@ export default function AdminPage() {
   const [query, setQuery] = useState("")
   const [editing, setEditing] = useState<Order | null>(null)
   const [month, setMonth] = useState(() => startOfMonth(new Date()))
+  const [updatingDeliveryId, setUpdatingDeliveryId] = useState<string | null>(null)
+  // The order whose swap picker is open
+  const [swapFor, setSwapFor] = useState<Order | null>(null)
+  const [swappingId, setSwappingId] = useState<string | null>(null)
 
   // Cards and list are both scoped to the picked month
   const monthOrders = ordersInMonth(orders, month)
@@ -201,6 +302,8 @@ export default function AdminPage() {
     value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
 
   const needle = normalise(query.trim())
+  // Kept in the order the API returns them — newest first. The list is read
+  // chronologically, so status must not reshuffle it.
   const filteredOrders = needle
     ? monthOrders.filter((o) =>
         normalise(`${o.first_name} ${o.last_name ?? ""} ${o.phone}`).includes(needle)
@@ -284,6 +387,92 @@ export default function AdminPage() {
         console.error("Error updating status:", err)
       } finally {
         setUpdatingId(null)
+      }
+    },
+    [adminKey]
+  )
+
+  // Update where the order is in the shipping pipeline
+  const updateDeliveryStatus = useCallback(
+    async (orderId: string, newStatus: DeliveryStatus) => {
+      if (!adminKey) return
+
+      setUpdatingDeliveryId(orderId)
+
+      try {
+        const res = await fetch(`/api/admin/orders/${orderId}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            "x-admin-key": adminKey,
+          },
+          body: JSON.stringify({ deliveryStatus: newStatus }),
+        })
+        const result = await res.json()
+
+        if (res.ok && result.success) {
+          setOrders((prev) =>
+            prev.map((o) => (o.id === orderId ? { ...o, delivery_status: newStatus } : o))
+          )
+        } else {
+          setError(result.error || "Erreur lors de la mise à jour de la livraison")
+        }
+      } catch (err) {
+        console.error("Error updating delivery status:", err)
+        setError("Erreur de connexion au serveur")
+      } finally {
+        setUpdatingDeliveryId(null)
+      }
+    },
+    [adminKey]
+  )
+
+  // Re-route a shipped parcel to another customer with an identical order: the
+  // chosen order becomes "Envoyée" and the courier fee is booked on the one
+  // that was re-routed.
+  const performSwap = useCallback(
+    async (source: Order, target: Order) => {
+      if (!adminKey) return
+
+      setSwappingId(target.id)
+      setError(null)
+
+      try {
+        const res = await fetch(`/api/admin/orders/${source.id}/swap`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-admin-key": adminKey,
+          },
+          body: JSON.stringify({ targetId: target.id }),
+        })
+        const result = await res.json()
+
+        if (!res.ok || !result.success) {
+          setError(result.error || "Erreur lors du swap")
+          return
+        }
+
+        setOrders((prev) =>
+          prev.map((o) => {
+            if (o.id === target.id) return { ...o, delivery_status: "Envoyée" as DeliveryStatus }
+            if (o.id === source.id) {
+              return {
+                ...o,
+                delivery_status: "swap" as DeliveryStatus,
+                swap_count: result.data.source.swap_count,
+                swap_cost: result.data.source.swap_cost,
+              }
+            }
+            return o
+          })
+        )
+        setSwapFor(null)
+      } catch (err) {
+        console.error("Error swapping order:", err)
+        setError("Erreur de connexion au serveur")
+      } finally {
+        setSwappingId(null)
       }
     },
     [adminKey]
@@ -478,11 +667,12 @@ export default function AdminPage() {
                       <TableHead>Client</TableHead>
                       <TableHead className="w-[130px]">Téléphone</TableHead>
                       <TableHead className="w-[130px]">Wilaya</TableHead>
-                      <TableHead className="w-[160px]">Livraison</TableHead>
+                      <TableHead className="w-[160px]">Mode de livraison</TableHead>
                       <TableHead>Articles</TableHead>
                       <TableHead className="w-[100px] text-right">Total</TableHead>
                       <TableHead className="w-[150px]">Statut</TableHead>
                       <TableHead className="w-[110px]">Actions</TableHead>
+                      <TableHead className="w-[230px]">Livraison</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -573,6 +763,45 @@ export default function AdminPage() {
                             <Pencil className="w-4 h-4" />
                             Modifier
                           </Button>
+                        </TableCell>
+                        {/* Shipping pipeline — only meaningful once the order is confirmed */}
+                        <TableCell>
+                          {order.status !== "confirmée" ? (
+                            <span className="text-xs text-muted-foreground">—</span>
+                          ) : updatingDeliveryId === order.id ? (
+                            <Badge variant="outline" className="animate-pulse">
+                              <Loader2 className="w-3 h-3 animate-spin mr-1" />
+                              Mise à jour...
+                            </Badge>
+                          ) : (
+                            <div className="flex items-center gap-2">
+                              <DeliveryBadge
+                                status={deliveryStatusOf(order)}
+                                onClick={(newStatus) => updateDeliveryStatus(order.id, newStatus)}
+                              />
+                              {deliveryStatusOf(order) === "Envoyée" && (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  disabled={!canSwap(order)}
+                                  onClick={() => setSwapFor(order)}
+                                  title={
+                                    canSwap(order)
+                                      ? "Échanger cette commande"
+                                      : `Limite de ${SWAP_LIMIT} swaps atteinte`
+                                  }
+                                >
+                                  <Repeat className="w-3.5 h-3.5" />
+                                  Swap
+                                  {swapCountOf(order) > 0 && (
+                                    <span className="text-xs text-muted-foreground">
+                                      {swapCountOf(order)}/{SWAP_LIMIT}
+                                    </span>
+                                  )}
+                                </Button>
+                              )}
+                            </div>
+                          )}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -681,6 +910,42 @@ export default function AdminPage() {
                         </div>
                       </div>
 
+                      {order.status === "confirmée" && (
+                        <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border/50">
+                          <span className="text-xs text-muted-foreground">Livraison</span>
+                          {updatingDeliveryId === order.id ? (
+                            <Badge variant="outline" className="animate-pulse">
+                              <Loader2 className="w-3 h-3 animate-spin mr-1" />
+                              ...
+                            </Badge>
+                          ) : (
+                            <>
+                              <DeliveryBadge
+                                status={deliveryStatusOf(order)}
+                                onClick={(newStatus) => updateDeliveryStatus(order.id, newStatus)}
+                              />
+                              {deliveryStatusOf(order) === "Envoyée" && (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="ml-auto"
+                                  disabled={!canSwap(order)}
+                                  onClick={() => setSwapFor(order)}
+                                >
+                                  <Repeat className="w-3.5 h-3.5" />
+                                  Swap
+                                  {swapCountOf(order) > 0 && (
+                                    <span className="text-xs text-muted-foreground">
+                                      {swapCountOf(order)}/{SWAP_LIMIT}
+                                    </span>
+                                  )}
+                                </Button>
+                              )}
+                            </>
+                          )}
+                        </div>
+                      )}
+
                       <Button
                         variant="outline"
                         size="sm"
@@ -698,6 +963,129 @@ export default function AdminPage() {
           </CardContent>
         </Card>
       </main>
+
+      {/* Swap picker: orders holding exactly the same products and quantities
+          that have not been shipped yet. Searched across every order, not just
+          the month on screen. */}
+      <Dialog open={swapFor !== null} onOpenChange={(open) => !open && setSwapFor(null)}>
+        <DialogContent className="sm:max-w-2xl max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Swap de commande</DialogTitle>
+            <DialogDescription>
+              {swapFor && (
+                <>
+                  Commandes identiques à celle de {swapFor.first_name}
+                  {swapFor.last_name ? ` ${swapFor.last_name}` : ""} (
+                  {swapFor.items.map((item) => `${item.name} x${item.quantity}`).join(", ")}) qui
+                  ne sont pas encore envoyées.
+                  {isRestrictedWilaya(swapFor.wilaya) && (
+                    <span className="text-foreground">
+                      {" "}
+                      {swapFor.wilaya} est une wilaya éloignée : seules les commandes de la même
+                      wilaya peuvent être échangées.
+                    </span>
+                  )}
+                </>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+
+          {(() => {
+            if (!swapFor) return null
+            const candidates = swapCandidates(swapFor, orders)
+
+            if (candidates.length === 0) {
+              return (
+                <p className="py-8 text-center text-sm text-muted-foreground">
+                  Pas de commande éligible au swap
+                </p>
+              )
+            }
+
+            return (
+              <div className="space-y-3">
+                <p className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-green-500" />
+                    même wilaya · {formatCurrency(SWAP_COST_SAME_WILAYA)} de frais
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+                    autre wilaya · {formatCurrency(SWAP_COST_OTHER_WILAYA)} de frais
+                  </span>
+                </p>
+
+                {candidates.map((candidate) => (
+                  <div
+                    key={candidate.id}
+                    className="flex flex-wrap items-center gap-x-4 gap-y-2 p-4 rounded-xl border border-border/50"
+                  >
+                    {/* Green while the parcel stays in its wilaya, yellow when it travels */}
+                    <span
+                      aria-hidden="true"
+                      className={`w-3 h-3 rounded-full flex-shrink-0 ${
+                        isSameWilaya(swapFor, candidate) ? "bg-green-500" : "bg-yellow-400"
+                      }`}
+                    />
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                        <span className="font-medium text-foreground">
+                          {candidate.first_name}
+                          {candidate.last_name ? ` ${candidate.last_name}` : ""}
+                        </span>
+                        <Badge
+                          variant={
+                            STATUS_CONFIG[candidate.status]?.color ?? "outline"
+                          }
+                        >
+                          {STATUS_CONFIG[candidate.status]?.label ?? candidate.status}
+                        </Badge>
+                        <span className="text-xs text-muted-foreground">
+                          {formatDate(candidate.created_at)}
+                        </span>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1 text-xs text-muted-foreground">
+                        <span className="flex items-center gap-1">
+                          <Phone className="w-3 h-3" />
+                          {candidate.phone}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <MapPin className="w-3 h-3" />
+                          {candidate.wilaya}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          {candidate.delivery_type === "À domicile" ? (
+                            <Truck className="w-3 h-3" />
+                          ) : (
+                            <Building className="w-3 h-3" />
+                          )}
+                          {candidate.delivery_type === "À domicile" ? "Domicile" : "Bureau"}
+                          {candidate.bureau ? ` · ${candidate.bureau}` : ""}
+                        </span>
+                      </div>
+                    </div>
+                    <span className="font-medium whitespace-nowrap">
+                      {formatCurrency(candidate.total)}
+                    </span>
+                    <Button
+                      size="sm"
+                      disabled={swappingId !== null}
+                      onClick={() => performSwap(swapFor, candidate)}
+                    >
+                      {swappingId === candidate.id ? (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      ) : (
+                        <Repeat className="w-3.5 h-3.5" />
+                      )}
+                      Swap −{formatCurrency(swapCost(swapFor, candidate))}
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )
+          })()}
+        </DialogContent>
+      </Dialog>
 
       <OrderEditDialog
         order={editing}

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createAdminClient, SupabaseConfigError } from "@/lib/supabase/admin"
+import { DELIVERY_STATUSES } from "@/lib/admin"
 import {
   ALLOWED_WILAYAS,
   PHONE_REGEX,
@@ -11,6 +12,9 @@ import {
 const VALID_STATUSES = ["en attente", "confirmée", "annulé", "ne répond pas", "injoignable/éteint"] as const
 
 const DELIVERY_LABELS = ["À domicile", "Bureau ZR Express"] as const
+
+// Taken from the shared list so this route can never fall behind the dropdown
+const VALID_DELIVERY_STATUSES = DELIVERY_STATUSES
 
 // Simple admin authentication using a shared secret
 function isAuthenticated(request: Request): boolean {
@@ -138,6 +142,37 @@ export async function PATCH(
 
     // A status-only body keeps the original contract used by the status dropdown
     const isStatusOnly = Object.keys(body).length === 1 && "status" in body
+
+    // Likewise for the delivery dropdown, which never touches the order itself
+    if (Object.keys(body).length === 1 && "deliveryStatus" in body) {
+      const { deliveryStatus } = body
+
+      if (!deliveryStatus || !VALID_DELIVERY_STATUSES.includes(deliveryStatus)) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: `Statut de livraison invalide. Les valeurs acceptées sont: ${VALID_DELIVERY_STATUSES.join(", ")}`,
+          },
+          { status: 400 }
+        )
+      }
+
+      const supabase = createAdminClient()
+      const { error } = await supabase
+        .from("orders")
+        .update({ delivery_status: deliveryStatus })
+        .eq("id", id)
+
+      if (error) {
+        console.error("Supabase update delivery status error:", error)
+        return NextResponse.json(
+          { success: false, error: "Erreur lors de la mise à jour de la livraison" },
+          { status: 500 }
+        )
+      }
+
+      return NextResponse.json({ success: true, data: { id, delivery_status: deliveryStatus } })
+    }
 
     if (isStatusOnly) {
       const { status } = body

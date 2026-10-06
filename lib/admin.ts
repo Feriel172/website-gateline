@@ -23,7 +23,158 @@ export interface Order {
   promo_code?: string | null
   discount?: number | null
   status: "en attente" | "confirmée" | "annulé" | "ne répond pas" | "injoignable/éteint"
+  // Optional so the admin still renders against a database where migration 005
+  // has not been applied yet; missing means "not shipped".
+  delivery_status?: DeliveryStatus
+  swap_count?: number
+  swap_cost?: number
   created_at: string
+}
+
+// --- Delivery pipeline ---
+// Where a confirmed order is on its way to the customer. Independent of
+// `status`, which records the outcome of the confirmation call.
+
+// "swap" marks a parcel that was re-routed to another customer: it left on the
+// original order and was handed to someone else, so it never reached this one.
+// "retour" marks a parcel that came back unsold, which the courier charges for.
+export const DELIVERY_STATUSES = [
+  "Pas encore envoyée",
+  "Envoyée",
+  "livrée",
+  "swap",
+  "retour",
+] as const
+
+export type DeliveryStatus = (typeof DELIVERY_STATUSES)[number]
+
+export const DEFAULT_DELIVERY_STATUS: DeliveryStatus = "Pas encore envoyée"
+
+export function deliveryStatusOf(order: Order): DeliveryStatus {
+  return order.delivery_status ?? DEFAULT_DELIVERY_STATUS
+}
+
+// --- Swap candidates ---
+// A shipped order can be swapped with one that has not left yet, as long as it
+// holds exactly the same products in exactly the same quantities.
+
+// Quantities are merged per product and sorted, so two orders listing the same
+// products in a different order — or splitting one product across two lines —
+// still compare as identical.
+export function itemsSignature(items: OrderItem[]): string {
+  const byProduct = new Map<string, number>()
+  for (const item of items) {
+    byProduct.set(item.id, (byProduct.get(item.id) ?? 0) + item.quantity)
+  }
+  return [...byProduct.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([id, quantity]) => `${id}x${quantity}`)
+    .join("|")
+}
+
+// A parcel may be re-routed at most twice before it has to come back.
+export const SWAP_LIMIT = 2
+
+// Courier fee for re-routing a parcel, in DZD.
+export const SWAP_COST_SAME_WILAYA = 50
+export const SWAP_COST_OTHER_WILAYA = 100
+
+// The far-south and border wilayas: a parcel sitting in one of them is too
+// expensive to move out, so it can only be re-routed to the same wilaya.
+export const RESTRICTED_SWAP_WILAYAS = new Set([
+  "Adrar",
+  "Bechar",
+  "Tamanrasset",
+  "Ouargla",
+  "El Bayadh",
+  "Naama",
+  "Timimoun",
+  "Beni Abbes",
+  "In Salah",
+  "In Guezzam",
+  "El Menia",
+])
+
+function normaliseWilaya(wilaya: string): string {
+  return wilaya.trim().toLowerCase()
+}
+
+const RESTRICTED_NORMALISED = new Set([...RESTRICTED_SWAP_WILAYAS].map(normaliseWilaya))
+
+export function isSameWilaya(a: Order, b: Order): boolean {
+  return normaliseWilaya(a.wilaya) === normaliseWilaya(b.wilaya)
+}
+
+export function isRestrictedWilaya(wilaya: string): boolean {
+  return RESTRICTED_NORMALISED.has(normaliseWilaya(wilaya))
+}
+
+// Either side being in a restricted wilaya pins the swap to that wilaya.
+export function wilayasSwappable(a: Order, b: Order): boolean {
+  if (isSameWilaya(a, b)) return true
+  return !isRestrictedWilaya(a.wilaya) && !isRestrictedWilaya(b.wilaya)
+}
+
+export function swapCost(a: Order, b: Order): number {
+  return isSameWilaya(a, b) ? SWAP_COST_SAME_WILAYA : SWAP_COST_OTHER_WILAYA
+}
+
+export function swapCountOf(order: Order): number {
+  return order.swap_count ?? 0
+}
+
+export function swapCostOf(order: Order): number {
+  return order.swap_cost ?? 0
+}
+
+export function canSwap(order: Order): boolean {
+  return swapCountOf(order) < SWAP_LIMIT
+}
+
+export function swapCandidates(order: Order, orders: Order[]): Order[] {
+  const signature = itemsSignature(order.items)
+
+  return orders
+    .filter(
+      (other) =>
+        other.id !== order.id &&
+        other.status !== "annulé" &&
+        deliveryStatusOf(other) === DEFAULT_DELIVERY_STATUS &&
+        itemsSignature(other.items) === signature &&
+        wilayasSwappable(order, other)
+    )
+    // Confirmed first, and within each of those the same wilaya before the
+    // rest, so the four groups read: confirmée+même wilaya, confirmée+autre,
+    // non confirmée+même wilaya, non confirmée+autre. Newest first inside each.
+    .sort((a, b) => {
+      const rank = (o: Order) =>
+        (o.status === "confirmée" ? 0 : 2) + (isSameWilaya(order, o) ? 0 : 1)
+      if (rank(a) !== rank(b)) return rank(a) - rank(b)
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    })
+}
+
+// Swap fees are a cost to the shop: they come off both revenue and profit.
+export function totalSwapCost(orders: Order[]): number {
+  return orders.reduce((sum, order) => sum + swapCostOf(order), 0)
+}
+
+// --- Returns ---
+// What the courier charges to bring an undelivered parcel back. Derived from
+// the delivery status rather than stored, so clearing the status clears the fee.
+
+export const RETURN_COST = 200
+
+export function isReturned(order: Order): boolean {
+  return deliveryStatusOf(order) === "retour"
+}
+
+export function returnCostOf(order: Order): number {
+  return isReturned(order) ? RETURN_COST : 0
+}
+
+export function totalReturnCost(orders: Order[]): number {
+  return orders.reduce((sum, order) => sum + returnCostOf(order), 0)
 }
 
 export function formatCurrency(amount: number) {
@@ -76,7 +227,7 @@ export const PRODUCTION_COSTS: Record<string, number> = {
   "hydra-cream": 310,          // Contour des yeux à la caféine  — vend 900
   "gentle-cleanser": 310,      // Contour des yeux au collagène  — vend 900
   "night-cream": 270,          // Contour des yeux au rétinol    — vend 900
-  "renewal-oil": 450,          // Glass skin masque collagène    — vend 1500
+  "renewal-oil": 630,          // Glass skin masque collagène    — vend 1500
   "rosehip-oil": 500,          // Clear pore masque              — vend 1200
   "deodorant-fraicheur": 300,  // Déodorant                      — vend 750
   "deodorant-vanille": 300,    // Déodorant                      — vend 750

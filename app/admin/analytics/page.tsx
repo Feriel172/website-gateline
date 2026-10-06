@@ -26,6 +26,8 @@ import {
   orderProductionCost,
   orderSubtotal,
   ordersInMonth,
+  totalReturnCost,
+  totalSwapCost,
   unpricedItems,
 } from "@/lib/admin"
 
@@ -85,14 +87,19 @@ export default function AdminAnalyticsPage() {
   // Every figure on the page is scoped to the month picked in the calendar
   const monthOrders = ordersInMonth(orders, month)
   const earning = confirmedOrders(monthOrders)
-  const revenue = earning.reduce((sum, o) => sum + o.total, 0)
+  const grossRevenue = earning.reduce((sum, o) => sum + o.total, 0)
   const productRevenue = earning.reduce((sum, o) => sum + orderSubtotal(o.items), 0)
-  const delivery = revenue - productRevenue
+  const delivery = grossRevenue - productRevenue
   const productionCost = earning.reduce((sum, o) => sum + orderProductionCost(o), 0)
+  // Courier fees paid out of pocket: re-routing a parcel to another customer,
+  // and bringing an undelivered one back. Both come off revenue and profit.
+  const swapCosts = totalSwapCost(earning)
+  const returnCosts = totalReturnCost(earning)
+  const revenue = grossRevenue - swapCosts - returnCosts
   // Delivery is charged to the customer and paid straight back out to the
   // courier, so it nets out: profit is what the products earned less what they
-  // cost to make.
-  const profit = productRevenue - productionCost
+  // cost to make, less the swap and return fees.
+  const profit = productRevenue - productionCost - swapCosts - returnCosts
   const missingCosts = unpricedItems(monthOrders)
 
   return (
@@ -160,14 +167,16 @@ export default function AdminAnalyticsPage() {
               sur les {earning.length} commandes confirmées du mois.
             </p>
             {/* Reads left to right as the calculation: total, less delivery,
-                less production cost, leaves profit. */}
-            <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+                less production cost, less swap and return fees, leaves profit. */}
+            <div className="grid grid-cols-2 lg:grid-cols-7 gap-4 mb-8">
               <Card>
                 <CardContent className="p-4 flex flex-col items-center text-center">
                   <p className="text-xl font-bold whitespace-nowrap">
                     {formatCurrency(revenue)}
                   </p>
-                  <p className="text-xs text-muted-foreground">Revenu total</p>
+                  <p className="text-xs text-muted-foreground">
+                    Revenu total{swapCosts + returnCosts > 0 ? " (net des frais)" : ""}
+                  </p>
                 </CardContent>
               </Card>
               <Card>
@@ -192,6 +201,22 @@ export default function AdminAnalyticsPage() {
                     −{formatCurrency(productionCost)}
                   </p>
                   <p className="text-xs text-muted-foreground">Coût de production</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4 flex flex-col items-center text-center">
+                  <p className="text-xl font-bold whitespace-nowrap text-muted-foreground">
+                    −{formatCurrency(swapCosts)}
+                  </p>
+                  <p className="text-xs text-muted-foreground">Frais de swap</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4 flex flex-col items-center text-center">
+                  <p className="text-xl font-bold whitespace-nowrap text-muted-foreground">
+                    −{formatCurrency(returnCosts)}
+                  </p>
+                  <p className="text-xs text-muted-foreground">Frais de retour</p>
                 </CardContent>
               </Card>
               <Card className="col-span-2 lg:col-span-1 border-primary/40 bg-primary/5">

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
@@ -13,6 +13,21 @@ import { isSoldOut, packsContaining } from "@/lib/orders"
 import { OfferSelector, type Offer, offerVariant } from "@/components/boty/offer-selector"
 import { packVariantName } from "@/lib/orders"
 import { ProductComments } from "@/components/boty/product-comments"
+import { ProductGallery } from "@/components/boty/product-gallery"
+import { ProductStickyBar } from "@/components/boty/product-sticky-bar"
+import { contentFor } from "@/lib/product-content"
+import {
+  ProductActives,
+  ProductBenefits,
+  ProductBrandBlock,
+  ProductFaq,
+  ProductLifestyle,
+  ProductPromise,
+  ProductResults,
+  ProductSkinTypes,
+  ProductSteps,
+  ProductTestimonials,
+} from "@/components/boty/product-sections"
 
 const products: Record<string, {
   id: string
@@ -140,17 +155,22 @@ export default function ProductPage() {
   const params = useParams()
   const productId = params.id as string
   const product = products[productId] || products["radiance-serum"]
+  const content = contentFor(product.id)
 
   const [selectedSize, setSelectedSize] = useState(product.sizes[0])
   const [quantity, setQuantity] = useState(1)
   const [openAccordion, setOpenAccordion] = useState<AccordionSection | null>("details")
   const [isAdded, setIsAdded] = useState(false)
+  const [offer, setOffer] = useState<Offer>({ kind: "single" })
   const { addItem, setIsOpen } = useCart()
   const router = useRouter()
+  // The sticky bar waits for this block to leave the screen
+  const buyBoxRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     window.scrollTo(0, 0)
     setOffer({ kind: "single" })
+    setQuantity(1)
   }, [productId])
 
   useEffect(() => {
@@ -160,6 +180,13 @@ export default function ProductPage() {
   const toggleAccordion = (section: AccordionSection) => {
     setOpenAccordion(openAccordion === section ? null : section)
   }
+
+  const soldOut = isSoldOut(product.id)
+  const relatedPacks = packsContaining(product.id)
+  const selectedVariant = offerVariant(offer)
+  const selectedPack = relatedPacks.find((p) => offer.kind === "pack" && p.id === offer.packId)
+  // What the buttons will actually add, and the price shown above them
+  const unitPrice = selectedPack ? selectedPack.price : product.price
 
   const addToCart = () => {
     if (selectedPack && selectedVariant) {
@@ -182,19 +209,11 @@ export default function ProductPage() {
         name: product.name,
         description: product.description,
         price: product.price,
-        image: product.image
+        image: product.image,
       },
       quantity
     )
   }
-
-  const soldOut = isSoldOut(product.id)
-  const relatedPacks = packsContaining(product.id)
-  const [offer, setOffer] = useState<Offer>({ kind: "single" })
-  const selectedVariant = offerVariant(offer)
-  const selectedPack = relatedPacks.find((p) => offer.kind === "pack" && p.id === offer.packId)
-  // What the buttons will actually add, and the price shown above them
-  const unitPrice = selectedPack ? selectedPack.price : product.price
 
   const handleAddToCart = () => {
     if (soldOut) return
@@ -213,16 +232,19 @@ export default function ProductPage() {
   }
 
   const accordionItems: { key: AccordionSection; title: string; content: string }[] = [
-    { key: "details", title: "Details", content: product.details },
+    { key: "details", title: "Description", content: product.details },
     { key: "howToUse", title: "Mode d'emploi", content: product.howToUse },
-    { key: "ingredients", title: "Ingredients", content: product.ingredients },
-    { key: "delivery", title: "Livraison", content: product.delivery }
+    { key: "ingredients", title: "Ingrédients", content: product.ingredients },
+    { key: "delivery", title: "Livraison", content: product.delivery },
   ]
+
+  // Falls back to the single product shot for a product with no gallery yet
+  const gallery = content?.gallery ?? [product.image]
 
   return (
     <main className="min-h-screen">
       <Header />
-      
+
       <div className="pt-28 pb-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           {/* Back Link */}
@@ -231,35 +253,22 @@ export default function ProductPage() {
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground boty-transition mb-8"
           >
             <ChevronLeft className="w-4 h-4" />
-            Back to Shop
+            Retour à la boutique
           </Link>
 
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
-            {/* Product Image */}
-            <div className="relative aspect-square rounded-3xl overflow-hidden bg-card boty-shadow">
-              <Image
-                src={product.image || "/placeholder.svg"}
-                alt={product.name}
-                fill
-                className="object-cover"
-                priority
-              />
-            </div>
+          <div ref={buyBoxRef} className="grid lg:grid-cols-2 gap-12 lg:gap-20">
+            <ProductGallery images={gallery} alt={product.name} badge={content?.badge} />
 
             {/* Product Info */}
             <div className="flex flex-col">
-              {/* Header */}
               <div className="mb-8">
                 <span className="text-sm tracking-[0.3em] uppercase text-primary mb-2 block">
-                  Toner pads 
+                  {content?.category ?? "Soin"}
                 </span>
                 <h1 className="font-serif text-4xl md:text-5xl text-foreground mb-3">
                   {product.name}
                 </h1>
-                <p className="text-lg text-muted-foreground italic mb-4">
-                  {product.tagline}
-                </p>
-                
+
                 {/* Rating */}
                 <div className="flex items-center gap-2 mb-4">
                   <div className="flex">
@@ -267,12 +276,12 @@ export default function ProductPage() {
                       <Star key={i} className="w-4 h-4 fill-primary text-primary" />
                     ))}
                   </div>
-                  <span className="text-sm text-muted-foreground">(128 reviews)</span>
+                  <span className="text-sm text-muted-foreground">(128 avis)</span>
                 </div>
 
-                <p className="text-foreground/80 leading-relaxed">
-                  {product.description}
-                </p>
+                <p className="text-lg text-muted-foreground italic mb-4">{product.tagline}</p>
+
+                <p className="text-foreground/80 leading-relaxed">{product.description}</p>
               </div>
 
               {/* Price */}
@@ -287,7 +296,7 @@ export default function ProductPage() {
 
               {/* Size Selector */}
               <div className="mb-6">
-                <label className="text-sm font-medium text-foreground mb-3 block">Size</label>
+                <label className="text-sm font-medium text-foreground mb-3 block">Contenance</label>
                 <div className="flex gap-3">
                   {product.sizes.map((size) => (
                     <button
@@ -308,13 +317,13 @@ export default function ProductPage() {
 
               {/* Quantity Selector */}
               <div className="mb-8">
-                <label className="text-sm font-medium text-foreground mb-3 block">Quantity</label>
+                <label className="text-sm font-medium text-foreground mb-3 block">Quantité</label>
                 <div className="inline-flex items-center gap-4 bg-card rounded-full px-2 py-2 boty-shadow">
                   <button
                     type="button"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     className="w-10 h-10 rounded-full bg-background flex items-center justify-center text-foreground/60 hover:text-foreground boty-transition"
-                    aria-label="Decrease quantity"
+                    aria-label="Diminuer la quantité"
                   >
                     <Minus className="w-4 h-4" />
                   </button>
@@ -323,7 +332,7 @@ export default function ProductPage() {
                     type="button"
                     onClick={() => setQuantity(quantity + 1)}
                     className="w-10 h-10 rounded-full bg-background flex items-center justify-center text-foreground/60 hover:text-foreground boty-transition"
-                    aria-label="Increase quantity"
+                    aria-label="Augmenter la quantité"
                   >
                     <Plus className="w-4 h-4" />
                   </button>
@@ -379,56 +388,95 @@ export default function ProductPage() {
                 </button>
               </div>
 
-              {/* Benefits */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+              {/* Reassurance, directly under the buttons */}
+              <div className="grid grid-cols-3 gap-4">
                 {benefits.slice(0, 3).map((benefit) => (
                   <div
                     key={benefit.label}
-                    className="flex flex-col items-center justify-center gap-3 p-6 boty-shadow bg-transparent shadow-none rounded-xl"
+                    className="flex flex-col items-center justify-start gap-3 text-center"
                   >
                     <benefit.icon className="w-6 h-6 text-primary" />
-                    <span className="text-xs text-muted-foreground text-center">
+                    <span className="text-xs text-muted-foreground leading-snug">
                       {benefit.label}
                     </span>
                   </div>
                 ))}
               </div>
-
-              {/* Accordion */}
-              <div className="border-t border-border/50">
-                {accordionItems.map((item) => (
-                  <div key={item.key} className="border-b border-border/50">
-                    <button
-                      type="button"
-                      onClick={() => toggleAccordion(item.key)}
-                      className="w-full flex items-center justify-between py-5 text-left"
-                    >
-                      <span className="font-medium text-foreground">{item.title}</span>
-                      <ChevronDown
-                        className={`w-5 h-5 text-muted-foreground boty-transition ${
-                          openAccordion === item.key ? "rotate-180" : ""
-                        }`}
-                      />
-                    </button>
-                    <div
-                      className={`overflow-hidden boty-transition ${
-                        openAccordion === item.key ? "max-h-96 pb-5" : "max-h-0"
-                      }`}
-                    >
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {item.content}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Customer comments, right under the buying decision */}
-              <ProductComments productId={product.id} locale="fr" />
             </div>
           </div>
         </div>
+
+        {/* Everything below the buying decision */}
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-20 space-y-20">
+          {content && (
+            <>
+              <ProductPromise promise={content.promise} />
+              <ProductBenefits benefits={content.benefits} />
+              <ProductLifestyle lifestyle={content.lifestyle} />
+              <ProductResults results={content.results} />
+              <ProductActives actives={content.actives} />
+              <ProductSteps steps={content.steps} />
+              <ProductSkinTypes skinTypes={content.skinTypes} />
+              <ProductTestimonials
+                testimonials={content.testimonials}
+                rating={4.9}
+                reviewCount={128}
+              />
+              <ProductFaq faq={content.faq} />
+            </>
+          )}
+
+          {/* Product details */}
+          <section>
+            <h2 className="font-serif text-3xl md:text-4xl text-foreground mb-8">
+              Détails du produit
+            </h2>
+            <div className="border-t border-border/50">
+              {accordionItems.map((item) => (
+                <div key={item.key} className="border-b border-border/50">
+                  <button
+                    type="button"
+                    onClick={() => toggleAccordion(item.key)}
+                    aria-expanded={openAccordion === item.key}
+                    className="w-full flex items-center justify-between gap-4 py-5 text-left"
+                  >
+                    <span className="font-medium text-foreground">{item.title}</span>
+                    <ChevronDown
+                      className={`w-5 h-5 text-muted-foreground flex-shrink-0 boty-transition ${
+                        openAccordion === item.key ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                  <div
+                    className={`overflow-hidden boty-transition ${
+                      openAccordion === item.key ? "max-h-96 pb-5" : "max-h-0"
+                    }`}
+                  >
+                    <p className="text-sm text-muted-foreground leading-relaxed">{item.content}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Real customer reviews, from lib/reviews.ts */}
+          <ProductComments productId={product.id} locale="fr" />
+
+          {content && <ProductBrandBlock scene={content.brandScene} />}
+        </div>
       </div>
+
+      <ProductStickyBar
+        name={selectedPack ? selectedPack.name : product.name}
+        price={unitPrice}
+        image={selectedPack ? selectedPack.image : gallery[0]}
+        quantity={quantity}
+        onQuantityChange={setQuantity}
+        onAddToCart={handleAddToCart}
+        soldOut={soldOut}
+        isAdded={isAdded}
+        triggerRef={buyBoxRef}
+      />
 
       <Footer />
     </main>

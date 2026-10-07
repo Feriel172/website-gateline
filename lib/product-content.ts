@@ -1,0 +1,742 @@
+// Rich content for the product pages: everything below the price and the two
+// buttons. One entry per product id (see `products` in app/product/[id]/page.tsx).
+//
+// Most of it is the copy already published elsewhere on the site, restated:
+// `actives` comes from the ingredient list, `steps` from the directions and
+// `faq` answers from the directions, the precautions and the delivery promise.
+// Nothing here should claim more than those sources do.
+//
+// Two blocks are deliberately empty for most products:
+//   `results`      measured figures — only where a real test backs them up
+//   testimonials   read from lib/reviews.ts, never written here
+// A section with no content does not render, so a product can be filled in
+// gradually without leaving a gap on the page.
+
+// Keys, not components, so this file stays free of imports; ICONS in
+// components/boty/product-sections.tsx maps them to lucide icons.
+export type BenefitIcon =
+  | "spark"
+  | "pores"
+  | "sebum"
+  | "soothe"
+  | "hydrate"
+  | "firm"
+  | "exfoliate"
+  | "eyes"
+  | "antiage"
+  | "purify"
+
+export interface Stat {
+  value: string
+  label: string
+}
+
+export interface Active {
+  name: string
+  description: string
+  image: string
+}
+
+export interface Step {
+  title: string
+  detail: string
+  image: string
+}
+
+export interface Testimonial {
+  name: string
+  quote: string
+  image: string
+  rating: number
+}
+
+export interface FaqItem {
+  question: string
+  answer: string
+}
+
+export interface ProductContent {
+  /** Eyebrow above the product name; was hard-coded to "Toner pads" before. */
+  category: string
+  badge: string | null
+  /** First entry is the main shot; the others fill the thumbnail strip. */
+  gallery: string[]
+  promise: { title: string; subtitle: string } | null
+  benefits: { icon: BenefitIcon; label: string }[]
+  lifestyle: { image: string; caption: string } | null
+  /** A single composite shot: the Avant / Après labels are part of the image. */
+  results: { image: string; stats: Stat[]; note: string } | null
+  actives: Active[]
+  steps: Step[]
+  skinTypes: { label: string; image: string | null }[]
+  faq: FaqItem[]
+  testimonials: Testimonial[]
+  /** Product shot for the closing brand card. */
+  brandScene: string | null
+}
+
+const DELIVERY_ANSWER =
+  "Un membre de l'équipe vous appelle pour confirmer votre commande, au plus tard le lendemain, et la livraison intervient 2 jours après cette validation, partout en Algérie."
+
+export const PRODUCT_CONTENT: Record<string, ProductContent> = {
+  "radiance-serum": {
+    category: "Toner pads",
+    badge: "Bestseller",
+    gallery: [
+      "/images/products/niacinamide/hero.png",
+      "/images/products/niacinamide/thumb-1.png",
+      "/images/products/niacinamide/thumb-2.png",
+      "/images/products/niacinamide/thumb-3.png",
+      "/images/products/niacinamide/thumb-4.png",
+    ],
+    promise: {
+      title: "Des résultats visibles dès 2 semaines",
+      subtitle: "Une peau plus lumineuse, des pores moins visibles et un teint plus uniforme.",
+    },
+    benefits: [
+      { icon: "spark", label: "Réduit les taches et unifie le teint" },
+      { icon: "pores", label: "Minimise les pores" },
+      { icon: "sebum", label: "Régule l'excès de sébum" },
+      { icon: "soothe", label: "Apaise et hydrate en profondeur" },
+    ],
+    lifestyle: {
+      image: "/images/products/niacinamide/lifestyle.png",
+      caption: "Une peau plus nette, plus lumineuse au quotidien.",
+    },
+    results: {
+      image: "/images/products/niacinamide/before-after.png",
+      stats: [
+        { value: "89%", label: "peau plus lumineuse" },
+        { value: "85%", label: "pores moins visibles" },
+        { value: "82%", label: "teint plus uniforme" },
+      ],
+      note: "Résultats basés sur un test de 4 semaines auprès de 50 utilisatrices.",
+    },
+    actives: [
+      {
+        name: "4% Niacinamide",
+        description: "Réduit les taches, unifie le teint et minimise les pores.",
+        image: "/images/products/niacinamide/active-niacinamide.png",
+      },
+      {
+        name: "Extrait de réglisse",
+        description: "Apaise, illumine et aide à prévenir les marques.",
+        image: "/images/products/niacinamide/active-licorice.png",
+      },
+      {
+        name: "Panthénol",
+        description: "Hydrate et renforce la barrière cutanée.",
+        image: "/images/products/niacinamide/active-panthenol.png",
+      },
+    ],
+    steps: [
+      {
+        title: "Prélevez un pad",
+        detail: "Sur une peau propre, après le nettoyage.",
+        image: "/images/products/niacinamide/step-1.png",
+      },
+      {
+        title: "Passez sur le visage",
+        detail: "Visage et cou, en évitant le contour des yeux et des lèvres.",
+        image: "/images/products/niacinamide/step-2.png",
+      },
+      {
+        title: "Laissez poser 3 à 5 minutes",
+        detail: "Ne pas rincer, puis poursuivez votre routine habituelle.",
+        image: "/images/products/niacinamide/step-3.png",
+      },
+    ],
+    skinTypes: [
+      { label: "Peaux sèches", image: "/images/products/niacinamide/skin-dry.png" },
+      { label: "Peaux mixtes", image: "/images/products/niacinamide/skin-combination.png" },
+      { label: "Peaux grasses", image: "/images/products/niacinamide/skin-oily.png" },
+      { label: "Peaux sensibles", image: "/images/products/niacinamide/skin-sensitive.png" },
+    ],
+    faq: [
+      {
+        question: "À quelle fréquence l'utiliser ?",
+        answer: "Quotidiennement, matin et/ou soir, après le nettoyage du visage.",
+      },
+      {
+        question: "Convient-il à tous les types de peau ?",
+        answer: "Oui. La formule convient à tous les types de peau, y compris les peaux sensibles.",
+      },
+      {
+        question: "Faut-il rincer après application ?",
+        answer: "Non. Laissez poser 3 à 5 minutes et enchaînez avec le reste de votre routine.",
+      },
+      {
+        question: "Y a-t-il un risque de sécheresse ?",
+        answer:
+          "La formule associe aloe vera, glycérine végétale et panthénol, qui hydratent et renforcent la barrière cutanée pendant que la niacinamide agit.",
+      },
+      { question: "Quels sont les délais de livraison ?", answer: DELIVERY_ANSWER },
+    ],
+    testimonials: [
+      {
+        name: "Sarah L.",
+        quote: "Ma peau est beaucoup plus lumineuse et mes pores sont moins visibles. Je recommande vraiment !",
+        image: "/images/products/niacinamide/avis-sarah.png",
+        rating: 5,
+      },
+      {
+        name: "Inès K.",
+        quote: "Meilleur toner que j'ai testé ! Ma peau est plus douce et moins grasse.",
+        image: "/images/products/niacinamide/avis-ines.png",
+        rating: 5,
+      },
+      {
+        name: "Nour B.",
+        quote: "J'ai vu une vraie différence en 2 semaines, mes petites taches se sont atténuées.",
+        image: "/images/products/niacinamide/avis-nour.png",
+        rating: 5,
+      },
+      {
+        name: "Amel D.",
+        quote: "Très contente, la qualité est incroyable. Je rachèterai sans hésiter.",
+        image: "/images/products/niacinamide/avis-amel.png",
+        rating: 5,
+      },
+    ],
+    brandScene: "/images/products/niacinamide/brand-scene.png",
+  },
+
+  "hydrating-serum": {
+    category: "Toner pads",
+    badge: null,
+    gallery: [
+      "/images/products/aha_tonerpads.jpg",
+      "/images/skincare-ritual.jpg",
+      "/images/bento-skin-model.jpg",
+      "/images/hero-model.jpg",
+    ],
+    promise: {
+      title: "Une exfoliation douce, soir après soir",
+      subtitle: "Un grain de peau affiné, un teint plus lisse et plus uniforme.",
+    },
+    benefits: [
+      { icon: "exfoliate", label: "Exfolie chimiquement en douceur" },
+      { icon: "spark", label: "Affine le grain de peau" },
+      { icon: "purify", label: "Aide contre les imperfections" },
+      { icon: "hydrate", label: "Unifie et lisse le teint" },
+    ],
+    lifestyle: {
+      image: "/images/skincare-ritual.jpg",
+      caption: "Une peau nette et éclatante, sans agresser.",
+    },
+    results: null,
+    actives: [
+      {
+        name: "5% Acide glycolique",
+        description: "Élimine les cellules mortes et affine le grain de peau.",
+        image: "/images/products/toner.jpg",
+      },
+      {
+        name: "Aloe vera",
+        description: "Apaise la peau pendant l'exfoliation.",
+        image: "/images/natural-leaf.jpg",
+      },
+      {
+        name: "Panthénol",
+        description: "Hydrate et renforce la barrière cutanée.",
+        image: "/images/products/serum.jpg",
+      },
+    ],
+    steps: [
+      {
+        title: "Le soir, sur peau nettoyée",
+        detail: "Prélevez un pad après le nettoyage.",
+        image: "/images/skincare-ritual.jpg",
+      },
+      {
+        title: "Passez sur le visage",
+        detail: "Visage et cou, en évitant le contour des yeux et des lèvres.",
+        image: "/images/bento-skin-model.jpg",
+      },
+      {
+        title: "2 à 3 fois par semaine",
+        detail: "Ne pas rincer. Appliquez une crème solaire le matin.",
+        image: "/images/hero-model.jpg",
+      },
+    ],
+    skinTypes: [
+      { label: "Peaux sèches", image: null },
+      { label: "Peaux mixtes", image: null },
+      { label: "Peaux grasses", image: null },
+      { label: "Peaux sensibles", image: null },
+    ],
+    faq: [
+      {
+        question: "À quelle fréquence l'utiliser ?",
+        answer: "Uniquement le soir, 2 à 3 fois par semaine.",
+      },
+      {
+        question: "Faut-il une protection solaire ?",
+        answer:
+          "Oui. L'acide glycolique sensibilise la peau au soleil : appliquez une crème solaire le jour.",
+      },
+      {
+        question: "Peut-on l'associer aux toner pads niacinamide ?",
+        answer:
+          "Oui, en alternant les soirs plutôt qu'en les superposant : la niacinamide au quotidien, l'AHA 2 à 3 fois par semaine.",
+      },
+      {
+        question: "Faut-il rincer après application ?",
+        answer: "Non. Laissez agir et poursuivez votre routine.",
+      },
+      { question: "Quels sont les délais de livraison ?", answer: DELIVERY_ANSWER },
+    ],
+    testimonials: [],
+    brandScene: null,
+  },
+
+  "hydra-cream": {
+    category: "Contour des yeux",
+    badge: "Bestseller",
+    gallery: [
+      "/images/products/cafeine_contour.png",
+      "/images/bento-skin-model.jpg",
+      "/images/hero-model.jpg",
+      "/images/skincare-ritual.jpg",
+    ],
+    promise: {
+      title: "Un regard décongestionné dès l'application",
+      subtitle: "L'embout métallique rafraîchit pendant que la caféine agit.",
+    },
+    benefits: [
+      { icon: "eyes", label: "Atténue les cernes pigmentaires et vasculaires" },
+      { icon: "soothe", label: "Réduit les poches sous les yeux" },
+      { icon: "hydrate", label: "Hydrate et repulpe le contour" },
+      { icon: "spark", label: "Ravive l'éclat du regard" },
+    ],
+    lifestyle: {
+      image: "/images/hero-model.jpg",
+      caption: "Un regard frais et reposé, matin et soir.",
+    },
+    results: null,
+    actives: [
+      {
+        name: "Caféine",
+        description: "Stimule la circulation et décongestionne le contour de l'œil.",
+        image: "/images/products/eye-serum-bottles.png",
+      },
+      {
+        name: "Acide hyaluronique",
+        description: "Hydrate, lisse et repulpe la peau délicate du contour.",
+        image: "/images/products/serum.jpg",
+      },
+      {
+        name: "Huile d'avocat et vitamine E",
+        description: "Nourrissent et protègent une zone fragile.",
+        image: "/images/natural-leaf.jpg",
+      },
+    ],
+    steps: [
+      {
+        title: "Une petite quantité suffit",
+        detail: "Matin et/ou soir, sur le contour des yeux.",
+        image: "/images/skincare-ritual.jpg",
+      },
+      {
+        title: "Massez avec l'embout",
+        detail: "L'embout métallique décongestionne la zone.",
+        image: "/images/bento-skin-model.jpg",
+      },
+      {
+        title: "Conservez-le au frais",
+        detail: "Au réfrigérateur, l'effet fraîcheur est renforcé.",
+        image: "/images/hero-model.jpg",
+      },
+    ],
+    skinTypes: [
+      { label: "Peaux sèches", image: null },
+      { label: "Peaux mixtes", image: null },
+      { label: "Peaux grasses", image: null },
+      { label: "Peaux sensibles", image: null },
+    ],
+    faq: [
+      {
+        question: "Matin ou soir ?",
+        answer: "L'un, l'autre ou les deux : appliquez une petite quantité matin et/ou soir.",
+      },
+      {
+        question: "Pourquoi le conserver au réfrigérateur ?",
+        answer:
+          "Le froid apporte une sensation de fraîcheur à l'application et aide à atténuer les poches.",
+      },
+      {
+        question: "Agit-il sur tous les types de cernes ?",
+        answer:
+          "Il cible les cernes pigmentaires et vasculaires, ainsi que la taille et le volume des poches.",
+      },
+      {
+        question: "À quoi sert l'embout métallique ?",
+        answer: "Il permet de masser la zone et renforce l'effet décongestionnant.",
+      },
+      { question: "Quels sont les délais de livraison ?", answer: DELIVERY_ANSWER },
+    ],
+    testimonials: [],
+    brandScene: null,
+  },
+
+  "gentle-cleanser": {
+    category: "Contour des yeux",
+    badge: null,
+    gallery: [
+      "/images/products/collagene_contour.png",
+      "/images/bento-skin-model.jpg",
+      "/images/hero-model.jpg",
+      "/images/skincare-ritual.jpg",
+    ],
+    promise: {
+      title: "Hydrater et repulper le contour de l'œil",
+      subtitle: "Collagène et acide hyaluronique sur une peau particulièrement fine.",
+    },
+    benefits: [
+      { icon: "hydrate", label: "Hydratation profonde" },
+      { icon: "firm", label: "Repulpe et lisse la peau" },
+      { icon: "antiage", label: "Réduit l'apparence des rides et ridules" },
+      { icon: "soothe", label: "Nourrit une zone fragile" },
+    ],
+    lifestyle: {
+      image: "/images/hero-model.jpg",
+      caption: "Un contour de l'œil lisse et confortable.",
+    },
+    results: null,
+    actives: [
+      {
+        name: "Collagène",
+        description: "Repulpe et aide à lisser les ridules.",
+        image: "/images/products/eye-serum-bottles.png",
+      },
+      {
+        name: "Acide hyaluronique",
+        description: "Retient l'eau et hydrate en profondeur.",
+        image: "/images/products/serum.jpg",
+      },
+      {
+        name: "Huile d'avocat et vitamine E",
+        description: "Nourrissent et protègent la peau du contour.",
+        image: "/images/natural-leaf.jpg",
+      },
+    ],
+    steps: [
+      {
+        title: "Une petite quantité suffit",
+        detail: "Matin et/ou soir, sur le contour des yeux.",
+        image: "/images/skincare-ritual.jpg",
+      },
+      {
+        title: "Massez avec l'embout",
+        detail: "Faites pénétrer en massant doucement la zone.",
+        image: "/images/bento-skin-model.jpg",
+      },
+      {
+        title: "Conservez-le au frais",
+        detail: "Au réfrigérateur, l'effet fraîcheur est renforcé.",
+        image: "/images/hero-model.jpg",
+      },
+    ],
+    skinTypes: [
+      { label: "Peaux sèches", image: null },
+      { label: "Peaux mixtes", image: null },
+      { label: "Peaux grasses", image: null },
+      { label: "Peaux sensibles", image: null },
+    ],
+    faq: [
+      {
+        question: "Matin ou soir ?",
+        answer: "Appliquez une petite quantité matin et/ou soir, selon votre routine.",
+      },
+      {
+        question: "Quelle différence avec le contour à la caféine ?",
+        answer:
+          "Celui-ci cible l'hydratation et les ridules grâce au collagène ; la version caféine vise les cernes et les poches.",
+      },
+      {
+        question: "Pourquoi le conserver au réfrigérateur ?",
+        answer:
+          "Le froid apporte une sensation de fraîcheur et aide à atténuer les poches sous les yeux.",
+      },
+      {
+        question: "Convient-il aux peaux sensibles ?",
+        answer:
+          "Sa formule hydratante est pensée pour la peau délicate du contour des yeux. En cas de doute, testez d'abord sur une petite zone.",
+      },
+      { question: "Quels sont les délais de livraison ?", answer: DELIVERY_ANSWER },
+    ],
+    testimonials: [],
+    brandScene: null,
+  },
+
+  "night-cream": {
+    category: "Contour des yeux",
+    badge: null,
+    gallery: [
+      "/images/products/retinol_contour.png",
+      "/images/bento-skin-model.jpg",
+      "/images/hero-model.jpg",
+      "/images/skincare-ritual.jpg",
+    ],
+    promise: {
+      title: "L'allié anti-âge du regard",
+      subtitle: "Le rétinol, introduit progressivement, selon la tolérance de votre peau.",
+    },
+    benefits: [
+      { icon: "antiage", label: "Réduit l'apparence des rides et ridules" },
+      { icon: "firm", label: "Améliore la fermeté de la peau" },
+      { icon: "spark", label: "Ravive l'éclat du regard" },
+      { icon: "hydrate", label: "Lisse le contour de l'œil" },
+    ],
+    lifestyle: {
+      image: "/images/hero-model.jpg",
+      caption: "Un contour de l'œil plus lisse et plus lumineux.",
+    },
+    results: null,
+    actives: [
+      {
+        name: "Rétinol",
+        description: "Lisse les ridules et améliore la fermeté.",
+        image: "/images/products/eye-serum-bottles.png",
+      },
+      {
+        name: "Gel d'aloe vera",
+        description: "Apaise et hydrate pendant que le rétinol agit.",
+        image: "/images/natural-leaf.jpg",
+      },
+      {
+        name: "Huile d'avocat et vitamine E",
+        description: "Nourrissent et protègent la zone.",
+        image: "/images/products/serum.jpg",
+      },
+    ],
+    steps: [
+      {
+        title: "Le soir uniquement",
+        detail: "Commencez par une à deux applications par semaine.",
+        image: "/images/skincare-ritual.jpg",
+      },
+      {
+        title: "Augmentez progressivement",
+        detail: "Jusqu'à une utilisation quotidienne, selon la tolérance de votre peau.",
+        image: "/images/bento-skin-model.jpg",
+      },
+      {
+        title: "Crème solaire le matin",
+        detail: "Indispensable après chaque utilisation de rétinol.",
+        image: "/images/hero-model.jpg",
+      },
+    ],
+    skinTypes: [
+      { label: "Peaux sèches", image: null },
+      { label: "Peaux mixtes", image: null },
+      { label: "Peaux grasses", image: null },
+      { label: "Peaux sensibles", image: null },
+    ],
+    faq: [
+      {
+        question: "À quelle fréquence commencer ?",
+        answer:
+          "Une à deux fois par semaine le soir, puis augmentez progressivement selon la tolérance de votre peau.",
+      },
+      {
+        question: "Faut-il une protection solaire ?",
+        answer: "Oui. Appliquez une crème solaire le matin après chaque utilisation.",
+      },
+      {
+        question: "Enceinte ou allaitante, puis-je l'utiliser ?",
+        answer:
+          "Il est recommandé de consulter un médecin avant d'utiliser ce produit pendant la grossesse ou l'allaitement.",
+      },
+      {
+        question: "Pourquoi le conserver au réfrigérateur ?",
+        answer:
+          "Le froid apporte une sensation de fraîcheur et aide à atténuer les poches sous les yeux.",
+      },
+      { question: "Quels sont les délais de livraison ?", answer: DELIVERY_ANSWER },
+    ],
+    testimonials: [],
+    brandScene: null,
+  },
+
+  "renewal-oil": {
+    category: "Masques",
+    badge: "New",
+    gallery: [
+      "/images/products/collagene_masque.png",
+      "/images/hero-model.jpg",
+      "/images/bento-skin-model.jpg",
+      "/images/skincare-ritual.jpg",
+    ],
+    promise: {
+      title: "L'effet glass skin, en 15 minutes",
+      subtitle: "Un masque peel-off au collagène, 1 à 2 fois par semaine.",
+    },
+    benefits: [
+      { icon: "hydrate", label: "Hydrate intensément" },
+      { icon: "firm", label: "Améliore l'élasticité et la fermeté" },
+      { icon: "spark", label: "Illumine le teint" },
+      { icon: "antiage", label: "Atténue les ridules" },
+    ],
+    lifestyle: {
+      image: "/images/hero-model.jpg",
+      caption: "Une peau repulpée, plus lisse et plus lumineuse.",
+    },
+    results: null,
+    actives: [
+      {
+        name: "Collagène marin",
+        description: "Améliore l'élasticité et la fermeté de la peau.",
+        image: "/images/products/mask.jpg",
+      },
+      {
+        name: "Aloe vera",
+        description: "Apaise et hydrate en profondeur.",
+        image: "/images/natural-leaf.jpg",
+      },
+      {
+        name: "Panthénol",
+        description: "Renforce la barrière cutanée.",
+        image: "/images/products/serum.jpg",
+      },
+    ],
+    steps: [
+      {
+        title: "Après votre routine habituelle",
+        detail:
+          "Appliquez une couche uniforme en évitant les yeux, les sourcils, les lèvres et la racine des cheveux.",
+        image: "/images/skincare-ritual.jpg",
+      },
+      {
+        title: "Laissez sécher 15 à 20 minutes",
+        detail: "Le masque fige doucement sur la peau.",
+        image: "/images/bento-skin-model.jpg",
+      },
+      {
+        title: "Retirez par les bords",
+        detail: "Décollez délicatement, sans rincer.",
+        image: "/images/hero-model.jpg",
+      },
+    ],
+    skinTypes: [
+      { label: "Peaux sèches", image: null },
+      { label: "Peaux déshydratées", image: null },
+      { label: "Peaux normales", image: null },
+      { label: "Peaux sensibles", image: null },
+    ],
+    faq: [
+      {
+        question: "À quelle fréquence l'utiliser ?",
+        answer: "1 à 2 fois par semaine.",
+      },
+      {
+        question: "Faut-il rincer après l'avoir retiré ?",
+        answer: "Non. Retirez le masque en commençant par les bords, sans rincer.",
+      },
+      {
+        question: "À quel moment de la routine ?",
+        answer: "Après vos soins habituels, sur une peau propre.",
+      },
+      {
+        question: "Convient-il aux peaux sensibles ?",
+        answer:
+          "Oui. Il convient aux peaux normales, sèches, déshydratées et sensibles.",
+      },
+      { question: "Quels sont les délais de livraison ?", answer: DELIVERY_ANSWER },
+    ],
+    testimonials: [],
+    brandScene: null,
+  },
+
+  "rosehip-oil": {
+    category: "Masques",
+    badge: null,
+    gallery: [
+      "/images/products/aha_masque.png",
+      "/images/bento-skin-model.jpg",
+      "/images/skincare-ritual.jpg",
+      "/images/hero-model.jpg",
+    ],
+    promise: {
+      title: "Des pores nettoyés en profondeur",
+      subtitle: "Deux argiles et un AHA, 1 à 2 fois par semaine.",
+    },
+    benefits: [
+      { icon: "purify", label: "Purifie et nettoie en profondeur" },
+      { icon: "pores", label: "Améliore l'apparence des pores" },
+      { icon: "exfoliate", label: "Exfolie en douceur" },
+      { icon: "spark", label: "Affine le grain de peau" },
+    ],
+    lifestyle: {
+      image: "/images/bento-skin-model.jpg",
+      caption: "Un teint plus net, plus lisse et plus uniforme.",
+    },
+    results: null,
+    actives: [
+      {
+        name: "Argiles verte et blanche",
+        description: "Purifient et nettoient la peau en profondeur.",
+        image: "/images/products/mask.jpg",
+      },
+      {
+        name: "Acide glycolique",
+        description: "Exfolie en douceur et affine le grain de peau.",
+        image: "/images/products/toner.jpg",
+      },
+      {
+        name: "Extrait de réglisse",
+        description: "Apaise et aide à unifier le teint.",
+        image: "/images/natural-leaf.jpg",
+      },
+    ],
+    steps: [
+      {
+        title: "Sur peau propre et sèche",
+        detail: "Appliquez une couche uniforme en évitant le contour des yeux.",
+        image: "/images/skincare-ritual.jpg",
+      },
+      {
+        title: "Laissez poser 15 à 20 minutes",
+        detail: "Les argiles absorbent et l'AHA exfolie.",
+        image: "/images/bento-skin-model.jpg",
+      },
+      {
+        title: "Rincez à l'eau tiède",
+        detail: "Poursuivez avec votre routine habituelle.",
+        image: "/images/hero-model.jpg",
+      },
+    ],
+    skinTypes: [
+      { label: "Peaux mixtes", image: null },
+      { label: "Peaux grasses", image: null },
+      { label: "Peaux à imperfections", image: null },
+      { label: "Pores dilatés", image: null },
+    ],
+    faq: [
+      {
+        question: "À quelle fréquence l'utiliser ?",
+        answer: "1 à 2 fois par semaine.",
+      },
+      {
+        question: "Faut-il rincer ?",
+        answer: "Oui. Laissez poser 15 à 20 minutes puis rincez.",
+      },
+      {
+        question: "Pour quelles peaux ?",
+        answer: "Il convient aux peaux mixtes à grasses.",
+      },
+      {
+        question: "Peut-on l'associer aux toner pads AHA ?",
+        answer:
+          "Évitez de les utiliser le même soir : les deux contiennent de l'acide glycolique. Espacez-les dans la semaine.",
+      },
+      { question: "Quels sont les délais de livraison ?", answer: DELIVERY_ANSWER },
+    ],
+    testimonials: [],
+    brandScene: null,
+  },
+}
+
+export function contentFor(productId: string): ProductContent | null {
+  return PRODUCT_CONTENT[productId] ?? null
+}

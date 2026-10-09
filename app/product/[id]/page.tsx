@@ -388,25 +388,35 @@ export default function ProductPage() {
                 </button>
               </div>
 
-              {/* Reassurance, directly under the buttons */}
-              <div className="grid grid-cols-3 gap-4">
-                {benefits.slice(0, 3).map((benefit) => (
-                  <div
-                    key={benefit.label}
-                    className="flex flex-col items-center justify-start gap-3 text-center"
-                  >
-                    <benefit.icon className="w-6 h-6 text-primary" />
-                    <span className="text-xs text-muted-foreground leading-snug">
-                      {benefit.label}
-                    </span>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         </div>
 
-        {/* Reviews come first after the buy box, straight under the reassurance row */}
+        {/* Page order under the buttons: results, then reassurance, then reviews.
+            All three sit outside the buy column so nothing is boxed into half
+            the page. */}
+        {content?.results && (
+          <div className="max-w-4xl mx-auto px-6 lg:px-8 mt-14">
+            <ProductResultsCompact results={content.results} />
+          </div>
+        )}
+
+        <div className="max-w-4xl mx-auto px-6 lg:px-8 mt-12">
+          <div className="grid grid-cols-3 gap-4">
+            {benefits.slice(0, 3).map((benefit) => (
+              <div
+                key={benefit.label}
+                className="flex flex-col items-center justify-start gap-3 text-center"
+              >
+                <benefit.icon className="w-6 h-6 text-primary" />
+                <span className="text-xs text-muted-foreground leading-snug">
+                  {benefit.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {content && content.testimonials.length > 0 && (
           <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-14">
             <ProductTestimonials
@@ -414,14 +424,6 @@ export default function ProductPage() {
               rating={4.9}
               reviewCount={128}
             />
-          </div>
-        )}
-
-        {/* Before / after and the measured figures, straight under the buy box.
-            Outside the column so the photos are not boxed into half the page. */}
-        {content?.results && (
-          <div className="max-w-4xl mx-auto px-6 lg:px-8 mt-14">
-            <ProductResultsCompact results={content.results} />
           </div>
         )}
 

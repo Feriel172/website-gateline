@@ -205,8 +205,9 @@ function BeforeAfterCarousel({
       onMouseLeave={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
+      onTouchStart={() => setPaused(true)}
     >
-        <Carousel opts={{ loop: true, align: "start" }} setApi={setApi}>
+      <Carousel opts={{ loop: true, align: "start" }} setApi={setApi}>
         <CarouselContent className="-ml-0">
           {images.map((image) => (
             <CarouselItem key={image.src} className="pl-0">
@@ -350,9 +351,9 @@ export function ProductMilestones({ milestones }: { milestones?: MilestoneCard[]
         onTouchStart={() => setPaused(true)}
       >
         <Carousel opts={{ loop: true, align: "start" }} setApi={setApi}>
-        <CarouselContent>
-          {milestones.map((stage) => (
-            <CarouselItem key={stage.src} className="md:basis-1/2">
+          <CarouselContent className="-ml-0">
+            {milestones.map((stage) => (
+              <CarouselItem key={stage.src} className="pl-0">
               <article>
                 <div className="rounded-3xl overflow-hidden bg-card">
                   {/* Served at its own size and shape: cropping these loses the

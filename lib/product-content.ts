@@ -132,7 +132,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
         { value: "85%", label: "pores moins visibles" },
         { value: "90%", label: "teint plus uniforme" },
       ],
-      note: "Résultats visibles après 4 semaines d'utilisation. Des milliers de clientes ont déjà vu la différence ; Une peau plus nette, plus lumineuse et un teint unifié dès quelques semaines d&apos;utilisation. ",
+      note: "Résultats visibles après 4 semaines d'utilisation. Des milliers de clientes ont déjà vu la différence ; Une peau plus nette, plus lumineuse et un teint unifié dès quelques semaines d'utilisation. ",
     },
     actives: [
       {
@@ -292,7 +292,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
         { value: "85%", label: "moins de cicatrices" },
         { value: "82%", label: "teint plus uniforme" },
       ],
-      note: "Résultats visibles après 4 semaines d'utilisation. Des milliers de clientes ont déjà vu la différence ; Une peau plus nette, plus lumineuse et un teint unifié dès quelques semaines d&apos;utilisation. ",
+      note: "Résultats visibles après 4 semaines d'utilisation. Des milliers de clientes ont déjà vu la différence ; Une peau plus nette, plus lumineuse et un teint unifié dès quelques semaines d'utilisation. ",
     },
     // Shared with the Niacinamide set: both are 40-pad toners, and panthénol is
     // literally the same ingredient. Swap in AHA photography when it exists.
@@ -369,23 +369,23 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       },
       {
         src: "/images/products/aha/resultat-2.jpg",
-        title: "Teint irrégulier",
+        title: "Boutons dans le dos",
         description:
-          "L'exfoliation élimine les cellules mortes en surface : le teint est plus clair et visiblement plus homogène.",
-        tags: ["Teint plus clair", "Grain affiné", "Éclat retrouvé"],
+          "L'exfoliation élimine les cellules mortes en surface : le teint est visiblement plus homogène.",
+        tags: ["plus d'acné", "cicatrices estompés", "teint unifié"],
       },
       {
         src: "/images/products/aha/resultat-3.jpg",
         title: "Grain de peau",
         description:
-          "Les petites rugosités et les pores obstrués s'atténuent, laissant une peau plus lisse au toucher.",
-        tags: ["Pores désobstrués", "Peau plus lisse", "Moins d'imperfections"],
+          "Les boutons sous la peau s'atténuent, laissant une peau plus lisse au toucher.",
+        tags: ["Pores purifiés", "Peau plus lisse", "Moins d'imperfections"],
       },
       {
         src: "/images/products/aha/resultat-4.jpg",
-        title: "Dos et épaules",
+        title: "Tâches d'hyperpigmentation",
         description:
-          "Les imperfections et les marques rouges se réduisent nettement, pour une peau plus nette.",
+          "Les Tâches et cicatrices d'acné se réduisent nettement, pour une peau plus nette.",
         tags: ["Imperfections réduites", "Peau plus nette"],
       },
       {
@@ -397,10 +397,10 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       },
       {
         src: "/images/products/aha/resultat-6.jpg",
-        title: "Rugosités du corps",
+        title: "Peau de fraise",
         description:
-          "Les petits points rouges et la sensation granuleuse s'estompent : la peau est nettement plus lisse et plus douce au toucher.",
-        tags: ["Rugosités lissées", "Peau plus douce", "Rougeurs apaisées"],
+          "la peau de fraise et la sensation granuleuse s'estompent : la peau est nettement plus lisse et plus douce au toucher.",
+        tags: ["peau lissées", "Peau plus douce", "Rougeurs apaisées"],
       },
     ],
     // Placeholder copy, like the Niacinamide ones: same customers, same photos,

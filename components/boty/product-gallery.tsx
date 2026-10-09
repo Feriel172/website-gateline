@@ -4,6 +4,12 @@ import { useEffect, useState } from "react"
 import Image from "next/image"
 import { Expand } from "lucide-react"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
+import {
+  Carousel,
+  type CarouselApi,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel"
 
 interface ProductGalleryProps {
   images: string[]
@@ -19,14 +25,28 @@ const STRINGS = {
 } as const
 
 export function ProductGallery({ images, alt, badge, rtl = false }: ProductGalleryProps) {
+  const [api, setApi] = useState<CarouselApi>()
   const [index, setIndex] = useState(0)
   const [zoomed, setZoomed] = useState(false)
   const t = rtl ? STRINGS.ar : STRINGS.fr
 
-  // A different product reuses this component, so start its gallery at the top
+  // Follow the carousel, however it was moved: swipe, drag or a thumbnail
   useEffect(() => {
+    if (!api) return
+    const onSelect = () => setIndex(api.selectedScrollSnap())
+    onSelect()
+    api.on("select", onSelect)
+    return () => {
+      api.off("select", onSelect)
+    }
+  }, [api])
+
+  // A different product reuses this component, so start its gallery at the top
+  const key = images.join("|")
+  useEffect(() => {
+    api?.scrollTo(0, true)
     setIndex(0)
-  }, [images])
+  }, [key, api])
 
   if (images.length === 0) return null
 
@@ -34,15 +54,29 @@ export function ProductGallery({ images, alt, badge, rtl = false }: ProductGalle
 
   return (
     <div>
-      <div className="relative aspect-square rounded-3xl overflow-hidden bg-card boty-shadow group">
-        <Image
-          src={images[clamped] || "/placeholder.svg"}
-          alt={alt}
-          fill
-          className="object-cover"
-          sizes="(min-width: 1024px) 50vw, 100vw"
-          priority
-        />
+      <div className="relative rounded-3xl overflow-hidden bg-card boty-shadow">
+        {/* Embla gives drag and swipe; the frame stays square either way */}
+        <Carousel
+          opts={{ loop: images.length > 1, direction: rtl ? "rtl" : "ltr" }}
+          setApi={setApi}
+        >
+          <CarouselContent className="ml-0">
+            {images.map((image, i) => (
+              <CarouselItem key={image} className="pl-0">
+                <div className="relative aspect-square">
+                  <Image
+                    src={image || "/placeholder.svg"}
+                    alt={i === clamped ? alt : ""}
+                    fill
+                    className="object-cover"
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    priority={i === 0}
+                  />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
 
         {badge && (
           <span className="absolute top-4 start-4 px-3 py-1.5 rounded-full bg-background/90 backdrop-blur-sm text-xs font-medium text-foreground">
@@ -58,9 +92,6 @@ export function ProductGallery({ images, alt, badge, rtl = false }: ProductGalle
         >
           <Expand className="w-4 h-4" />
         </button>
-
-        {/* No arrows over the image: several gallery shots carry printed copy
-            and the controls sat on top of it. The thumbnails below navigate. */}
       </div>
 
       {images.length > 1 && (
@@ -72,7 +103,7 @@ export function ProductGallery({ images, alt, badge, rtl = false }: ProductGalle
             <button
               key={image}
               type="button"
-              onClick={() => setIndex(i)}
+              onClick={() => api?.scrollTo(i)}
               aria-label={`${t.thumb} ${i + 1}`}
               aria-current={i === clamped}
               className={`relative aspect-square rounded-2xl overflow-hidden bg-card boty-transition ${

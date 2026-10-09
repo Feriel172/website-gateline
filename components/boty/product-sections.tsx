@@ -5,7 +5,6 @@ import Image from "next/image"
 import {
   Aperture,
   ChevronDown,
-  ArrowRight,
   ChevronLeft,
   ChevronRight,
   Droplet,
@@ -108,7 +107,7 @@ function BeforeAfterSlide({
   const seams = Array.from({ length: Math.max(0, panels - 1) }, (_, i) => ((i + 1) / panels) * 100)
 
   return (
-    <div className="relative aspect-[2/1] rounded-3xl overflow-hidden bg-card">
+    <div className="relative aspect-[2/1] sm:rounded-3xl overflow-hidden bg-card">
       <Image
         src={image}
         alt="Avant et après utilisation"
@@ -265,21 +264,20 @@ export function ProductResultsCompact({ results }: { results: ProductContent["re
   if (!results) return null
 
   return (
-    <section aria-labelledby="results-compact-title" className="rounded-3xl bg-card/60 p-6">
+    <section
+      aria-labelledby="results-compact-title"
+      className="sm:rounded-3xl bg-card/60 px-5 py-6 sm:p-6"
+    >
       <h2 id="results-compact-title" className="font-serif text-2xl text-foreground mb-1">
-        Des résultats visibles
+        Des résultats visibles dès les premières semaines <br></br>
       </h2>
-      <p className="text-sm text-muted-foreground leading-relaxed mb-5">
-        Des milliers de clientes ont déjà vu la différence.
-        Une peau plus nette, plus lumineuse et un teint unifié dès quelques semaines
-        d&apos;utilisation.
-      </p>
-
-      <BeforeAfterCarousel
-        images={results.images}
-        labelsInImage={results.labelsInImage}
-        sizes="(min-width: 1024px) 848px, 100vw"
-      />
+      <div className="-mx-5 sm:mx-0">
+        <BeforeAfterCarousel
+          images={results.images}
+          labelsInImage={results.labelsInImage}
+          sizes="(min-width: 1024px) 848px, 100vw"
+        />
+      </div>
 
       <dl className="grid grid-cols-3 gap-3 mt-3">
         {results.stats.map((stat) => (
@@ -299,6 +297,91 @@ export function ProductResultsCompact({ results }: { results: ProductContent["re
 }
 
 
+
+// --- Stage by stage results ---
+
+interface MilestoneCard {
+  src: string
+  title: string
+  description: string
+  tags: string[]
+}
+
+export function ProductMilestones({ milestones }: { milestones?: MilestoneCard[] }) {
+  const [api, setApi] = useState<CarouselApi>()
+  const [current, setCurrent] = useState(0)
+
+  useEffect(() => {
+    if (!api) return
+    const onSelect = () => setCurrent(api.selectedScrollSnap())
+    onSelect()
+    api.on("select", onSelect)
+    return () => {
+      api.off("select", onSelect)
+    }
+  }, [api])
+
+  if (!milestones || milestones.length === 0) return null
+
+  return (
+    <section aria-labelledby="milestones-title">
+      <h2
+        id="milestones-title"
+        className="font-serif text-3xl md:text-4xl text-foreground text-center mb-10"
+      >
+        Votre peau, semaine après semaine
+      </h2>
+
+      <Carousel opts={{ loop: true, align: "start" }} setApi={setApi}>
+        <CarouselContent>
+          {milestones.map((stage) => (
+            <CarouselItem key={stage.src} className="md:basis-1/2">
+              <article>
+                <div className="relative rounded-3xl overflow-hidden bg-card">
+                  {/* Served at its own size and shape: cropping these loses the
+                      detail that makes the result readable. */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={stage.src} alt={stage.title} loading="lazy" className="w-full h-auto" />
+                  {stage.tags.length > 0 && (
+                    <ul className="absolute bottom-4 right-4 flex flex-col items-end gap-2">
+                      {stage.tags.map((tag) => (
+                        <li
+                          key={tag}
+                          className="rounded-lg bg-white/95 text-foreground text-xs px-3 py-1.5 shadow-sm"
+                        >
+                          {tag}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+                <h3 className="font-serif text-xl md:text-2xl text-foreground mt-5 mb-2">
+                  {stage.title}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{stage.description}</p>
+              </article>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
+
+      <div className="flex items-center justify-center gap-2 mt-8">
+        {milestones.map((stage, i) => (
+          <button
+            key={stage.src}
+            type="button"
+            onClick={() => api?.scrollTo(i)}
+            aria-label={`Photo ${i + 1} sur ${milestones.length}`}
+            aria-current={i === current}
+            className={`h-1.5 rounded-full boty-transition ${
+              i === current ? "w-6 bg-primary" : "w-1.5 bg-foreground/20 hover:bg-foreground/40"
+            }`}
+          />
+        ))}
+      </div>
+    </section>
+  )
+}
 
 // --- The actives doing the work ---
 
@@ -467,7 +550,8 @@ export function ProductTestimonials({
 
   if (testimonials.length === 0) return null
 
-  const VISIBLE = 3
+  // One full row, then the rest behind the button
+  const VISIBLE = 4
   const shown = showAll ? testimonials : testimonials.slice(0, VISIBLE)
 
   return (
@@ -488,20 +572,9 @@ export function ProductTestimonials({
             </span>
           </div>
         </div>
-
-        {testimonials.length > VISIBLE && (
-          <button
-            type="button"
-            onClick={() => setShowAll(!showAll)}
-            className="inline-flex items-center gap-2 text-sm text-foreground hover:text-primary boty-transition"
-          >
-            {showAll ? "Voir moins d'avis" : "Voir tous les avis"}
-            <ArrowRight className={`w-4 h-4 boty-transition ${showAll ? "rotate-180" : ""}`} />
-          </button>
-        )}
       </div>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {shown.map((item) => (
           <figure key={item.name} className="rounded-3xl bg-background p-5 flex flex-col">
             <div className="mb-4">
@@ -533,6 +606,21 @@ export function ProductTestimonials({
           </figure>
         ))}
       </div>
+
+      {/* Sits under the last visible card and reveals the rest in place */}
+      {testimonials.length > VISIBLE && (
+        <div className="flex justify-center mt-8">
+          <button
+            type="button"
+            onClick={() => setShowAll(!showAll)}
+            aria-expanded={showAll}
+            className="inline-flex items-center gap-2 rounded-full border border-foreground/20 px-6 py-3 text-sm text-foreground hover:bg-foreground/5 boty-transition"
+          >
+            {showAll ? "Voir moins" : `Voir plus d'avis (${testimonials.length - VISIBLE})`}
+            <ChevronDown className={`w-4 h-4 boty-transition ${showAll ? "rotate-180" : ""}`} />
+          </button>
+        </div>
+      )}
     </section>
   )
 }

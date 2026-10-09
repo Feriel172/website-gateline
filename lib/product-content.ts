@@ -85,6 +85,12 @@ export interface ProductContent {
   steps: Step[]
   skinTypes: { label: string; image: string | null }[]
   faq: FaqItem[]
+  /**
+   * Customer before / after photos, shown as cards in a carousel. The images are
+   * served exactly as they were supplied — never cropped — so each card is as
+   * tall as its own photo.
+   */
+  milestones?: { src: string; title: string; description: string; tags: string[] }[]
   testimonials: Testimonial[]
   /** Product shot for the closing brand card. */
   brandScene: string | null
@@ -252,8 +258,14 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
   "hydrating-serum": {
     category: "Toner pads",
     badge: null,
-    // Product shot only — no model photos in the gallery
-    gallery: ["/images/products/aha_tonerpads.jpg"],
+    // Product shot first, then the branded visuals. No model photos.
+    gallery: [
+      "/images/products/aha_tonerpads.jpg",
+      "/images/products/aha/gallery-cure.png",
+      "/images/products/aha/gallery-rituel.png",
+      "/images/products/aha/gallery-benefices.png",
+      "/images/products/aha/gallery-comparatif.png",
+    ],
     
     // No promise or lifestyle block on this page: the sections skip themselves
     promise: null,
@@ -280,7 +292,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
         { value: "85%", label: "moins de cicatrices" },
         { value: "82%", label: "teint plus uniforme" },
       ],
-      note: "Résultats visibles après 4 semaines d'utilisation.",
+      note: "Résultats visibles après 4 semaines d'utilisation. Des milliers de clientes ont déjà vu la différence ; Une peau plus nette, plus lumineuse et un teint unifié dès quelques semaines d&apos;utilisation. ",
     },
     // Shared with the Niacinamide set: both are 40-pad toners, and panthénol is
     // literally the same ingredient. Swap in AHA photography when it exists.
@@ -344,6 +356,45 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
         answer: "Non. Laissez agir et poursuivez votre routine.",
       },
       { question: "Quels sont les délais de livraison ?", answer: DELIVERY_ANSWER },
+    ],
+    // Photos exactly as supplied. Titles name the zone each one shows rather
+    // than a duration, since no timings were given for them.
+    milestones: [
+      {
+        src: "/images/products/aha/resultat-1.jpg",
+        title: "Taches pigmentaires",
+        description:
+          "Les taches brunes et les marques laissées par les imperfections s'estompent, et le teint retrouve de l'uniformité.",
+        tags: ["Taches atténuées", "Teint unifié", "Peau lumineuse"],
+      },
+      {
+        src: "/images/products/aha/resultat-2.jpg",
+        title: "Teint irrégulier",
+        description:
+          "L'exfoliation élimine les cellules mortes en surface : le teint est plus clair et visiblement plus homogène.",
+        tags: ["Teint plus clair", "Grain affiné", "Éclat retrouvé"],
+      },
+      {
+        src: "/images/products/aha/resultat-3.jpg",
+        title: "Grain de peau",
+        description:
+          "Les petites rugosités et les pores obstrués s'atténuent, laissant une peau plus lisse au toucher.",
+        tags: ["Pores désobstrués", "Peau plus lisse", "Moins d'imperfections"],
+      },
+      {
+        src: "/images/products/aha/resultat-4.jpg",
+        title: "Dos et épaules",
+        description:
+          "Les imperfections et les marques rouges se réduisent nettement, pour une peau plus nette.",
+        tags: ["Imperfections réduites", "Peau plus nette"],
+      },
+      {
+        src: "/images/products/aha/resultat-5.jpg",
+        title: "Zones de frottement",
+        description:
+          "Les zones sombres et épaissies s'éclaircissent progressivement et la texture s'affine.",
+        tags: ["Peau plus claire", "Texture affinée"],
+      },
     ],
     // Placeholder copy, like the Niacinamide ones: same customers, same photos,
     // quotes written for this product. Replace with real reviews.

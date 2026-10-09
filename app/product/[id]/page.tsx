@@ -22,6 +22,7 @@ import {
   ProductBrandBlock,
   ProductFaq,
   ProductLifestyle,
+  ProductMilestones,
   ProductPromise,
   ProductResultsCompact,
   ProductSkinTypes,
@@ -396,7 +397,7 @@ export default function ProductPage() {
             All three sit outside the buy column so nothing is boxed into half
             the page. */}
         {content?.results && (
-          <div className="max-w-4xl mx-auto px-6 lg:px-8 mt-14">
+          <div className="max-w-4xl mx-auto px-0 sm:px-6 lg:px-8 mt-14">
             <ProductResultsCompact results={content.results} />
           </div>
         )}
@@ -435,6 +436,7 @@ export default function ProductPage() {
               <ProductLifestyle lifestyle={content.lifestyle} />
               <ProductActives actives={content.actives} />
               <ProductSteps steps={content.steps} />
+              <ProductMilestones milestones={content.milestones} />
               <ProductSkinTypes skinTypes={content.skinTypes} />
               <ProductBenefits benefits={content.benefits} />
               <ProductFaq faq={content.faq} />

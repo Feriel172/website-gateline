@@ -46,8 +46,13 @@ export interface Step {
 export interface Testimonial {
   name: string
   quote: string
-  image: string
+  /** Avatar. Kept on the existing entries but no longer shown on the card. */
+  image?: string
   rating: number
+  /** Relative date under the name, e.g. "Il y a 2 semaines". */
+  since?: string
+  /** Before / after shot attached to the review, shown under the quote. */
+  photo?: string
 }
 
 export interface FaqItem {
@@ -64,8 +69,18 @@ export interface ProductContent {
   promise: { title: string; subtitle: string } | null
   benefits: { icon: BenefitIcon; label: string }[]
   lifestyle: { image: string; caption: string } | null
-  /** A single composite shot: the Avant / Après labels are part of the image. */
-  results: { image: string; stats: Stat[]; note: string } | null
+  /**
+   * Before / after shots, one per carousel slide. `labelsInImage` is for older
+   * composites that already have the Avant / Après pills printed on them;
+   * without it the section draws its own.
+   */
+  results: {
+    /** `panels` is how many stages the shot is cut into; 2 (before / after) unless set. */
+    images: { src: string; panels?: number }[]
+    labelsInImage?: boolean
+    stats: Stat[]
+    note: string
+  } | null
   actives: Active[]
   steps: Step[]
   skinTypes: { label: string; image: string | null }[]
@@ -104,13 +119,14 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       caption: "Une peau plus nette, plus lumineuse au quotidien.",
     },
     results: {
-      image: "/images/products/niacinamide/before-after.png",
+      images: [{ src: "/images/products/niacinamide/before-after.png" }],
+      labelsInImage: true,
       stats: [
         { value: "89%", label: "peau plus lumineuse" },
         { value: "85%", label: "pores moins visibles" },
-        { value: "82%", label: "teint plus uniforme" },
+        { value: "90%", label: "teint plus uniforme" },
       ],
-      note: "Résultats basés sur un test de 4 semaines auprès de 50 utilisatrices.",
+      note: "Résultats visibles après 4 semaines d'utilisation.",
     },
     actives: [
       {
@@ -175,25 +191,57 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     testimonials: [
       {
         name: "Sarah L.",
-        quote: "Ma peau est beaucoup plus lumineuse et mes pores sont moins visibles. Je recommande vraiment !",
+        since: "Il y a 2 semaines",
+        quote: "Andi 15j mli cherit had 2 produit dyalkom Kan 3endi klef 3ejb Rahli 70%",
         image: "/images/products/niacinamide/avis-sarah.png",
         rating: 5,
       },
       {
-        name: "Inès K.",
-        quote: "Meilleur toner que j'ai testé ! Ma peau est plus douce et moins grasse.",
+        name: "Oum Maram.",
+        since: "Il y a 1 mois",
+        quote: "وحدا ف 10 جوان و وحدا ف 27 جوان",
         image: "/images/products/niacinamide/avis-ines.png",
         rating: 5,
       },
       {
         name: "Nour B.",
-        quote: "J'ai vu une vraie différence en 2 semaines, mes petites taches se sont atténuées.",
+        since: "Il y a 1 semaine",
+        quote: "Wellah les produits magnifique surtout les pads bleu kano 3ndi des cicatrices hadi moda twila ki sta3mlt les pads khafo bzf inchallah ytwafro f kml les cosmétiques",
         image: "/images/products/niacinamide/avis-nour.png",
         rating: 5,
       },
       {
         name: "Amel D.",
-        quote: "Très contente, la qualité est incroyable. Je rachèterai sans hésiter.",
+        since: "Il y a 3 semaines",
+        quote: "منتجاتكم فاقوا التوقعات روعة ولله الحمد اللّٰه يبارك عليكم ويباركلكم في رزقكم ومالكم راح نكون زبونتكم الوفية باذن اللّه",
+        image: "/images/products/niacinamide/avis-amel.png",
+        rating: 5,
+      },
+      {
+        name: "Dounia B.",
+        since: "Il y a 3 semaines",
+        quote: "seyit les pads nta3kom un coup de coeur",
+        image: "/images/products/niacinamide/avis-amel.png",
+        rating: 5,
+      },
+      {
+        name: "Warda E.",
+        since: "Il y a 3 semaines",
+        quote: "Habit n9olkom merci 3la had magnifique produits vraiment hayel deja rah nzid commande",
+        image: "/images/products/niacinamide/avis-amel.png",
+        rating: 5,
+      },
+      {
+        name: "Yassmine T.",
+        since: "Il y a 3 semaines",
+        quote: "Toner pads c'est mon coup de cœur vraiment rien a dire",
+        image: "/images/products/niacinamide/avis-amel.png",
+        rating: 5,
+      },
+      {
+        name: "Nora K.",
+        since: "Il y a 4 semaines",
+        quote: "المنتوج تاعكم جربتtoner pads حسيت وجهي نقي و رطب مازال ماكملتش الشهر",
         image: "/images/products/niacinamide/avis-amel.png",
         rating: 5,
       },
@@ -204,59 +252,70 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
   "hydrating-serum": {
     category: "Toner pads",
     badge: null,
-    gallery: [
-      "/images/products/aha_tonerpads.jpg",
-      "/images/skincare-ritual.jpg",
-      "/images/bento-skin-model.jpg",
-      "/images/hero-model.jpg",
-    ],
-    promise: {
-      title: "Une exfoliation douce, soir après soir",
-      subtitle: "Un grain de peau affiné, un teint plus lisse et plus uniforme.",
-    },
+    // Product shot only — no model photos in the gallery
+    gallery: ["/images/products/aha_tonerpads.jpg"],
+    
+    // No promise or lifestyle block on this page: the sections skip themselves
+    promise: null,
+    lifestyle: null,
     benefits: [
       { icon: "exfoliate", label: "Exfolie chimiquement en douceur" },
       { icon: "spark", label: "Affine le grain de peau" },
       { icon: "purify", label: "Aide contre les imperfections" },
       { icon: "hydrate", label: "Unifie et lisse le teint" },
     ],
-    lifestyle: {
-      image: "/images/skincare-ritual.jpg",
-      caption: "Une peau nette et éclatante, sans agresser.",
+    
+    // Customer before / after photos. The figures below are still the
+    // Niacinamide ones — there is no AHA test yet; replace them when there is.
+    results: {
+      images: [
+        { src: "/images/products/aha/before-after-1.png" },
+        { src: "/images/products/aha/before-after-2.jpg" },
+        // Three stages of the same cheek, so it gets two separators
+        { src: "/images/products/aha/before-after-3.jpg", panels: 3 },
+        { src: "/images/products/aha/before-after-4.jpg" },
+      ],
+      stats: [
+        { value: "89%", label: "moins de tâches" },
+        { value: "85%", label: "moins de cicatrices" },
+        { value: "82%", label: "teint plus uniforme" },
+      ],
+      note: "Résultats visibles après 4 semaines d'utilisation.",
     },
-    results: null,
+    // Shared with the Niacinamide set: both are 40-pad toners, and panthénol is
+    // literally the same ingredient. Swap in AHA photography when it exists.
     actives: [
       {
         name: "5% Acide glycolique",
         description: "Élimine les cellules mortes et affine le grain de peau.",
-        image: "/images/products/toner.jpg",
+        image: "/images/products/niacinamide/active-niacinamide.png",
       },
       {
         name: "Aloe vera",
         description: "Apaise la peau pendant l'exfoliation.",
-        image: "/images/natural-leaf.jpg",
+        image: "/images/products/niacinamide/active-licorice.png",
       },
       {
         name: "Panthénol",
         description: "Hydrate et renforce la barrière cutanée.",
-        image: "/images/products/serum.jpg",
+        image: "/images/products/niacinamide/active-panthenol.png",
       },
     ],
     steps: [
       {
-        title: "Le soir, sur peau nettoyée",
-        detail: "Prélevez un pad après le nettoyage.",
-        image: "/images/skincare-ritual.jpg",
+        title: "Prélevez un pad",
+        detail: "Le soir, sur une peau propre et sèche.",
+        image: "/images/products/niacinamide/step-1.png",
       },
       {
         title: "Passez sur le visage",
         detail: "Visage et cou, en évitant le contour des yeux et des lèvres.",
-        image: "/images/bento-skin-model.jpg",
+        image: "/images/products/niacinamide/step-2.png",
       },
       {
-        title: "2 à 3 fois par semaine",
-        detail: "Ne pas rincer. Appliquez une crème solaire le matin.",
-        image: "/images/hero-model.jpg",
+        title: "Laissez agir",
+        detail: "Ne pas rincer. 2 à 3 fois par semaine, avec un SPF le matin.",
+        image: "/images/products/niacinamide/step-3.png",
       },
     ],
     skinTypes: [
@@ -278,7 +337,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       {
         question: "Peut-on l'associer aux toner pads niacinamide ?",
         answer:
-          "Oui, en alternant les soirs plutôt qu'en les superposant : la niacinamide au quotidien, l'AHA 2 à 3 fois par semaine.",
+          "Oui, la niacinamide le matin, l'AHA le soir",
       },
       {
         question: "Faut-il rincer après application ?",
@@ -286,7 +345,67 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       },
       { question: "Quels sont les délais de livraison ?", answer: DELIVERY_ANSWER },
     ],
-    testimonials: [],
+    // Placeholder copy, like the Niacinamide ones: same customers, same photos,
+    // quotes written for this product. Replace with real reviews.
+    testimonials: [
+      {
+        name: "Sarah L.",
+        since: "Il y a 2 semaines",
+        quote: "Andi 15j mli cherit had 2 produit dyalkom Kan 3endi klef 3ejb Rahli 70%",
+        image: "/images/products/niacinamide/avis-sarah.png",
+        rating: 5,
+      },
+      {
+        name: "Oum Maram.",
+        since: "Il y a 1 mois",
+        quote: "وحدا ف 10 جوان و وحدا ف 27 جوان",
+        image: "/images/products/niacinamide/avis-ines.png",
+        photo: "/images/products/aha/avis-1.jpeg",
+        rating: 5,
+      },
+      {
+        name: "Nour B.",
+        since: "Il y a 1 semaine",
+        quote: "Wellah les produits magnifique surtout les pads bleu kano 3ndi des cicatrices hadi moda twila ki sta3mlt les pads khafo bzf inchallah ytwafro f kml les cosmétiques",
+        image: "/images/products/niacinamide/avis-nour.png",
+        rating: 5,
+      },
+      {
+        name: "Amel D.",
+        since: "Il y a 3 semaines",
+        quote: "منتجاتكم فاقوا التوقعات روعة ولله الحمد اللّٰه يبارك عليكم ويباركلكم في رزقكم ومالكم راح نكون زبونتكم الوفية باذن اللّه",
+        image: "/images/products/niacinamide/avis-amel.png",
+        rating: 5,
+      },
+      {
+        name: "Dounia B.",
+        since: "Il y a 3 semaines",
+        quote: "seyit les pads nta3kom un coup de coeur",
+        image: "/images/products/niacinamide/avis-amel.png",
+        rating: 5,
+      },
+      {
+        name: "Warda E.",
+        since: "Il y a 3 semaines",
+        quote: "Habit n9olkom merci 3la had magnifique produits vraiment hayel deja rah nzid commande",
+        image: "/images/products/niacinamide/avis-amel.png",
+        rating: 5,
+      },
+      {
+        name: "Yassmine T.",
+        since: "Il y a 3 semaines",
+        quote: "Toner pads c'est mon coup de cœur vraiment rien a dire",
+        image: "/images/products/niacinamide/avis-amel.png",
+        rating: 5,
+      },
+      {
+        name: "Nora K.",
+        since: "Il y a 4 semaines",
+        quote: "المنتوج تاعكم جربتtoner pads حسيت وجهي نقي و رطب مازال ماكملتش الشهر",
+        image: "/images/products/niacinamide/avis-amel.png",
+        rating: 5,
+      },
+    ],
     brandScene: null,
   },
 

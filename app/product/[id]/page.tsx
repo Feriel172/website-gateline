@@ -23,7 +23,7 @@ import {
   ProductFaq,
   ProductLifestyle,
   ProductPromise,
-  ProductResults,
+  ProductResultsCompact,
   ProductSkinTypes,
   ProductSteps,
   ProductTestimonials,
@@ -388,6 +388,13 @@ export default function ProductPage() {
                 </button>
               </div>
 
+              {/* Before / after and the measured figures, right under the CTA */}
+              {content?.results && (
+                <div className="mb-10">
+                  <ProductResultsCompact results={content.results} />
+                </div>
+              )}
+
               {/* Reassurance, directly under the buttons */}
               <div className="grid grid-cols-3 gap-4">
                 {benefits.slice(0, 3).map((benefit) => (
@@ -411,17 +418,17 @@ export default function ProductPage() {
           {content && (
             <>
               <ProductPromise promise={content.promise} />
-              <ProductBenefits benefits={content.benefits} />
               <ProductLifestyle lifestyle={content.lifestyle} />
-              <ProductResults results={content.results} />
               <ProductActives actives={content.actives} />
               <ProductSteps steps={content.steps} />
-              <ProductSkinTypes skinTypes={content.skinTypes} />
+              {/* Reviews sit straight after the actives and the how-to */}
               <ProductTestimonials
                 testimonials={content.testimonials}
                 rating={4.9}
                 reviewCount={128}
               />
+              <ProductSkinTypes skinTypes={content.skinTypes} />
+              <ProductBenefits benefits={content.benefits} />
               <ProductFaq faq={content.faq} />
             </>
           )}

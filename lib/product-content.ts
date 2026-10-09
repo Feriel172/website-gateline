@@ -203,13 +203,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
           "Les points noirs du nez sont nettement moins visibles et les pores paraissent resserrés.",
         tags: ["Pores désobstrués", "Nez plus net", "Sébum régulé"],
       },
-      {
-        src: "/images/products/niacinamide/resultat-2.jpg",
-        title: "Rougeurs",
-        description:
-          "La peau est visiblement apaisée : les rougeurs diffuses s'atténuent et le teint gagne en homogénéité.",
-        tags: ["Rougeurs apaisées", "Teint unifié", "Peau confortable"],
-      },
+      
       {
         src: "/images/products/niacinamide/resultat-3.jpg",
         title: "Grain de peau",

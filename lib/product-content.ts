@@ -125,6 +125,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
         { src: "/images/products/niacinamide/before-after-2.jpg" },
         { src: "/images/products/niacinamide/before-after-3.jpg" },
         { src: "/images/products/niacinamide/before-after-4.jpg" },
+        
       ],
       stats: [
         { value: "89%", label: "peau plus lumineuse" },

@@ -201,11 +201,17 @@ function BeforeAfterCarousel({
 
   return (
     <div
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
+      onPointerEnter={(e) => {
+        if (e.pointerType === "mouse") setPaused(true)
+      }}
+      onPointerLeave={(e) => {
+        if (e.pointerType === "mouse") setPaused(false)
+      }}
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
       onTouchStart={() => setPaused(true)}
+      onTouchEnd={() => setPaused(false)}
+      onTouchCancel={() => setPaused(false)}
     >
       <Carousel opts={{ loop: true, align: "start" }} setApi={setApi}>
         <CarouselContent className="-ml-0">
@@ -344,11 +350,17 @@ export function ProductMilestones({ milestones }: { milestones?: MilestoneCard[]
 
       {/* Rotates on its own; stops as soon as someone interacts with it */}
       <div
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
+        onPointerEnter={(e) => {
+          if (e.pointerType === "mouse") setPaused(true)
+        }}
+        onPointerLeave={(e) => {
+          if (e.pointerType === "mouse") setPaused(false)
+        }}
         onFocusCapture={() => setPaused(true)}
         onBlurCapture={() => setPaused(false)}
         onTouchStart={() => setPaused(true)}
+        onTouchEnd={() => setPaused(false)}
+        onTouchCancel={() => setPaused(false)}
       >
         <Carousel opts={{ loop: true, align: "start" }} setApi={setApi}>
           <CarouselContent className="-ml-0">

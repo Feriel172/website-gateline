@@ -75,9 +75,11 @@ export interface ProductContent {
    * without it the section draws its own.
    */
   results: {
-    /** `panels` is how many stages the shot is cut into; 2 (before / after) unless set. */
-    images: { src: string; panels?: number }[]
-    labelsInImage?: boolean
+    /**
+     * `panels` is how many stages a shot is cut into (2 unless set), and
+     * `labelsInImage` marks one that already has the pills printed on it.
+     */
+    images: { src: string; panels?: number; labelsInImage?: boolean }[]
     stats: Stat[]
     note: string
   } | null
@@ -97,36 +99,33 @@ export interface ProductContent {
 }
 
 const DELIVERY_ANSWER =
-  "Un membre de l'équipe vous appelle pour confirmer votre commande, au plus tard le lendemain, et la livraison intervient 2 jours après cette validation, partout en Algérie."
+  "24h à 48h après votre commande"
 
 export const PRODUCT_CONTENT: Record<string, ProductContent> = {
   "radiance-serum": {
     category: "Toner pads",
     badge: "Bestseller",
     gallery: [
-      "/images/products/niacinamide/hero.png",
+      "/images/products/niacinamide_tonerpads.jpg",
       "/images/products/niacinamide/thumb-1.png",
       "/images/products/niacinamide/thumb-2.png",
       "/images/products/niacinamide/thumb-3.png",
       "/images/products/niacinamide/thumb-4.png",
     ],
-    promise: {
-      title: "Des résultats visibles dès 2 semaines",
-      subtitle: "Une peau plus lumineuse, des pores moins visibles et un teint plus uniforme.",
-    },
+    promise: null,
     benefits: [
       { icon: "spark", label: "Réduit les taches et unifie le teint" },
       { icon: "pores", label: "Minimise les pores" },
       { icon: "sebum", label: "Régule l'excès de sébum" },
       { icon: "soothe", label: "Apaise et hydrate en profondeur" },
     ],
-    lifestyle: {
-      image: "/images/products/niacinamide/lifestyle.png",
-      caption: "Une peau plus nette, plus lumineuse au quotidien.",
-    },
+    lifestyle: null,
     results: {
-      images: [{ src: "/images/products/niacinamide/before-after.png" }],
-      labelsInImage: true,
+      images: [
+        { src: "/images/products/niacinamide/before-after-2.jpg" },
+        { src: "/images/products/niacinamide/before-after-3bs.jpg" },
+        { src: "/images/products/niacinamide/before-after-4.jpg" },
+      ],
       stats: [
         { value: "89%", label: "peau plus lumineuse" },
         { value: "85%", label: "pores moins visibles" },
@@ -194,65 +193,113 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       },
       { question: "Quels sont les délais de livraison ?", answer: DELIVERY_ANSWER },
     ],
+    // Customer photos, served exactly as supplied. Titles name what each one
+    // shows rather than a duration, since no timings were given.
+    milestones: [
+      {
+        src: "/images/products/niacinamide/resultat-1.png",
+        title: "Points noirs",
+        description:
+          "Les points noirs du nez sont nettement moins visibles et les pores paraissent resserrés.",
+        tags: ["Pores désobstrués", "Nez plus net", "Sébum régulé"],
+      },
+      {
+        src: "/images/products/niacinamide/resultat-2.jpg",
+        title: "Rougeurs",
+        description:
+          "La peau est visiblement apaisée : les rougeurs diffuses s'atténuent et le teint gagne en homogénéité.",
+        tags: ["Rougeurs apaisées", "Teint unifié", "Peau confortable"],
+      },
+      {
+        src: "/images/products/niacinamide/resultat-3.jpg",
+        title: "Grain de peau",
+        description:
+          "Le relief de la peau est lissé autour du nez et des joues, pour un grain visiblement plus fin.",
+        tags: ["Grain affiné", "Peau plus lisse", "Teint lumineux"],
+      },
+      {
+        src: "/images/products/niacinamide/resultat-4.jpg",
+        title: "Pores dilatés",
+        description:
+          "Les pores de la joue paraissent minimisés et la peau reflète mieux la lumière.",
+        tags: ["Pores minimisés", "Peau plus nette", "Éclat retrouvé"],
+      },
+      {
+        src: "/images/products/niacinamide/resultat-5.jpg",
+        title: "Marques d'acné",
+        description:
+          "Les marques rouges laissées par les boutons s'estompent et le teint redevient uniforme.",
+        tags: ["Marques atténuées", "Teint unifié", "Peau apaisée"],
+      },
+      {
+        src: "/images/products/niacinamide/resultat-6.jpg",
+        title: "Imperfections",
+        description:
+          "Les boutons se raréfient et les traces qu'ils laissent derrière eux s'éclaircissent nettement.",
+        tags: ["Imperfections réduites", "Traces éclaircies", "Peau plus nette"],
+      },
+    ],
     testimonials: [
       {
-        name: "Sarah L.",
+        name: "Mouna L.",
         since: "Il y a 2 semaines",
-        quote: "Andi 15j mli cherit had 2 produit dyalkom Kan 3endi klef 3ejb Rahli 70%",
+        quote: "syit la boite jaune m3blich wla rani ntkhayl ms tellement wihi rah fih le golw w rtab mamntch hba n93od nchouf fih.",
         image: "/images/products/niacinamide/avis-sarah.png",
+        photo:"/images/products/niacinamide/avis-1.jpeg",
         rating: 5,
       },
       {
-        name: "Oum Maram.",
+        name: "Zahira C.",
         since: "Il y a 1 mois",
-        quote: "وحدا ف 10 جوان و وحدا ف 27 جوان",
+        quote: "J’ai recommander 4 boîtes du toner à la niacinamide et 1 à l'AHA Pour moi et mes copines parce qu'elles ont toute remarquer la différence que ça a fait sur ma peau et veulent l'essayer aussi ",
         image: "/images/products/niacinamide/avis-ines.png",
         rating: 5,
       },
       {
-        name: "Nour B.",
+        name: "Nesrine B.",
         since: "Il y a 1 semaine",
-        quote: "Wellah les produits magnifique surtout les pads bleu kano 3ndi des cicatrices hadi moda twila ki sta3mlt les pads khafo bzf inchallah ytwafro f kml les cosmétiques",
+        quote: "والله خرج عليا هايل انشاء اللّٰه توفرهولنا فكوسميتيك",
         image: "/images/products/niacinamide/avis-nour.png",
+        photo:"/images/products/niacinamide/avis-2.jpeg",
         rating: 5,
       },
       {
-        name: "Amel D.",
+        name: "Rayane B.",
         since: "Il y a 3 semaines",
-        quote: "منتجاتكم فاقوا التوقعات روعة ولله الحمد اللّٰه يبارك عليكم ويباركلكم في رزقكم ومالكم راح نكون زبونتكم الوفية باذن اللّه",
+        quote: "Les patchs gateline tres efficace, j'ai adoré",
         image: "/images/products/niacinamide/avis-amel.png",
         rating: 5,
       },
       {
-        name: "Dounia B.",
+        name: "Assia C.",
         since: "Il y a 3 semaines",
-        quote: "seyit les pads nta3kom un coup de coeur",
+        quote: "J'ai essayé votre produit je l'aime trop Ms vraiment c'est une découverte votre marque",
         image: "/images/products/niacinamide/avis-amel.png",
         rating: 5,
       },
       {
-        name: "Warda E.",
+        name: "marwa Z.",
         since: "Il y a 3 semaines",
-        quote: "Habit n9olkom merci 3la had magnifique produits vraiment hayel deja rah nzid commande",
+        quote: "أنا حبيت منتجكم لانو تونر وينظف فنفس الوقت لقيتو خيار ملائم جدا بش نمسح بيه وجهي صباحا قبل مندير روتينيي الصباحي أنا ندير سيروم فيتامين سي ومرطب وواقي شمسي",
         image: "/images/products/niacinamide/avis-amel.png",
         rating: 5,
       },
       {
-        name: "Yassmine T.",
+        name: "Assma B.",
         since: "Il y a 3 semaines",
-        quote: "Toner pads c'est mon coup de cœur vraiment rien a dire",
+        quote: "without compliments your product amazing walah",
         image: "/images/products/niacinamide/avis-amel.png",
         rating: 5,
       },
       {
-        name: "Nora K.",
+        name: "Douaa G.",
         since: "Il y a 4 semaines",
-        quote: "المنتوج تاعكم جربتtoner pads حسيت وجهي نقي و رطب مازال ماكملتش الشهر",
+        quote: "نشكركم لانو مدة وانا نحوس على منتج هكذا يكون تونر وينظف ويغذي وخفيف ومواد تاوعو خفيفة ماتضرش وشرف ليا لقيتو منتوج بلادي",
         image: "/images/products/niacinamide/avis-amel.png",
         rating: 5,
       },
     ],
-    brandScene: "/images/products/niacinamide/brand-scene.png",
+    brandScene: null,
   },
 
   "hydrating-serum": {
@@ -290,7 +337,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       stats: [
         { value: "89%", label: "moins de tâches" },
         { value: "85%", label: "moins de cicatrices" },
-        { value: "82%", label: "teint plus uniforme" },
+        { value: "90%", label: "teint plus uniforme" },
       ],
       note: "Résultats visibles après 4 semaines d'utilisation. Des milliers de clientes ont déjà vu la différence ; Une peau plus nette, plus lumineuse et un teint unifié dès quelques semaines d'utilisation. ",
     },
@@ -461,6 +508,13 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
         name: "Nora K.",
         since: "Il y a 4 semaines",
         quote: "المنتوج تاعكم جربتtoner pads حسيت وجهي نقي و رطب مازال ماكملتش الشهر",
+        image: "/images/products/niacinamide/avis-amel.png",
+        rating: 5,
+      },
+      {
+        name: "Nadjet S.",
+        since: "Il y a 4 semaines",
+        quote: "لبارح في ليل جربت الغليكوليك وبزاف عجبني صح حسيت بشرتي تنقات ولقيت Glow جميل يعطيكم الصحة راح نبدا نداوم عليهم ونمدلكم النتيجة ولي تواصلت معايا في التلفون وفهمتني في طريقة الاستعمال ماشاء اللّٰه هايلة ومؤدبة يعطيها الصحة ",
         image: "/images/products/niacinamide/avis-amel.png",
         rating: 5,
       },

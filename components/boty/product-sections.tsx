@@ -157,11 +157,9 @@ function BeforeAfterSlide({
 // renders as a plain card, with no arrows, dots or motion.
 function BeforeAfterCarousel({
   images,
-  labelsInImage,
   sizes,
 }: {
-  images: { src: string; panels?: number }[]
-  labelsInImage?: boolean
+  images: { src: string; panels?: number; labelsInImage?: boolean }[]
   sizes: string
 }) {
   const [api, setApi] = useState<CarouselApi>()
@@ -193,7 +191,7 @@ function BeforeAfterCarousel({
       <BeforeAfterSlide
         image={images[0].src}
         panels={images[0].panels}
-        labelsInImage={labelsInImage}
+        labelsInImage={images[0].labelsInImage}
         sizes={sizes}
       />
     )
@@ -220,7 +218,7 @@ function BeforeAfterCarousel({
               <BeforeAfterSlide
                 image={image.src}
                 panels={image.panels}
-                labelsInImage={labelsInImage}
+                labelsInImage={image.labelsInImage}
                 sizes={sizes}
               />
             </CarouselItem>
@@ -281,7 +279,6 @@ export function ProductResultsCompact({ results }: { results: ProductContent["re
       <div className="-mx-5 sm:mx-0">
         <BeforeAfterCarousel
           images={results.images}
-          labelsInImage={results.labelsInImage}
           sizes="(min-width: 1024px) 848px, 100vw"
         />
       </div>

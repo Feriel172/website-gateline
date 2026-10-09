@@ -17,7 +17,6 @@ import { ProductGallery } from "@/components/boty/product-gallery"
 import { ProductStickyBar } from "@/components/boty/product-sticky-bar"
 import { contentFor } from "@/lib/product-content"
 import {
-  ProductActives,
   ProductBenefits,
   ProductBrandBlock,
   ProductFaq,
@@ -62,7 +61,7 @@ const products: Record<string, {
     id: "hydrating-serum",
     name: "Toner Pads 5% AHA",
     tagline: "Exfolie chimiquement la peau en douceur pour une peau plus lisse et un teint unifié. ",
-    description: "Obtenez une peau nette et éclatante avec les toner pads 5% d'acide glycolique. Cette formule exfolie en douceur, et aide contre les imperfections. Elle élimine les cellules mortes et affine le grain de peau pour une peau plus lisse et un teint uniforme.",
+    description: "",
     price: 1600,
     originalPrice: null,
     image: "/images/products/aha_tonerpads.jpg",
@@ -434,7 +433,6 @@ export default function ProductPage() {
             <>
               <ProductPromise promise={content.promise} />
               <ProductLifestyle lifestyle={content.lifestyle} />
-              <ProductActives actives={content.actives} />
               <ProductSteps steps={content.steps} />
               <ProductMilestones milestones={content.milestones} />
               <ProductSkinTypes skinTypes={content.skinTypes} />

@@ -25,7 +25,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel"
-import type { Active, BenefitIcon, FaqItem, ProductContent, Stat, Step, Testimonial } from "@/lib/product-content"
+import type { BenefitIcon, FaqItem, ProductContent, Stat, Step, Testimonial } from "@/lib/product-content"
 
 const ICONS: Record<BenefitIcon, React.ComponentType<{ className?: string }>> = {
   spark: Sparkles,
@@ -206,7 +206,7 @@ function BeforeAfterCarousel({
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
     >
-      <Carousel opts={{ loop: true, align: "start" }} setApi={setApi}>
+        <Carousel opts={{ loop: true, align: "start" }} setApi={setApi}>
         <CarouselContent className="-ml-0">
           {images.map((image) => (
             <CarouselItem key={image.src} className="pl-0">
@@ -310,6 +310,7 @@ interface MilestoneCard {
 export function ProductMilestones({ milestones }: { milestones?: MilestoneCard[] }) {
   const [api, setApi] = useState<CarouselApi>()
   const [current, setCurrent] = useState(0)
+  const [paused, setPaused] = useState(false)
 
   useEffect(() => {
     if (!api) return
@@ -320,6 +321,14 @@ export function ProductMilestones({ milestones }: { milestones?: MilestoneCard[]
       api.off("select", onSelect)
     }
   }, [api])
+
+  useEffect(() => {
+    if (!api || paused) return
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+
+    const timer = setInterval(() => api.scrollNext(), 4000)
+    return () => clearInterval(timer)
+  }, [api, paused])
 
   if (!milestones || milestones.length === 0) return null
 
@@ -332,30 +341,41 @@ export function ProductMilestones({ milestones }: { milestones?: MilestoneCard[]
         Votre peau, semaine après semaine
       </h2>
 
-      <Carousel opts={{ loop: true, align: "start" }} setApi={setApi}>
+      {/* Rotates on its own; stops as soon as someone interacts with it */}
+      <div
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        onFocusCapture={() => setPaused(true)}
+        onBlurCapture={() => setPaused(false)}
+        onTouchStart={() => setPaused(true)}
+      >
+        <Carousel opts={{ loop: true, align: "start" }} setApi={setApi}>
         <CarouselContent>
           {milestones.map((stage) => (
             <CarouselItem key={stage.src} className="md:basis-1/2">
               <article>
-                <div className="relative rounded-3xl overflow-hidden bg-card">
+                <div className="rounded-3xl overflow-hidden bg-card">
                   {/* Served at its own size and shape: cropping these loses the
                       detail that makes the result readable. */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={stage.src} alt={stage.title} loading="lazy" className="w-full h-auto" />
-                  {stage.tags.length > 0 && (
-                    <ul className="absolute bottom-4 right-4 flex flex-col items-end gap-2">
-                      {stage.tags.map((tag) => (
-                        <li
-                          key={tag}
-                          className="rounded-lg bg-white/95 text-foreground text-xs px-3 py-1.5 shadow-sm"
-                        >
-                          {tag}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
                 </div>
-                <h3 className="font-serif text-xl md:text-2xl text-foreground mt-5 mb-2">
+
+                {/* Under the photo, never over it — on a before / after shot the
+                    corner they used to sit in is the result itself. */}
+                {stage.tags.length > 0 && (
+                  <ul className="flex flex-wrap gap-2 mt-4">
+                    {stage.tags.map((tag) => (
+                      <li
+                        key={tag}
+                        className="rounded-full bg-card text-foreground text-xs px-3 py-1.5"
+                      >
+                        {tag}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <h3 className="font-serif text-xl md:text-2xl text-foreground mt-4 mb-2">
                   {stage.title}
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{stage.description}</p>
@@ -363,7 +383,8 @@ export function ProductMilestones({ milestones }: { milestones?: MilestoneCard[]
             </CarouselItem>
           ))}
         </CarouselContent>
-      </Carousel>
+        </Carousel>
+      </div>
 
       <div className="flex items-center justify-center gap-2 mt-8">
         {milestones.map((stage, i) => (
@@ -377,37 +398,6 @@ export function ProductMilestones({ milestones }: { milestones?: MilestoneCard[]
               i === current ? "w-6 bg-primary" : "w-1.5 bg-foreground/20 hover:bg-foreground/40"
             }`}
           />
-        ))}
-      </div>
-    </section>
-  )
-}
-
-// --- The actives doing the work ---
-
-export function ProductActives({ actives }: { actives: Active[] }) {
-  if (actives.length === 0) return null
-
-  return (
-    <section>
-      <SectionTitle title="Des actifs puissants pour une peau plus saine" />
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {actives.map((active) => (
-          <article key={active.name} className="rounded-3xl overflow-hidden bg-card boty-shadow">
-            <div className="relative aspect-[16/10]">
-              <Image
-                src={active.image}
-                alt=""
-                fill
-                className="object-cover"
-                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-              />
-            </div>
-            <div className="p-6">
-              <h3 className="font-serif text-xl text-foreground mb-2">{active.name}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{active.description}</p>
-            </div>
-          </article>
         ))}
       </div>
     </section>
@@ -559,7 +549,7 @@ export function ProductTestimonials({
       <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 mb-8">
         <div>
           <h2 className="font-serif text-3xl md:text-4xl text-foreground">
-            Elles en parlent mieux que nous
+            Avis clients
           </h2>
           <div className="flex items-center gap-2 mt-2">
             <div className="flex">
@@ -635,12 +625,7 @@ export function ProductBrandBlock({ scene }: { scene: string | null }) {
           <Image src={scene} alt="" fill className="object-cover" sizes="(min-width: 640px) 50vw, 100vw" />
         </div>
       )}
-      <div className="px-8 py-12 text-center">
-        <h2 className="font-serif text-3xl text-foreground mb-2">Gateline Cosmetics</h2>
-        <p className="text-muted-foreground max-w-sm mx-auto">
-          Des soins simples pour une peau plus belle, au naturel.
-        </p>
-      </div>
+      
     </section>
   )
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Image from "next/image"
-import { ChevronLeft, ChevronRight, Expand } from "lucide-react"
+import { Expand } from "lucide-react"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 
 interface ProductGalleryProps {
@@ -14,8 +14,8 @@ interface ProductGalleryProps {
 }
 
 const STRINGS = {
-  fr: { previous: "Image précédente", next: "Image suivante", zoom: "Agrandir l'image", thumb: "Voir l'image" },
-  ar: { previous: "الصورة السابقة", next: "الصورة التالية", zoom: "تكبير الصورة", thumb: "عرض الصورة" },
+  fr: { zoom: "Agrandir l'image", thumb: "Voir l'image" },
+  ar: { zoom: "تكبير الصورة", thumb: "عرض الصورة" },
 } as const
 
 export function ProductGallery({ images, alt, badge, rtl = false }: ProductGalleryProps) {
@@ -31,11 +31,6 @@ export function ProductGallery({ images, alt, badge, rtl = false }: ProductGalle
   if (images.length === 0) return null
 
   const clamped = Math.min(index, images.length - 1)
-  const step = (delta: number) =>
-    setIndex((current) => (current + delta + images.length) % images.length)
-
-  // In RTL the on-screen arrows swap meaning: the "previous" control sits right
-  const prevDelta = rtl ? 1 : -1
 
   return (
     <div>
@@ -64,26 +59,8 @@ export function ProductGallery({ images, alt, badge, rtl = false }: ProductGalle
           <Expand className="w-4 h-4" />
         </button>
 
-        {images.length > 1 && (
-          <>
-            <button
-              type="button"
-              onClick={() => step(prevDelta)}
-              aria-label={t.previous}
-              className="absolute start-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-background/90 backdrop-blur-sm flex items-center justify-center text-foreground/70 hover:text-foreground boty-transition opacity-0 group-hover:opacity-100 focus-visible:opacity-100 max-lg:opacity-100"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <button
-              type="button"
-              onClick={() => step(-prevDelta)}
-              aria-label={t.next}
-              className="absolute end-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-background/90 backdrop-blur-sm flex items-center justify-center text-foreground/70 hover:text-foreground boty-transition opacity-0 group-hover:opacity-100 focus-visible:opacity-100 max-lg:opacity-100"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </>
-        )}
+        {/* No arrows over the image: several gallery shots carry printed copy
+            and the controls sat on top of it. The thumbnails below navigate. */}
       </div>
 
       {images.length > 1 && (

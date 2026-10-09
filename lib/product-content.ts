@@ -389,11 +389,18 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
         tags: ["Imperfections réduites", "Peau plus nette"],
       },
       {
-        src: "/images/products/aha/resultat-5.jpg",
+        src: "/images/products/aha/resultat-5.png",
         title: "Zones de frottement",
         description:
           "Les zones sombres et épaissies s'éclaircissent progressivement et la texture s'affine.",
         tags: ["Peau plus claire", "Texture affinée"],
+      },
+      {
+        src: "/images/products/aha/resultat-6.jpg",
+        title: "Rugosités du corps",
+        description:
+          "Les petits points rouges et la sensation granuleuse s'estompent : la peau est nettement plus lisse et plus douce au toucher.",
+        tags: ["Rugosités lissées", "Peau plus douce", "Rougeurs apaisées"],
       },
     ],
     // Placeholder copy, like the Niacinamide ones: same customers, same photos,

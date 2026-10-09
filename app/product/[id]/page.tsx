@@ -388,13 +388,6 @@ export default function ProductPage() {
                 </button>
               </div>
 
-              {/* Before / after and the measured figures, right under the CTA */}
-              {content?.results && (
-                <div className="mb-10">
-                  <ProductResultsCompact results={content.results} />
-                </div>
-              )}
-
               {/* Reassurance, directly under the buttons */}
               <div className="grid grid-cols-3 gap-4">
                 {benefits.slice(0, 3).map((benefit) => (
@@ -413,6 +406,25 @@ export default function ProductPage() {
           </div>
         </div>
 
+        {/* Reviews come first after the buy box, straight under the reassurance row */}
+        {content && content.testimonials.length > 0 && (
+          <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-14">
+            <ProductTestimonials
+              testimonials={content.testimonials}
+              rating={4.9}
+              reviewCount={128}
+            />
+          </div>
+        )}
+
+        {/* Before / after and the measured figures, straight under the buy box.
+            Outside the column so the photos are not boxed into half the page. */}
+        {content?.results && (
+          <div className="max-w-4xl mx-auto px-6 lg:px-8 mt-14">
+            <ProductResultsCompact results={content.results} />
+          </div>
+        )}
+
         {/* Everything below the buying decision */}
         <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-20 space-y-20">
           {content && (
@@ -421,12 +433,6 @@ export default function ProductPage() {
               <ProductLifestyle lifestyle={content.lifestyle} />
               <ProductActives actives={content.actives} />
               <ProductSteps steps={content.steps} />
-              {/* Reviews sit straight after the actives and the how-to */}
-              <ProductTestimonials
-                testimonials={content.testimonials}
-                rating={4.9}
-                reviewCount={128}
-              />
               <ProductSkinTypes skinTypes={content.skinTypes} />
               <ProductBenefits benefits={content.benefits} />
               <ProductFaq faq={content.faq} />

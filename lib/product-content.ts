@@ -126,7 +126,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
         { value: "85%", label: "pores moins visibles" },
         { value: "90%", label: "teint plus uniforme" },
       ],
-      note: "Résultats visibles après 4 semaines d'utilisation.",
+      note: "Résultats visibles après 4 semaines d'utilisation. Des milliers de clientes ont déjà vu la différence ; Une peau plus nette, plus lumineuse et un teint unifié dès quelques semaines d&apos;utilisation. ",
     },
     actives: [
       {
@@ -371,10 +371,11 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
         rating: 5,
       },
       {
-        name: "Amel D.",
+        name: "Lylia B.",
         since: "Il y a 3 semaines",
-        quote: "منتجاتكم فاقوا التوقعات روعة ولله الحمد اللّٰه يبارك عليكم ويباركلكم في رزقكم ومالكم راح نكون زبونتكم الوفية باذن اللّه",
+        quote: "نحير كي نشوف واش ينحي دبوغية! يديا مغسولين يعني ماشي وسخ",
         image: "/images/products/niacinamide/avis-amel.png",
+        photo: "/images/products/aha/avis-2.jpeg",
         rating: 5,
       },
       {

@@ -278,7 +278,7 @@ export function ProductResultsCompact({ results }: { results: ProductContent["re
       <BeforeAfterCarousel
         images={results.images}
         labelsInImage={results.labelsInImage}
-        sizes="(min-width: 1024px) 40vw, 100vw"
+        sizes="(min-width: 1024px) 848px, 100vw"
       />
 
       <dl className="grid grid-cols-3 gap-3 mt-3">

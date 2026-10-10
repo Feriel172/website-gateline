@@ -517,7 +517,6 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       "/images/products/hydra-cream/gallery-resultats.png",
       "/images/products/hydra-cream/gallery-rituel.png",
       "/images/products/hydra-cream/gallery-comparatif.png",
-
     ],
     promise: null,
     benefits: [

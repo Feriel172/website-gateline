@@ -56,7 +56,7 @@ import { useAdminAuth } from "@/hooks/use-admin-auth"
 import {
   type Order,
   type OrderItem,
-  confirmedOrders,
+  deliveredOrders,
   formatCurrency,
   lineTotal,
   orderShipping,
@@ -213,7 +213,8 @@ function DashboardCards({ orders }: { orders: Order[] }) {
   const cancelled = orders.filter((o) => o.status === "annulé").length
   const swapped = orders.filter((o) => deliveryStatusOf(o) === "swap").length
   const returned = orders.filter((o) => isReturned(o)).length
-  const earning = confirmedOrders(orders)
+  // Paid on delivery, so only delivered orders count as revenue
+  const earning = deliveredOrders(orders)
   const revenue = earning.reduce((sum, o) => sum + o.total, 0)
   const productRevenue = earning.reduce((sum, o) => sum + orderSubtotal(o.items), 0)
 

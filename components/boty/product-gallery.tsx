@@ -72,17 +72,18 @@ export function ProductGallery({ images, alt, badge, rtl = false }: ProductGalle
                     sizes="(min-width: 1024px) 50vw, 100vw"
                     priority={i === 0}
                   />
+                  {/* Belongs to the product, not the gallery, so it stays on
+                      the opening shot and slides away with it. */}
+                  {badge && i === 0 && (
+                    <span className="absolute top-4 start-4 px-3 py-1.5 rounded-full bg-background/90 backdrop-blur-sm text-xs font-medium text-foreground">
+                      {badge}
+                    </span>
+                  )}
                 </div>
               </CarouselItem>
             ))}
           </CarouselContent>
         </Carousel>
-
-        {badge && (
-          <span className="absolute top-4 start-4 px-3 py-1.5 rounded-full bg-background/90 backdrop-blur-sm text-xs font-medium text-foreground">
-            {badge}
-          </span>
-        )}
 
         <button
           type="button"

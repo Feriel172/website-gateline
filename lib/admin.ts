@@ -204,8 +204,9 @@ export function orderShipping(order: Order): number {
 }
 
 // --- Revenue scope ---
-// Every revenue figure counts confirmed orders only. Pending, unreachable and
-// cancelled orders are not money earned, so they must not inflate the totals.
+// Money is only earned once the parcel reaches the customer and is paid for on
+// delivery. An order that is confirmed but still in transit, swapped away or
+// returned has not been paid, so it must not inflate revenue or profit.
 
 export function isConfirmed(order: Order): boolean {
   return order.status === "confirmée"
@@ -213,6 +214,14 @@ export function isConfirmed(order: Order): boolean {
 
 export function confirmedOrders(orders: Order[]): Order[] {
   return orders.filter(isConfirmed)
+}
+
+export function isDelivered(order: Order): boolean {
+  return deliveryStatusOf(order) === "livrée"
+}
+
+export function deliveredOrders(orders: Order[]): Order[] {
+  return orders.filter(isDelivered)
 }
 
 // --- Production costs ---

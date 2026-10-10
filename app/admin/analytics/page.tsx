@@ -21,7 +21,7 @@ import { OrdersCalendar } from "@/components/admin/orders-calendar"
 import { useAdminAuth } from "@/hooks/use-admin-auth"
 import {
   type Order,
-  confirmedOrders,
+  deliveredOrders,
   formatCurrency,
   orderProductionCost,
   orderSubtotal,
@@ -86,15 +86,18 @@ export default function AdminAnalyticsPage() {
 
   // Every figure on the page is scoped to the month picked in the calendar
   const monthOrders = ordersInMonth(orders, month)
-  const earning = confirmedOrders(monthOrders)
+  // Only delivered orders are money in hand — the rest are not paid for yet
+  const earning = deliveredOrders(monthOrders)
   const grossRevenue = earning.reduce((sum, o) => sum + o.total, 0)
   const productRevenue = earning.reduce((sum, o) => sum + orderSubtotal(o.items), 0)
   const delivery = grossRevenue - productRevenue
   const productionCost = earning.reduce((sum, o) => sum + orderProductionCost(o), 0)
   // Courier fees paid out of pocket: re-routing a parcel to another customer,
   // and bringing an undelivered one back. Both come off revenue and profit.
-  const swapCosts = totalSwapCost(earning)
-  const returnCosts = totalReturnCost(earning)
+  // A swapped or returned parcel is never "livrée", so these fees have to be
+  // counted across the whole month or they would disappear from the books.
+  const swapCosts = totalSwapCost(monthOrders)
+  const returnCosts = totalReturnCost(monthOrders)
   const revenue = grossRevenue - swapCosts - returnCosts
   // Delivery is charged to the customer and paid straight back out to the
   // courier, so it nets out: profit is what the products earned less what they
@@ -164,7 +167,7 @@ export default function AdminAnalyticsPage() {
           <>
             <p className="text-sm text-muted-foreground mb-4">
               <span className="capitalize">{format(month, "LLLL yyyy", { locale: fr })}</span> · calculé
-              sur les {earning.length} commandes confirmées du mois.
+              sur les {earning.length} commandes livrées du mois.
             </p>
             {/* Reads left to right as the calculation: total, less delivery,
                 less production cost, less swap and return fees, leaves profit. */}

@@ -112,6 +112,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       "/images/products/niacinamide/gallery-pres.png",
       "/images/products/niacinamide/gallery-comparatif.png",
     ],
+
     promise: null,
     benefits: [
       { icon: "spark", label: "Réduit les taches et unifie le teint" },

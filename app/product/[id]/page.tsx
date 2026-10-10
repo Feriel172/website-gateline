@@ -47,7 +47,7 @@ const products: Record<string, {
     id: "radiance-serum",
     name: "Toner Pads 4% Niacinamide",
     tagline: "Illumine et unifie le teint, améliore l'aspect des pores et régule la production de sébum. ",
-    description: " Enrichis en niacinamide et en extrait de réglisse, ces disques ciblent et réduisent l'apparence des taches brunes et des marques d'acné existantes, contribuent à resserrer les pores dilatés, Illuminent le teint et ravivent l’éclat naturel pour un teint unifié et éclatant.",
+    description: "",
     price: 1600,
     originalPrice: null,
     image: "/images/products/niacinamide_tonerpads.jpg",

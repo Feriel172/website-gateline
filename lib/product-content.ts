@@ -105,12 +105,12 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
   "radiance-serum": {
     category: "Toner pads",
     badge: "Bestseller",
+    // Product shots first, then the branded visuals
     gallery: [
       "/images/products/niacinamide_tonerpads.jpg",
-      "/images/products/niacinamide/thumb-1.png",
-      "/images/products/niacinamide/thumb-2.png",
-      "/images/products/niacinamide/thumb-3.png",
-      "/images/products/niacinamide/thumb-4.png",
+      "/images/products/niacinamide/gallery-cure.png",
+      "/images/products/niacinamide/gallery-pres.png",
+      "/images/products/niacinamide/gallery-comparatif.png",
     ],
     promise: null,
     benefits: [
@@ -205,13 +205,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
         tags: ["Pores désobstrués", "Nez plus net", "Sébum régulé"],
       },
       
-      {
-        src: "/images/products/niacinamide/resultat-3.jpg",
-        title: "Grain de peau",
-        description:
-          "Le relief de la peau est lissé autour du nez et des joues, pour un grain visiblement plus fin.",
-        tags: ["Grain affiné", "Peau plus lisse", "Teint lumineux"],
-      },
+      
       {
         src: "/images/products/niacinamide/resultat-4.jpg",
         title: "Pores dilatés",
@@ -226,13 +220,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
           "Les marques rouges laissées par les boutons s'estompent et le teint redevient uniforme.",
         tags: ["Marques atténuées", "Teint unifié", "Peau apaisée"],
       },
-      {
-        src: "/images/products/niacinamide/resultat-6.jpg",
-        title: "Imperfections",
-        description:
-          "Les boutons se raréfient et les traces qu'ils laissent derrière eux s'éclaircissent nettement.",
-        tags: ["Imperfections réduites", "Traces éclaircies", "Peau plus nette"],
-      },
+      
     ],
     testimonials: [
       {

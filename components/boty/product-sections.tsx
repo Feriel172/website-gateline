@@ -283,19 +283,24 @@ export function ProductResultsCompact({ results }: { results: ProductContent["re
         />
       </div>
 
-      <dl className="grid grid-cols-3 gap-3 mt-3">
-        {results.stats.map((stat) => (
-          <div
-            key={stat.label}
-            className="rounded-2xl bg-background p-4 text-center flex flex-col items-center"
-          >
-            <dt className="font-serif text-2xl text-foreground tabular-nums">{stat.value}</dt>
-            <dd className="text-xs text-muted-foreground leading-snug mt-1">{stat.label}</dd>
-          </div>
-        ))}
-      </dl>
+      {/* A product with photos but no measured figures still shows the shots */}
+      {results.stats.length > 0 && (
+        <dl className="grid grid-cols-3 gap-3 mt-3">
+          {results.stats.map((stat) => (
+            <div
+              key={stat.label}
+              className="rounded-2xl bg-background p-4 text-center flex flex-col items-center"
+            >
+              <dt className="font-serif text-2xl text-foreground tabular-nums">{stat.value}</dt>
+              <dd className="text-xs text-muted-foreground leading-snug mt-1">{stat.label}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
 
-      <p className="text-[11px] text-muted-foreground leading-relaxed mt-4">{results.note}</p>
+      {results.note && (
+        <p className="text-[11px] text-muted-foreground leading-relaxed mt-4">{results.note}</p>
+      )}
     </section>
   )
 }

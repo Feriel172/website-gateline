@@ -509,27 +509,35 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
   "hydra-cream": {
     category: "Contour des yeux",
     badge: "Bestseller",
+    // Product shot first, then the branded visuals
     gallery: [
       "/images/products/cafeine_contour.png",
-      "/images/bento-skin-model.jpg",
-      "/images/hero-model.jpg",
-      "/images/skincare-ritual.jpg",
+      "/images/products/hydra-cream/gallery-cure.png",
+      "/images/products/hydra-cream/gallery-benefices.png",
+      "/images/products/hydra-cream/gallery-resultats.png",
+      "/images/products/hydra-cream/gallery-rituel.png",
+      "/images/products/hydra-cream/gallery-comparatif.png",
+
     ],
-    promise: {
-      title: "Un regard décongestionné dès l'application",
-      subtitle: "L'embout métallique rafraîchit pendant que la caféine agit.",
-    },
+    promise: null,
     benefits: [
       { icon: "eyes", label: "Atténue les cernes pigmentaires et vasculaires" },
       { icon: "soothe", label: "Réduit les poches sous les yeux" },
       { icon: "hydrate", label: "Hydrate et repulpe le contour" },
       { icon: "spark", label: "Ravive l'éclat du regard" },
     ],
-    lifestyle: {
-      image: "/images/hero-model.jpg",
-      caption: "Un regard frais et reposé, matin et soir.",
+    lifestyle: null,
+    // Customer photos. No measured figures for this one yet, so the stats
+    // tiles and the test note stay empty and the section skips them.
+    results: {
+      images: [
+        { src: "/images/products/hydra-cream/before-after-1.jpg" },
+        { src: "/images/products/hydra-cream/before-after-2.jpg" },
+        { src: "/images/products/hydra-cream/before-after-3.jpg" },
+      ],
+      stats: [],
+      note: "",
     },
-    results: null,
     actives: [
       {
         name: "Caféine",
@@ -573,7 +581,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     faq: [
       {
         question: "Matin ou soir ?",
-        answer: "L'un, l'autre ou les deux : appliquez une petite quantité matin et/ou soir.",
+        answer: "appliquez une petite quantité matin et/ou soir.",
       },
       {
         question: "Pourquoi le conserver au réfrigérateur ?",
@@ -591,33 +599,101 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       },
       { question: "Quels sont les délais de livraison ?", answer: DELIVERY_ANSWER },
     ],
-    testimonials: [],
+    // The same customer photos as the carousel above, shown here exactly as
+    // supplied rather than cropped to the 2:1 frame.
+    milestones: [
+      {
+        src: "/images/products/hydra-cream/resultat-1.png",
+        title: "Cernes bleus",
+        description:
+          "Le cerne bleuté sous l'œil est visiblement éclairci et le regard paraît moins fatigué.",
+        tags: ["Cernes atténués", "Regard éclairci", "Contour hydraté"],
+      },
+      {
+        src: "/images/products/hydra-cream/resultat-2.jpg",
+        title: "Poches et gonflements",
+        description:
+          "La zone sous l'œil est décongestionnée : les poches sont réduites et le contour paraît plus lisse.",
+        tags: ["Poches réduites", "Contour lissé", "Effet décongestionnant"],
+      },
+      {
+        src: "/images/products/hydra-cream/resultat-3.jpg",
+        title: "Cernes et fatigue",
+        description:
+          "Le contour est repulpé et l'ombre sous les yeux s'estompe, pour un regard visiblement plus reposé.",
+        tags: ["Contour repulpé", "Cernes estompés", "Éclat du regard"],
+      },
+    ],
+    // Placeholder: copied from the Niacinamide pads purely for the structure.
+    // Names, dates and quotes all need replacing with this product's own.
+    testimonials: [
+      {
+        name: "Amira L.",
+        since: "Il y a 2 semaines",
+        quote: "Mon contour des yeux préféré j'ai testé plusieurs autres marques même celui de The ordinary à la caféine mais le votre est mille fois mieux",
+        image: "/images/products/niacinamide/avis-sarah.png",
+        rating: 5,
+      },
+      {
+        name: "Selma C.",
+        since: "Il y a 1 mois",
+        quote: "هايل يعطيكم الصحة واحد الانتعاش سورتو مور ما حطيتو فلفريجيدار",
+        image: "/images/products/niacinamide/avis-ines.png",
+        rating: 5,
+      },
+      {
+        name: "Esma B.",
+        since: "Il y a 1 semaine",
+        quote: " J'ai adoré l'hydratation tient plusieurs heures et l'odeur magnifique",
+        image: "/images/products/niacinamide/avis-nour.png",
+        rating: 5,
+      },
+      {
+        name: "Siham B.",
+        since: "Il y a 3 semaines",
+        quote: "Une très belle découverte ce produit d'habitude j'utilise des marques d'importation mais celui là est devenu mon préféré",
+        image: "/images/products/niacinamide/avis-amel.png",
+        rating: 5,
+      },
+      {
+        name: "Assia C.",
+        since: "Il y a 3 semaines",
+        quote: "J'ai essayé votre produit je l'aime trop Ms vraiment c'est une découverte votre marque",
+        image: "/images/products/niacinamide/avis-amel.png",
+        rating: 5,
+      },
+      {
+        name: "Sonia Z.",
+        since: "Il y a 3 semaines",
+        quote: "هذي ماشاء اللّٰه خرجت على وجهي هبال اللهم بارك حبيت نزيد ليا ونديرها كادوان شاء اللّٰه",
+        image: "/images/products/niacinamide/avis-amel.png",
+        rating: 5,
+      },
+      {
+        name: "naima B.",
+        since: "Il y a 3 semaines",
+        quote: "hayel même pour l'ydratation il est 2 en 1",
+        image: "/images/products/niacinamide/avis-amel.png",
+        rating: 5,
+      },
+      
+    ],
     brandScene: null,
   },
 
   "gentle-cleanser": {
     category: "Contour des yeux",
     badge: null,
-    gallery: [
-      "/images/products/collagene_contour.png",
-      "/images/bento-skin-model.jpg",
-      "/images/hero-model.jpg",
-      "/images/skincare-ritual.jpg",
-    ],
-    promise: {
-      title: "Hydrater et repulper le contour de l'œil",
-      subtitle: "Collagène et acide hyaluronique sur une peau particulièrement fine.",
-    },
+    // Product shot only — no model photos in the gallery
+    gallery: ["/images/products/collagene_contour.png"],
+    promise: null,
     benefits: [
       { icon: "hydrate", label: "Hydratation profonde" },
       { icon: "firm", label: "Repulpe et lisse la peau" },
       { icon: "antiage", label: "Réduit l'apparence des rides et ridules" },
       { icon: "soothe", label: "Nourrit une zone fragile" },
     ],
-    lifestyle: {
-      image: "/images/hero-model.jpg",
-      caption: "Un contour de l'œil lisse et confortable.",
-    },
+    lifestyle: null,
     results: null,
     actives: [
       {
@@ -688,26 +764,16 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
   "night-cream": {
     category: "Contour des yeux",
     badge: null,
-    gallery: [
-      "/images/products/retinol_contour.png",
-      "/images/bento-skin-model.jpg",
-      "/images/hero-model.jpg",
-      "/images/skincare-ritual.jpg",
-    ],
-    promise: {
-      title: "L'allié anti-âge du regard",
-      subtitle: "Le rétinol, introduit progressivement, selon la tolérance de votre peau.",
-    },
+    // Product shot only — no model photos in the gallery
+    gallery: ["/images/products/retinol_contour.png"],
+    promise: null,
     benefits: [
       { icon: "antiage", label: "Réduit l'apparence des rides et ridules" },
       { icon: "firm", label: "Améliore la fermeté de la peau" },
       { icon: "spark", label: "Ravive l'éclat du regard" },
       { icon: "hydrate", label: "Lisse le contour de l'œil" },
     ],
-    lifestyle: {
-      image: "/images/hero-model.jpg",
-      caption: "Un contour de l'œil plus lisse et plus lumineux.",
-    },
+    lifestyle: null,
     results: null,
     actives: [
       {
@@ -778,26 +844,16 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
   "renewal-oil": {
     category: "Masques",
     badge: "New",
-    gallery: [
-      "/images/products/collagene_masque.png",
-      "/images/hero-model.jpg",
-      "/images/bento-skin-model.jpg",
-      "/images/skincare-ritual.jpg",
-    ],
-    promise: {
-      title: "L'effet glass skin, en 15 minutes",
-      subtitle: "Un masque peel-off au collagène, 1 à 2 fois par semaine.",
-    },
+    // Product shot only — no model photos in the gallery
+    gallery: ["/images/products/collagene_masque.png"],
+    promise: null,
     benefits: [
       { icon: "hydrate", label: "Hydrate intensément" },
       { icon: "firm", label: "Améliore l'élasticité et la fermeté" },
       { icon: "spark", label: "Illumine le teint" },
       { icon: "antiage", label: "Atténue les ridules" },
     ],
-    lifestyle: {
-      image: "/images/hero-model.jpg",
-      caption: "Une peau repulpée, plus lisse et plus lumineuse.",
-    },
+    lifestyle: null,
     results: null,
     actives: [
       {
@@ -867,26 +923,16 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
   "rosehip-oil": {
     category: "Masques",
     badge: null,
-    gallery: [
-      "/images/products/aha_masque.png",
-      "/images/bento-skin-model.jpg",
-      "/images/skincare-ritual.jpg",
-      "/images/hero-model.jpg",
-    ],
-    promise: {
-      title: "Des pores nettoyés en profondeur",
-      subtitle: "Deux argiles et un AHA, 1 à 2 fois par semaine.",
-    },
+    // Product shot only — no model photos in the gallery
+    gallery: ["/images/products/aha_masque.png"],
+    promise: null,
     benefits: [
       { icon: "purify", label: "Purifie et nettoie en profondeur" },
       { icon: "pores", label: "Améliore l'apparence des pores" },
       { icon: "exfoliate", label: "Exfolie en douceur" },
       { icon: "spark", label: "Affine le grain de peau" },
     ],
-    lifestyle: {
-      image: "/images/bento-skin-model.jpg",
-      caption: "Un teint plus net, plus lisse et plus uniforme.",
-    },
+    lifestyle: null,
     results: null,
     actives: [
       {

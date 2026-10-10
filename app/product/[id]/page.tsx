@@ -75,7 +75,7 @@ const products: Record<string, {
     id: "hydra-cream",
     name: "Contour des yeux à la caféine",
     tagline: "décongestionne le contour de l'oeil grâce à son embout métallique, hydrate et atténue la pigmentation des cernes",
-    description: "ce gel contour des yeux atténue les cernes pigmentaires et vasculaires, réduit la taille et le volume des poches sous les yeux, hydrate, lisse et repulpe le contour des yeux.",
+    description: "",
     price: 900,
     originalPrice: null,
     image: "/images/products/cafeine_contour.png",
@@ -276,7 +276,7 @@ export default function ProductPage() {
                       <Star key={i} className="w-4 h-4 fill-primary text-primary" />
                     ))}
                   </div>
-                  <span className="text-sm text-muted-foreground">(128 avis)</span>
+                  <span className="text-sm text-muted-foreground">(758 avis)</span>
                 </div>
 
                 <p className="text-lg text-muted-foreground italic mb-4">{product.tagline}</p>

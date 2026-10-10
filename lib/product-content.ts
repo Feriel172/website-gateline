@@ -123,7 +123,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     results: {
       images: [
         { src: "/images/products/niacinamide/before-after-2.jpg" },
-        { src: "/images/products/niacinamide/before-after-3.jpg" },
+        { src: "/images/products/niacinamide/before-after-3.png" },
         { src: "/images/products/niacinamide/before-after-4.jpg" },
         
       ],

@@ -110,6 +110,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       "/images/products/niacinamide_tonerpads.jpg",
       "/images/products/niacinamide/gallery-cure.png",
       "/images/products/niacinamide/gallery-pres.png",
+      "/images/products/niacinamide/gallery-res.png",
       "/images/products/niacinamide/gallery-comparatif.png",
     ],
 

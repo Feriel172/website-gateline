@@ -700,7 +700,15 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       { icon: "soothe", label: "Nourrit une zone fragile" },
     ],
     lifestyle: null,
-    results: null,
+    // Customer photos. No measured figures for this one yet, so the stats
+    // tiles and the test note stay empty and the section skips them.
+    results: {
+      images: [
+        { src: "/images/products/gentle-cleanser/before-after-2.jpg" },
+      ],
+      stats: [],
+      note: "",
+    },
     actives: [
       {
         name: "Collagène",
@@ -762,6 +770,24 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
           "Sa formule hydratante est pensée pour la peau délicate du contour des yeux. En cas de doute, testez d'abord sur une petite zone.",
       },
       { question: "Quels sont les délais de livraison ?", answer: DELIVERY_ANSWER },
+    ],
+    // The same customer photos as the carousel above, shown here exactly as
+    // supplied rather than cropped to the 2:1 frame.
+    milestones: [
+      {
+        src: "/images/products/gentle-cleanser/resultat-1.jpg",
+        title: "Ridules et cernes",
+        description:
+          "Le contour est repulpé : les ridules sous l'œil sont lissées et l'ombre du cerne s'éclaircit.",
+        tags: ["Ridules lissées", "Contour repulpé", "Regard reposé"],
+      },
+      {
+        src: "/images/products/gentle-cleanser/resultat-2.jpg",
+        title: "Pattes d'oie et texture",
+        description:
+          "La peau du contour est plus souple et mieux hydratée, les plis au coin de l'œil sont adoucis.",
+        tags: ["Pattes d'oie adoucies", "Hydratation profonde", "Peau assouplie"],
+      },
     ],
     // Placeholder: copied from the Niacinamide pads purely for the structure.
     // Names, dates and quotes all need replacing with this product's own.

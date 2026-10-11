@@ -55,6 +55,13 @@ export interface Testimonial {
   photo?: string
 }
 
+/** A skin concern the product answers, with a photo showing it. */
+export interface Concern {
+  image: string
+  title: string
+  description: string
+}
+
 export interface FaqItem {
   question: string
   answer: string
@@ -93,6 +100,11 @@ export interface ProductContent {
    * tall as its own photo.
    */
   milestones?: { src: string; title: string; description: string; tags: string[] }[]
+  /**
+   * Stands in for a before / after block on products sold on the concern they
+   * answer rather than on a measurable change.
+   */
+  concerns?: Concern[]
   testimonials: Testimonial[]
   /** Product shot for the closing brand card. */
   brandScene: string | null
@@ -1043,8 +1055,14 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
   "renewal-oil": {
     category: "Masques",
     badge: "New",
-    // Product shot only — no model photos in the gallery
-    gallery: ["/images/products/collagene_masque.png"],
+    // Product shot first, then the branded visuals
+    gallery: [
+      "/images/products/collagene_masque.png",
+      "/images/products/renewal-oil/gallery-ingredients.png",
+      "/images/products/renewal-oil/gallery-mode-emploi.png",
+      "/images/products/renewal-oil/gallery-test.png",
+      "/images/products/renewal-oil/gallery-benefices.png",
+    ],
     promise: null,
     benefits: [
       { icon: "hydrate", label: "Hydrate intensément" },
@@ -1053,6 +1071,40 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       { icon: "antiage", label: "Atténue les ridules" },
     ],
     lifestyle: null,
+    // Shown instead of a before / after block: this mask is sold on the
+    // concerns it answers rather than on a measured change.
+    concerns: [
+      {
+        image: "/images/products/renewal-oil/besoin-1.jpg",
+        title: "Peau qui tiraille",
+        description: "Des plaques sèches et des peaux mortes qui s'accrochent au maquillage.",
+      },
+      {
+        image: "/images/products/renewal-oil/besoin-2.jpg",
+        title: "Grain de peau irrégulier",
+        description: "Des pores marqués et un relief qui accroche la lumière.",
+      },
+      {
+        image: "/images/products/renewal-oil/besoin-3.jpg",
+        title: "Ridules de déshydratation",
+        description: "De fines lignes qui apparaissent dès que la peau manque d'eau.",
+      },
+      {
+        image: "/images/products/renewal-oil/besoin-4.jpg",
+        title: "Peaux mortes en surface",
+        description: "Un film rugueux qui ternit le teint et gêne l'application des soins.",
+      },
+      {
+        image: "/images/products/renewal-oil/besoin-5.jpg",
+        title: "Teint terne, peau molle",
+        description: "Une peau fatiguée, qui a perdu de sa souplesse et de son rebond.",
+      },
+      {
+        image: "/images/products/renewal-oil/besoin-6.jpg",
+        title: "Le résultat : une glass skin",
+        description: "Une peau repulpée, lisse et lumineuse, qui accroche la lumière.",
+      },
+    ],
     results: null,
     actives: [
       {
@@ -1076,17 +1128,17 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
         title: "Après votre routine habituelle",
         detail:
           "Appliquez une couche uniforme en évitant les yeux, les sourcils, les lèvres et la racine des cheveux.",
-        image: "/images/skincare-ritual.jpg",
+        image: "/images/products/renewal-oil/step-1.jpg",
       },
       {
         title: "Laissez sécher 15 à 20 minutes",
         detail: "Le masque fige doucement sur la peau.",
-        image: "/images/bento-skin-model.jpg",
+        image: "/images/products/renewal-oil/step-2.jpg",
       },
       {
         title: "Retirez par les bords",
         detail: "Décollez délicatement, sans rincer.",
-        image: "/images/hero-model.jpg",
+        image: "/images/products/renewal-oil/step-3.jpg",
       },
     ],
     skinTypes: [
@@ -1122,8 +1174,14 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
   "rosehip-oil": {
     category: "Masques",
     badge: null,
-    // Product shot only — no model photos in the gallery
-    gallery: ["/images/products/aha_masque.png"],
+    // Product shot first, then the branded visuals
+    gallery: [
+      "/images/products/aha_masque.png",
+      "/images/products/rosehip-oil/gallery-ingredients.png",
+      "/images/products/rosehip-oil/gallery-rituel.png",
+      "/images/products/rosehip-oil/gallery-resultats.png",
+      "/images/products/rosehip-oil/gallery-benefices.png",
+    ],
     promise: null,
     benefits: [
       { icon: "purify", label: "Purifie et nettoie en profondeur" },
@@ -1132,7 +1190,17 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       { icon: "spark", label: "Affine le grain de peau" },
     ],
     lifestyle: null,
-    results: null,
+    // Customer photos. No measured figures for this one yet, so the stats
+    // tiles and the test note stay empty and the section skips them.
+    results: {
+      images: [
+        { src: "/images/products/rosehip-oil/before-after-1.jpg" },
+        { src: "/images/products/rosehip-oil/before-after-2.jpg" },
+        { src: "/images/products/rosehip-oil/before-after-3.jpg" },
+      ],
+      stats: [],
+      note: "",
+    },
     actives: [
       {
         name: "Argiles verte et blanche",
@@ -1154,17 +1222,17 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       {
         title: "Sur peau propre et sèche",
         detail: "Appliquez une couche uniforme en évitant le contour des yeux.",
-        image: "/images/skincare-ritual.jpg",
+        image: "/images/products/rosehip-oil/step-1.jpg",
       },
       {
         title: "Laissez poser 15 à 20 minutes",
         detail: "Les argiles absorbent et l'AHA exfolie.",
-        image: "/images/bento-skin-model.jpg",
+        image: "/images/products/rosehip-oil/step-2.jpg",
       },
       {
         title: "Rincez à l'eau tiède",
         detail: "Poursuivez avec votre routine habituelle.",
-        image: "/images/hero-model.jpg",
+        image: "/images/products/rosehip-oil/step-3.jpg",
       },
     ],
     skinTypes: [
@@ -1192,6 +1260,31 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
           "Évitez de les utiliser le même soir : les deux contiennent de l'acide glycolique. Espacez-les dans la semaine.",
       },
       { question: "Quels sont les délais de livraison ?", answer: DELIVERY_ANSWER },
+    ],
+    // The same customer photos as the carousel above, shown here exactly as
+    // supplied rather than cropped to the 2:1 frame.
+    milestones: [
+      {
+        src: "/images/products/rosehip-oil/resultat-1.jpg",
+        title: "Pores et grain de peau",
+        description:
+          "Le relief est lissé et la peau réfléchit la lumière au lieu de l'accrocher.",
+        tags: ["Pores désincrustés", "Grain affiné", "Peau lumineuse"],
+      },
+      {
+        src: "/images/products/rosehip-oil/resultat-2.jpg",
+        title: "Pores dilatés",
+        description:
+          "Les pores marqués de la joue sont nettement moins visibles après désincrustation.",
+        tags: ["Pores resserrés", "Sébum absorbé", "Peau nette"],
+      },
+      {
+        src: "/images/products/rosehip-oil/resultat-3.jpg",
+        title: "Teint irrégulier",
+        description:
+          "Les petites imperfections s'estompent et le teint gagne en netteté et en uniformité.",
+        tags: ["Imperfections réduites", "Teint unifié", "Peau plus douce"],
+      },
     ],
     testimonials: [],
     brandScene: null,

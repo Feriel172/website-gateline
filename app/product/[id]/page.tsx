@@ -19,6 +19,7 @@ import { contentFor } from "@/lib/product-content"
 import {
   ProductBenefits,
   ProductBrandBlock,
+  ProductConcerns,
   ProductFaq,
   ProductLifestyle,
   ProductMilestones,
@@ -117,7 +118,7 @@ const products: Record<string, {
     id: "renewal-oil",
     name: "Glass skin masque",
     tagline: "enrichi en collagène, ce masque peel-off enveloppe votre skincare et vous apporte l'apaisement et l'hydratation idéales.",
-    description: "Obtenez une glass skin grâce à ce masque au collagène, aloé vera et panthénol. sa formule hydrate intensément, améliore l’élasticité et la fermeté de la peau, elle illumine le teint, atténue les ridules et renforce la barrière cutanée, pour une peau repulpée, plus lisse et plus lumineuse.",
+    description: "",
     price: 1500,
     originalPrice: null,
     image: "/images/products/collagene_masque.png",
@@ -131,7 +132,7 @@ const products: Record<string, {
     id: "rosehip-oil",
     name: "clear pore masque",
     tagline: "enrichi en acide glycolique et d'un mélange d'argiles, ce masque agit comme un exfoliant et un masque purifiant qui nettoie en profondeur.",
-    description: "Ce Clear Pore Mask à base d’argiles verte et blanche, enrichi en AHA, aide à purifier et nettoyer la peau en profondeur et à améliorer l'apparence des pores. Il exfolie en douceur et affine le grain de peau pour un teint plus net, plus lisse et plus uniforme.",
+    description: "",
     price: 1200,
     originalPrice: null,
     image: "/images/products/aha_masque.png",
@@ -398,6 +399,13 @@ export default function ProductPage() {
         {content?.results && (
           <div className="max-w-4xl mx-auto px-0 sm:px-6 lg:px-8 mt-14">
             <ProductResultsCompact results={content.results} />
+          </div>
+        )}
+
+        {/* Takes the same slot for products sold on the concern they answer */}
+        {content?.concerns && content.concerns.length > 0 && (
+          <div className="max-w-4xl mx-auto px-0 sm:px-6 lg:px-8 mt-14">
+            <ProductConcerns concerns={content.concerns} />
           </div>
         )}
 

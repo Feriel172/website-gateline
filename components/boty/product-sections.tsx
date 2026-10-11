@@ -25,7 +25,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel"
-import type { BenefitIcon, FaqItem, ProductContent, Stat, Step, Testimonial } from "@/lib/product-content"
+import type { BenefitIcon, Concern, FaqItem, ProductContent, Stat, Step, Testimonial } from "@/lib/product-content"
 
 const ICONS: Record<BenefitIcon, React.ComponentType<{ className?: string }>> = {
   spark: Sparkles,
@@ -408,6 +408,107 @@ export function ProductMilestones({ milestones }: { milestones?: MilestoneCard[]
             type="button"
             onClick={() => api?.scrollTo(i)}
             aria-label={`Photo ${i + 1} sur ${milestones.length}`}
+            aria-current={i === current}
+            className={`h-1.5 rounded-full boty-transition ${
+              i === current ? "w-6 bg-primary" : "w-1.5 bg-foreground/20 hover:bg-foreground/40"
+            }`}
+          />
+        ))}
+      </div>
+    </section>
+  )
+}
+
+// --- The concerns the product answers ---
+
+export function ProductConcerns({ concerns }: { concerns?: Concern[] }) {
+  const [api, setApi] = useState<CarouselApi>()
+  const [current, setCurrent] = useState(0)
+  const [paused, setPaused] = useState(false)
+
+  useEffect(() => {
+    if (!api) return
+    const onSelect = () => setCurrent(api.selectedScrollSnap())
+    onSelect()
+    api.on("select", onSelect)
+    return () => {
+      api.off("select", onSelect)
+    }
+  }, [api])
+
+  useEffect(() => {
+    if (!api || paused) return
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+
+    const timer = setInterval(() => api.scrollNext(), 4000)
+    return () => clearInterval(timer)
+  }, [api, paused])
+
+  if (!concerns || concerns.length === 0) return null
+
+  return (
+    <section
+      aria-labelledby="concerns-title"
+      className="sm:rounded-3xl bg-card/60 px-5 py-6 sm:p-6"
+    >
+      <h2 id="concerns-title" className="font-serif text-2xl text-foreground mb-1">
+        Pour quels besoins ?
+      </h2>
+      <p className="text-sm text-muted-foreground leading-relaxed mb-5">
+        Les signes de peau que ce soin est conçu pour adoucir.
+      </p>
+
+      {/* Same swipe, autoplay and pause behaviour as the before / after block */}
+      <div
+        onPointerEnter={(e) => {
+          if (e.pointerType === "mouse") setPaused(true)
+        }}
+        onPointerLeave={(e) => {
+          if (e.pointerType === "mouse") setPaused(false)
+        }}
+        onFocusCapture={() => setPaused(true)}
+        onBlurCapture={() => setPaused(false)}
+        onTouchStart={() => setPaused(true)}
+        onTouchEnd={() => setPaused(false)}
+        onTouchCancel={() => setPaused(false)}
+      >
+        <Carousel opts={{ loop: true, align: "start" }} setApi={setApi}>
+          <CarouselContent className="-ml-0">
+            {concerns.map((concern) => (
+              <CarouselItem key={concern.title} className="pl-0">
+                <article className="-mx-5 sm:mx-0">
+                  <div className="relative aspect-[4/3] sm:rounded-2xl overflow-hidden bg-card">
+                    <Image
+                      src={concern.image}
+                      alt=""
+                      fill
+                      className="object-cover"
+                      sizes="(min-width: 1024px) 848px, 100vw"
+                      quality={90}
+                    />
+                  </div>
+                  <div className="px-5 sm:px-0">
+                    <h3 className="font-medium text-foreground mt-4 leading-snug">
+                      {concern.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed mt-1">
+                      {concern.description}
+                    </p>
+                  </div>
+                </article>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+      </div>
+
+      <div className="flex items-center justify-center gap-2 mt-5">
+        {concerns.map((concern, i) => (
+          <button
+            key={concern.title}
+            type="button"
+            onClick={() => api?.scrollTo(i)}
+            aria-label={`Besoin ${i + 1} sur ${concerns.length}`}
             aria-current={i === current}
             className={`h-1.5 rounded-full boty-transition ${
               i === current ? "w-6 bg-primary" : "w-1.5 bg-foreground/20 hover:bg-foreground/40"

@@ -683,8 +683,14 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
   "gentle-cleanser": {
     category: "Contour des yeux",
     badge: null,
-    // Product shot only — no model photos in the gallery
-    gallery: ["/images/products/collagene_contour.png"],
+    // Product shot first, then the branded visuals
+    gallery: [
+      "/images/products/collagene_contour.png",
+      "/images/products/gentle-cleanser/gallery-cure.png",
+      "/images/products/gentle-cleanser/gallery-resultats.png",
+      "/images/products/gentle-cleanser/gallery-rituel.png",
+      "/images/products/gentle-cleanser/gallery-comparatif.png",
+    ],
     promise: null,
     benefits: [
       { icon: "hydrate", label: "Hydratation profonde" },
@@ -756,15 +762,73 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       },
       { question: "Quels sont les délais de livraison ?", answer: DELIVERY_ANSWER },
     ],
-    testimonials: [],
+    // Placeholder: copied from the Niacinamide pads purely for the structure.
+    // Names, dates and quotes all need replacing with this product's own.
+    testimonials: [
+      {
+        name: "Amira L.",
+        since: "Il y a 2 semaines",
+        quote: "Mon contour des yeux préféré j'ai testé plusieurs autres marques même celui de The ordinary à la caféine mais le votre est mille fois mieux",
+        image: "/images/products/niacinamide/avis-sarah.png",
+        rating: 5,
+      },
+      {
+        name: "Selma C.",
+        since: "Il y a 1 mois",
+        quote: "هايل يعطيكم الصحة واحد الانتعاش سورتو مور ما حطيتو فلفريجيدار",
+        image: "/images/products/niacinamide/avis-ines.png",
+        rating: 5,
+      },
+      {
+        name: "Esma B.",
+        since: "Il y a 1 semaine",
+        quote: " J'ai adoré l'hydratation tient plusieurs heures et l'odeur magnifique",
+        image: "/images/products/niacinamide/avis-nour.png",
+        rating: 5,
+      },
+      {
+        name: "Siham B.",
+        since: "Il y a 3 semaines",
+        quote: "Une très belle découverte ce produit d'habitude j'utilise des marques d'importation mais celui là est devenu mon préféré",
+        image: "/images/products/niacinamide/avis-amel.png",
+        rating: 5,
+      },
+      {
+        name: "Assia C.",
+        since: "Il y a 3 semaines",
+        quote: "J'ai essayé votre produit je l'aime trop Ms vraiment c'est une découverte votre marque",
+        image: "/images/products/niacinamide/avis-amel.png",
+        rating: 5,
+      },
+      {
+        name: "Sonia Z.",
+        since: "Il y a 3 semaines",
+        quote: "هذي ماشاء اللّٰه خرجت على وجهي هبال اللهم بارك حبيت نزيد ليا ونديرها كادوان شاء اللّٰه",
+        image: "/images/products/niacinamide/avis-amel.png",
+        rating: 5,
+      },
+      {
+        name: "naima B.",
+        since: "Il y a 3 semaines",
+        quote: "hayel même pour l'ydratation il est 2 en 1",
+        image: "/images/products/niacinamide/avis-amel.png",
+        rating: 5,
+      },
+      
+    ],
     brandScene: null,
   },
 
   "night-cream": {
     category: "Contour des yeux",
     badge: null,
-    // Product shot only — no model photos in the gallery
-    gallery: ["/images/products/retinol_contour.png"],
+    // Product shot first, then the branded visuals
+    gallery: [
+      "/images/products/retinol_contour.png",
+      "/images/products/night-cream/gallery-cure.png",
+      "/images/products/night-cream/gallery-resultats.png",
+      "/images/products/night-cream/gallery-rituel.png",
+    ],
     promise: null,
     benefits: [
       { icon: "antiage", label: "Réduit l'apparence des rides et ridules" },
@@ -773,7 +837,17 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       { icon: "hydrate", label: "Lisse le contour de l'œil" },
     ],
     lifestyle: null,
-    results: null,
+    // Customer photos. No measured figures for this one yet, so the stats
+    // tiles and the test note stay empty and the section skips them.
+    results: {
+      images: [
+        { src: "/images/products/night-cream/before-after-1.jpg" },
+        { src: "/images/products/night-cream/before-after-2.jpg" },
+        { src: "/images/products/night-cream/before-after-3.jpg" },
+      ],
+      stats: [],
+      note: "",
+    },
     actives: [
       {
         name: "Rétinol",
@@ -836,7 +910,106 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       },
       { question: "Quels sont les délais de livraison ?", answer: DELIVERY_ANSWER },
     ],
-    testimonials: [],
+    // Customer photos, served exactly as supplied. Titles name what each one
+    // shows rather than a duration, since no timings were given.
+    milestones: [
+      {
+        src: "/images/products/night-cream/resultat-1.jpg",
+        title: "Cernes et relief",
+        description:
+          "Le creux sous l'œil est comblé et l'ombre bleutée s'éclaircit : le regard paraît reposé.",
+        tags: ["Cernes atténués", "Contour repulpé", "Regard reposé"],
+      },
+      {
+        src: "/images/products/night-cream/resultat-2.jpg",
+        title: "Ridules du coin de l'œil",
+        description:
+          "Les ridules au coin de l'œil sont lissées et la peau du contour paraît plus souple.",
+        tags: ["Ridules lissées", "Peau assouplie", "Contour plus ferme"],
+      },
+      {
+        src: "/images/products/night-cream/resultat-3.jpg",
+        title: "Rides et texture",
+        description:
+          "Les rides installées sous l'œil s'adoucissent et le grain de peau du contour est plus régulier.",
+        tags: ["Rides adoucies", "Texture affinée", "Teint unifié"],
+      },
+      {
+        src: "/images/products/night-cream/resultat-4.jpg",
+        title: "Peau froissée",
+        description:
+          "L'aspect froissé sous l'œil est visiblement réduit et la peau retrouve de la tenue.",
+        tags: ["Peau lissée", "Fermeté améliorée", "Contour défatigué"],
+      },
+      {
+        src: "/images/products/night-cream/resultat-5.jpg",
+        title: "Pattes d'oie",
+        description:
+          "Les pattes d'oie sont estompées, y compris lorsque le regard est en mouvement.",
+        tags: ["Pattes d'oie estompées", "Contour lissé", "Éclat du regard"],
+      },
+      {
+        src: "/images/products/night-cream/resultat-6.jpg",
+        title: "Contour fatigué",
+        description:
+          "Le contour est plus lisse et plus lumineux, pour un regard nettement moins marqué.",
+        tags: ["Contour lissé", "Regard lumineux", "Rides réduites"],
+      },
+    ],
+    // Placeholder: copied from the Niacinamide pads purely for the structure.
+    // Names, dates and quotes all need replacing with this product's own.
+    testimonials: [
+      {
+        name: "Amira L.",
+        since: "Il y a 2 semaines",
+        quote: "Mon contour des yeux préféré j'ai testé plusieurs autres marques même celui de The ordinary à la caféine mais le votre est mille fois mieux",
+        image: "/images/products/niacinamide/avis-sarah.png",
+        rating: 5,
+      },
+      {
+        name: "Selma C.",
+        since: "Il y a 1 mois",
+        quote: "هايل يعطيكم الصحة واحد الانتعاش سورتو مور ما حطيتو فلفريجيدار",
+        image: "/images/products/niacinamide/avis-ines.png",
+        rating: 5,
+      },
+      {
+        name: "Esma B.",
+        since: "Il y a 1 semaine",
+        quote: " J'ai adoré l'hydratation tient plusieurs heures et l'odeur magnifique",
+        image: "/images/products/niacinamide/avis-nour.png",
+        rating: 5,
+      },
+      {
+        name: "Siham B.",
+        since: "Il y a 3 semaines",
+        quote: "Une très belle découverte ce produit d'habitude j'utilise des marques d'importation mais celui là est devenu mon préféré",
+        image: "/images/products/niacinamide/avis-amel.png",
+        rating: 5,
+      },
+      {
+        name: "Assia C.",
+        since: "Il y a 3 semaines",
+        quote: "J'ai essayé votre produit je l'aime trop Ms vraiment c'est une découverte votre marque",
+        image: "/images/products/niacinamide/avis-amel.png",
+        rating: 5,
+      },
+      {
+        name: "Sonia Z.",
+        since: "Il y a 3 semaines",
+        quote: "هذي ماشاء اللّٰه خرجت على وجهي هبال اللهم بارك حبيت نزيد ليا ونديرها كادوان شاء اللّٰه",
+        image: "/images/products/niacinamide/avis-amel.png",
+        rating: 5,
+      },
+      {
+        name: "naima B.",
+        since: "Il y a 3 semaines",
+        quote: "hayel même pour l'ydratation il est 2 en 1",
+        image: "/images/products/niacinamide/avis-amel.png",
+        rating: 5,
+      },
+      
+    ],
     brandScene: null,
   },
 

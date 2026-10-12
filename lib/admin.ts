@@ -286,27 +286,66 @@ export interface DayStat {
   productRevenue: number  // confirmed revenue excluding delivery
 }
 
-// created_at is stored in UTC. Keying on the browser's local calendar day keeps
-// the grouping aligned with the shop's own day rather than splitting an evening
-// order into the next date.
+// The shop runs on Algerian time, so every order belongs to the day it was
+// placed in Algiers — not the day it happened to be wherever the admin is
+// sitting. Without this, an evening order in Algiers lands on the next date for
+// anyone browsing from further east.
+export const SHOP_TIME_ZONE = "Africa/Algiers"
+
+// en-CA formats as YYYY-MM-DD, which is exactly the key shape we want
+const SHOP_DAY = new Intl.DateTimeFormat("en-CA", {
+  timeZone: SHOP_TIME_ZONE,
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+})
+
+const SHOP_CLOCK = new Intl.DateTimeFormat("fr-FR", {
+  timeZone: SHOP_TIME_ZONE,
+  day: "2-digit",
+  month: "short",
+  year: "numeric",
+  hour: "2-digit",
+  minute: "2-digit",
+})
+
+/** The Algiers calendar day an order was placed on, as "YYYY-MM-DD". */
+export function orderDayKey(order: Order): string {
+  return SHOP_DAY.format(new Date(order.created_at))
+}
+
+/** Today in Algiers, as a plain calendar date the date-fns helpers can use. */
+export function shopToday(): Date {
+  const [year, month, day] = SHOP_DAY.format(new Date()).split("-").map(Number)
+  return new Date(year, month - 1, day)
+}
+
+/** Order date and time, written in Algiers time whatever the viewer's clock. */
+export function formatShopDateTime(value: string): string {
+  const date = new Date(value)
+  return Number.isNaN(date.getTime()) ? value : SHOP_CLOCK.format(date)
+}
+
+// For the calendar's own cells, which are plain calendar days rather than
+// instants: read the fields straight off, with no time-zone shift.
 export function dayKey(date: Date): string {
   const month = String(date.getMonth() + 1).padStart(2, "0")
   const day = String(date.getDate()).padStart(2, "0")
   return `${date.getFullYear()}-${month}-${day}`
 }
 
-// Orders placed within the given calendar month, using the same local-day
-// grouping as dayKey so the two never disagree at a month boundary.
+// Orders placed within the given calendar month, in Algiers time, so the month
+// picker and the calendar grid never disagree at a boundary.
 export function ordersInMonth(orders: Order[], month: Date): Order[] {
   const prefix = dayKey(month).slice(0, 7) // "YYYY-MM"
-  return orders.filter((order) => dayKey(new Date(order.created_at)).startsWith(prefix))
+  return orders.filter((order) => orderDayKey(order).startsWith(prefix))
 }
 
 export function dailyStats(orders: Order[]): Map<string, DayStat> {
   const byDay = new Map<string, DayStat>()
 
   for (const order of orders) {
-    const key = dayKey(new Date(order.created_at))
+    const key = orderDayKey(order)
     const stat = byDay.get(key) ?? { orders: 0, confirmed: 0, revenue: 0, productRevenue: 0 }
 
     stat.orders += 1

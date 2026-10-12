@@ -57,11 +57,13 @@ import {
   type Order,
   type OrderItem,
   deliveredOrders,
+  formatShopDateTime,
   formatCurrency,
   lineTotal,
   orderShipping,
   orderSubtotal,
   ordersInMonth,
+  shopToday,
   DELIVERY_STATUSES,
   type DeliveryStatus,
   deliveryStatusOf,
@@ -196,12 +198,9 @@ function DeliveryBadge({
 
 // --- Format helpers ---
 
+// Algiers time, so the list agrees with the day the calendar counts it under
 function formatDate(dateStr: string) {
-  try {
-    return format(new Date(dateStr), "dd MMM yyyy HH:mm", { locale: fr })
-  } catch {
-    return dateStr
-  }
+  return formatShopDateTime(dateStr)
 }
 
 // --- Summary Cards ---
@@ -288,7 +287,7 @@ export default function AdminPage() {
   const [updatingId, setUpdatingId] = useState<string | null>(null)
   const [query, setQuery] = useState("")
   const [editing, setEditing] = useState<Order | null>(null)
-  const [month, setMonth] = useState(() => startOfMonth(new Date()))
+  const [month, setMonth] = useState(() => startOfMonth(shopToday()))
   const [updatingDeliveryId, setUpdatingDeliveryId] = useState<string | null>(null)
   // The order whose swap picker is open
   const [swapFor, setSwapFor] = useState<Order | null>(null)

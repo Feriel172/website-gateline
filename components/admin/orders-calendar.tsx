@@ -7,7 +7,6 @@ import {
   endOfWeek,
   format,
   isSameMonth,
-  isToday,
   startOfMonth,
   startOfWeek,
 } from "date-fns"
@@ -15,7 +14,7 @@ import { fr } from "date-fns/locale"
 import { CalendarDays } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { MonthPicker } from "@/components/admin/month-picker"
-import { type Order, dailyStats, dayKey, formatCurrency } from "@/lib/admin"
+import { type Order, dailyStats, dayKey, formatCurrency, shopToday } from "@/lib/admin"
 
 const WEEK_STARTS_ON = 1 // Monday
 
@@ -40,6 +39,8 @@ interface OrdersCalendarProps {
 // shown around the calendar.
 export function OrdersCalendar({ orders, month, onMonthChange }: OrdersCalendarProps) {
   const stats = useMemo(() => dailyStats(orders), [orders])
+  // "today" means today in Algiers, not on whatever clock the admin is using
+  const todayKey = dayKey(shopToday())
 
   const days = useMemo(() => {
     // Pad to whole weeks so the grid always has 7 aligned columns
@@ -105,11 +106,11 @@ export function OrdersCalendar({ orders, month, onMonthChange }: OrdersCalendarP
                     key={day.toISOString()}
                     className={`min-h-[4.5rem] rounded-lg border p-2 flex flex-col gap-0.5 ${
                       outside ? "opacity-40 border-transparent" : "border-border/50"
-                    } ${isToday(day) ? "ring-1 ring-primary" : ""} ${
+                    } ${dayKey(day) === todayKey ? "ring-1 ring-primary" : ""} ${
                       outside ? "" : heatClass(stat?.revenue ?? 0, peak)
                     }`}
                   >
-                    <span className={`text-xs ${isToday(day) ? "font-bold text-primary" : "text-muted-foreground"}`}>
+                    <span className={`text-xs ${dayKey(day) === todayKey ? "font-bold text-primary" : "text-muted-foreground"}`}>
                       {format(day, "d")}
                     </span>
 

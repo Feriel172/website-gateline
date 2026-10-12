@@ -26,6 +26,7 @@ import {
   orderProductionCost,
   orderSubtotal,
   ordersInMonth,
+  shopToday,
   totalReturnCost,
   totalSwapCost,
   unpricedItems,
@@ -36,7 +37,7 @@ export default function AdminAnalyticsPage() {
   const [orders, setOrders] = useState<Order[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [month, setMonth] = useState(() => startOfMonth(new Date()))
+  const [month, setMonth] = useState(() => startOfMonth(shopToday()))
 
   const fetchOrders = useCallback(async () => {
     if (!adminKey) return
